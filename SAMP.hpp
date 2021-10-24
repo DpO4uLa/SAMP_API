@@ -310,8 +310,8 @@ namespace SAMP {
 		};
 
 		void UnloadAPI(void) {//unload samp api
-			MH_DisableHook((void*)(sampAddr + 0x005DB40));//delete wndproc hook
-
+			
+			
 			printf("\nUnload sampAPI");
 		};
 
@@ -332,24 +332,38 @@ namespace SAMP {
 			INCOMING_RAKPEER_PACKET_CALLBACK,
 			OUTCOMING_RAKPEER_PACKET_CALLBACK,
 			INCOMING_RPC_CALLBACK,
-			OUTCOMING_RPC_CALLBACK
+			OUTCOMING_RPC_CALLBACK,
+			INCOMING_RAKCLIENT_PACKET_CALLBACK,
+			OUTCOMING_RAKCLIENT_PACKET_CALLBACK,
 		};
 
+		struct stWndProcParams {
+			HWND hWnd;
+			UINT uMsg;
+			WPARAM wParam;
+			LPARAM lParam;
+		};
+
+
 		class CCallbackRegister {
-		public:
+		public:			
 			typedef bool(__stdcall *tRakPeerOutcomingPacket)(void *, BitStream*, const int, PacketPriority, PacketReliability, char, PlayerID, bool);
-			typedef LRESULT(__stdcall *tWndProc)(HWND, UINT, WPARAM, LPARAM);
+			typedef LRESULT(__stdcall *tWndProc)(stWndProcParams*);
 
 			CCallbackRegister() {
-				DWORD sampBase = (DWORD)GetModuleHandleA("samp.dll");
+				sampBase = (DWORD)GetModuleHandleA("samp.dll");
 
 				MH_Initialize();
 
 				MH_CreateHook((void*)(sampBase + 0x005DB40), &HOOKED_WndProc, (void**)&origWndProc);//wndproc hook
-				MH_EnableHook((void*)(sampBase + 0x005DB40));
+				MH_EnableHook((void*)(sampBase + 0x005DB40));//maybe jumping on notfund address ????? 
 
-				MH_CreateHook((void*)(sampBase + 0x00307F0), &HOOKED_RakPeerSend, (void**)&origRakPeerSend);//rakpeer send hook
-				MH_EnableHook((void*)(sampBase + 0x00307F0));
+				//MH_CreateHook((void*)(sampBase + 0x00307F0), &HOOKED_RakPeerSend, (void**)&origRakPeerSend);//rakpeer send hook
+				//MH_EnableHook((void*)(sampBase + 0x00307F0));
+			}
+
+			~CCallbackRegister() {
+				MH_DisableHook((void*)(sampBase + 0x005DB40));
 			}
 
 			//сделать перегрузки
@@ -361,7 +375,7 @@ namespace SAMP {
 					break;
 				}
 				case eRakNetCallBacks::OUTCOMING_RAKPEER_PACKET_CALLBACK: {
-					vecRakPeerOutcomingPacket.push_back(func);
+					callRakPeerOutcomingPacket = func;
 					break;
 				}
 				case eRakNetCallBacks::INCOMING_RPC_CALLBACK: {
@@ -374,11 +388,13 @@ namespace SAMP {
 				}
 				}
 			};
-			void RegisterWnwProcCallback(tWndProc func) { vecWndProc.push_back(func); }
+			void inline RegisterWndProcCallback(tWndProc func) { callWndProc = func; };
 		private:
-			std::vector<tRakPeerOutcomingPacket> vecRakPeerOutcomingPacket;
+			DWORD sampBase = 0;
 
-			std::vector<tWndProc> vecWndProc;
+			tRakPeerOutcomingPacket callRakPeerOutcomingPacket = 0;
+
+			tWndProc callWndProc = 0;
 
 
 			typedef LRESULT(__stdcall *tWNDPROC)(HWND, UINT, WPARAM, LPARAM);
@@ -397,17 +413,29 @@ namespace SAMP {
 }
 
 LRESULT __stdcall SAMP::CallBacks::CCallbackRegister::HOOKED_WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
-	for (unsigned __int32 i = 0; i != SAMP::CallBacks::pCallBackRegister->vecWndProc.size(); i++) {
-		if (!SAMP::CallBacks::pCallBackRegister->vecWndProc.data()[i](hWnd, uMsg, wParam, lParam))
-			return 0;
+	if (SAMP::CallBacks::pCallBackRegister->callWndProc != 0) {//maybe error if null?
+		stWndProcParams *params = new stWndProcParams;
+		params->hWnd = hWnd;
+		params->uMsg = uMsg;
+		params->wParam = wParam;
+		params->lParam = lParam;
+		LRESULT retn = SAMP::CallBacks::pCallBackRegister->callWndProc(params);
+		hWnd = params->hWnd;
+		uMsg = params->uMsg;
+		wParam = params->wParam;
+		lParam = params->lParam;
+		delete params;
+		params = nullptr;
+		if (retn != 0)
+			return retn;
 	}
 	return SAMP::CallBacks::pCallBackRegister->origWndProc(hWnd, uMsg, wParam, lParam);
 }
 
 unsigned __int32 __fastcall SAMP::CallBacks::CCallbackRegister::HOOKED_RakPeerSend(void* _this, void *pUnk, BitStream *data, const int length, PacketPriority priority, PacketReliability reliability, char orderingChannel, PlayerID playerId, bool broadcast) {
-	for (unsigned __int32 i = 0; i != SAMP::CallBacks::pCallBackRegister->vecRakPeerOutcomingPacket.size(); i++) {
-		if (!SAMP::CallBacks::pCallBackRegister->vecRakPeerOutcomingPacket.data()[i](_this, data, length, priority, reliability, orderingChannel, playerId, broadcast))
-			return 0;
-	}
+	//if (SAMP::CallBacks::pCallBackRegister->callRakPeerOutcomingPacket != 0) {//maybe error if null?
+	//	if (!SAMP::CallBacks::pCallBackRegister->callRakPeerOutcomingPacket(_this, data, length, priority, reliability, orderingChannel, playerId, broadcast))
+	//		return false;
+	//}//reallocate new bitStream if game crashed because user write  more bytes how original bitstream
 	return SAMP::CallBacks::pCallBackRegister->origRakPeerSend(_this, data, length, priority, reliability, orderingChannel, playerId, broadcast);
 }
