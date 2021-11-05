@@ -1,0 +1,412 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Исходные файлы">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Исходные файлы\SAMP">
+      <UniqueIdentifier>{bbbf8167-cd61-4350-b6b2-ed04e0a0351f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\SAMP\RakNet">
+      <UniqueIdentifier>{dbb043e7-6c7a-4a29-a411-a3c895ec5616}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\injector">
+      <UniqueIdentifier>{28da94ba-bde1-49bd-9410-e82245d48f24}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\injector\hde">
+      <UniqueIdentifier>{db337d78-b49b-40e9-acd4-c1ceb070fe1f}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\samp_auth.cpp">
+      <Filter>Исходные файлы\SAMP</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\samp_netencr.cpp">
+      <Filter>Исходные файлы\SAMP</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\RakNet\_findfirst.cpp">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\RakNet\BitStream.cpp">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\RakNet\CheckSum.cpp">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\RakNet\CommandParserInterface.cpp">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\RakNet\ConsoleServer.cpp">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\RakNet\DataBlockEncryptor.cpp">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\RakNet\DataCompressor.cpp">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\RakNet\DS_ByteQueue.cpp">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\RakNet\DS_HuffmanEncodingTree.cpp">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\RakNet\DS_Table.cpp">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\RakNet\GetTime.cpp">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\RakNet\InternalPacketPool.cpp">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\RakNet\LinuxStrings.cpp">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\RakNet\LogCommandParser.cpp">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\RakNet\NetworkIDGenerator.cpp">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\RakNet\NetworkTypes.cpp">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\RakNet\PluginInterface.cpp">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\RakNet\RakClient.cpp">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\RakNet\RakNetCommandParser.cpp">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\RakNet\RakNetStatistics.cpp">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\RakNet\RakNetworkFactory.cpp">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\RakNet\RakPeer.cpp">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\RakNet\RakSleep.cpp">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\RakNet\Rand.cpp">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\RakNet\ReliabilityLayer.cpp">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\RakNet\rijndael.cpp">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\RakNet\RPCMap.cpp">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\RakNet\SHA1.cpp">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\RakNet\SimpleMutex.cpp">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\RakNet\SocketLayer.cpp">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\RakNet\StringCompressor.cpp">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\RakNet\StringTable.cpp">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\RakNet\SystemAddressList.cpp">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\RakNet\SystemDatabaseClient.cpp">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\RakNet\SystemDatabaseServer.cpp">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\RakNet\TableSerializer.cpp">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClCompile>
+    <ClCompile Include="injector\hde\hde32.cpp">
+      <Filter>Исходные файлы\injector\hde</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="SAMP\SAMP.hpp">
+      <Filter>Исходные файлы\SAMP</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\samp_auth.h">
+      <Filter>Исходные файлы\SAMP</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\samp_netencr.h">
+      <Filter>Исходные файлы\SAMP</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\SAMP_VER.h">
+      <Filter>Исходные файлы\SAMP</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\Structs.h">
+      <Filter>Исходные файлы\SAMP</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\_findfirst.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\AutopatcherPatchContext.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\AutopatcherRepositoryInterface.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\BigTypes.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\BitStream.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\CheckSum.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\ClientContextStruct.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\CommandParserInterface.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\ConsoleServer.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\DataBlockEncryptor.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\DataCompressor.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\DS_BinarySearchTree.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\DS_BPlusTree.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\DS_ByteQueue.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\DS_Heap.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\DS_HuffmanEncodingTree.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\DS_HuffmanEncodingTreeFactory.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\DS_HuffmanEncodingTreeNode.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\DS_LinkedList.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\DS_List.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\DS_Map.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\DS_MemoryPool.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\DS_OrderedChannelHeap.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\DS_OrderedList.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\DS_Queue.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\DS_QueueLinkedList.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\DS_RangeList.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\DS_Table.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\DS_Tree.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\DS_WeightedGraph.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\Export.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\GetTime.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\InternalPacket.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\InternalPacketPool.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\LinuxStrings.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\LogCommandParser.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\MTUSize.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\multiplayer.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\NetworkIDGenerator.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\NetworkTypes.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\PacketEnumerations.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\PacketPriority.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\PluginInterface.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\RakAssert.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\RakClient.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\RakClientInterface.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\RakNetCommandParser.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\RakNetDefines.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\RakNetStatistics.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\RakNetworkFactory.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\rakpeer.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\rakpeerinterface.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\RakSleep.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\Rand.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\ReliabilityLayer.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\Replica.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\ReplicaEnums.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\rijndael.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\rijndael-boxes.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\RouterInterface.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\RPCMap.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\RPCNode.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\RSACrypt.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\SHA1.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\SimpleMutex.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\SimpleTCPServer.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\SingleProducerConsumer.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\SocketLayer.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\StringCompressor.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\StringTable.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\systemaddresslist.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\SystemDatabaseClient.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\SystemDatabaseServer.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\TableSerializer.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\ThreadPool.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\TransportInterface.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\RakNet\Types.h">
+      <Filter>Исходные файлы\SAMP\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="injector\disassembler.hpp">
+      <Filter>Исходные файлы\injector</Filter>
+    </ClInclude>
+    <ClInclude Include="injector\hook.hpp">
+      <Filter>Исходные файлы\injector</Filter>
+    </ClInclude>
+    <ClInclude Include="injector\injector.hpp">
+      <Filter>Исходные файлы\injector</Filter>
+    </ClInclude>
+    <ClInclude Include="injector\invoker.hpp">
+      <Filter>Исходные файлы\injector</Filter>
+    </ClInclude>
+    <ClInclude Include="injector\patch.hpp">
+      <Filter>Исходные файлы\injector</Filter>
+    </ClInclude>
+    <ClInclude Include="injector\hde\hde32.h">
+      <Filter>Исходные файлы\injector\hde</Filter>
+    </ClInclude>
+    <ClInclude Include="injector\hde\table32.h">
+      <Filter>Исходные файлы\injector\hde</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

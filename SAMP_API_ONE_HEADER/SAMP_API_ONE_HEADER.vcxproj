@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>15.0</VCProjectVersion>
+    <ProjectGuid>{5EED001D-1315-4353-9964-6F4190F2B2B0}</ProjectGuid>
+    <RootNamespace>SAMPAPIONEHEADER</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>false</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <TargetExt>.ASI</TargetExt>
+    <ExecutablePath>$(VC_ExecutablePath_x86);$(WindowsSDK_ExecutablePath);$(VS_ExecutablePath);$(MSBuild_ExecutablePath);$(SystemRoot)\SysWow64;$(FxCopDir);$(PATH)</ExecutablePath>
+    <LibraryPath>$(MSBuildProjectDirectory)\MinHook;$(MSBuildProjectDirectory)\DirectX;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>false</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>false</SDLCheck>
+      <ConformanceMode>false</ConformanceMode>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <PreprocessorDefinitions>WIN32;_WINSOCK_DEPRECATED_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;WIN32_LEAN_AND_MEAN;_WINDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
+      <OmitFramePointers>true</OmitFramePointers>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <StringPooling>true</StringPooling>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <EntryPointSymbol>
+      </EntryPointSymbol>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="injector\hde\hde32.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="SAMP\RakNet\BitStream.cpp" />
+    <ClCompile Include="SAMP\RakNet\CheckSum.cpp" />
+    <ClCompile Include="SAMP\RakNet\CommandParserInterface.cpp" />
+    <ClCompile Include="SAMP\RakNet\ConsoleServer.cpp" />
+    <ClCompile Include="SAMP\RakNet\DataBlockEncryptor.cpp" />
+    <ClCompile Include="SAMP\RakNet\DataCompressor.cpp" />
+    <ClCompile Include="SAMP\RakNet\DS_ByteQueue.cpp" />
+    <ClCompile Include="SAMP\RakNet\DS_HuffmanEncodingTree.cpp" />
+    <ClCompile Include="SAMP\RakNet\DS_Table.cpp" />
+    <ClCompile Include="SAMP\RakNet\GetTime.cpp" />
+    <ClCompile Include="SAMP\RakNet\InternalPacketPool.cpp" />
+    <ClCompile Include="SAMP\RakNet\LinuxStrings.cpp" />
+    <ClCompile Include="SAMP\RakNet\LogCommandParser.cpp" />
+    <ClCompile Include="SAMP\RakNet\NetworkIDGenerator.cpp" />
+    <ClCompile Include="SAMP\RakNet\NetworkTypes.cpp" />
+    <ClCompile Include="SAMP\RakNet\PluginInterface.cpp" />
+    <ClCompile Include="SAMP\RakNet\RakClient.cpp" />
+    <ClCompile Include="SAMP\RakNet\RakNetCommandParser.cpp" />
+    <ClCompile Include="SAMP\RakNet\RakNetStatistics.cpp" />
+    <ClCompile Include="SAMP\RakNet\RakNetworkFactory.cpp" />
+    <ClCompile Include="SAMP\RakNet\RakPeer.cpp" />
+    <ClCompile Include="SAMP\RakNet\RakSleep.cpp" />
+    <ClCompile Include="SAMP\RakNet\Rand.cpp" />
+    <ClCompile Include="SAMP\RakNet\ReliabilityLayer.cpp" />
+    <ClCompile Include="SAMP\RakNet\rijndael.cpp" />
+    <ClCompile Include="SAMP\RakNet\RPCMap.cpp" />
+    <ClCompile Include="SAMP\RakNet\SHA1.cpp" />
+    <ClCompile Include="SAMP\RakNet\SimpleMutex.cpp" />
+    <ClCompile Include="SAMP\RakNet\SocketLayer.cpp" />
+    <ClCompile Include="SAMP\RakNet\StringCompressor.cpp" />
+    <ClCompile Include="SAMP\RakNet\StringTable.cpp" />
+    <ClCompile Include="SAMP\RakNet\SystemAddressList.cpp" />
+    <ClCompile Include="SAMP\RakNet\SystemDatabaseClient.cpp" />
+    <ClCompile Include="SAMP\RakNet\SystemDatabaseServer.cpp" />
+    <ClCompile Include="SAMP\RakNet\TableSerializer.cpp" />
+    <ClCompile Include="SAMP\RakNet\_findfirst.cpp" />
+    <ClCompile Include="SAMP\samp_auth.cpp" />
+    <ClCompile Include="SAMP\samp_netencr.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="injector\disassembler.hpp" />
+    <ClInclude Include="injector\hde\hde32.h" />
+    <ClInclude Include="injector\hde\table32.h" />
+    <ClInclude Include="injector\hook.hpp" />
+    <ClInclude Include="injector\injector.hpp" />
+    <ClInclude Include="injector\invoker.hpp" />
+    <ClInclude Include="injector\patch.hpp" />
+    <ClInclude Include="SAMP\RakNet\AutopatcherPatchContext.h" />
+    <ClInclude Include="SAMP\RakNet\AutopatcherRepositoryInterface.h" />
+    <ClInclude Include="SAMP\RakNet\BigTypes.h" />
+    <ClInclude Include="SAMP\RakNet\BitStream.h" />
+    <ClInclude Include="SAMP\RakNet\CheckSum.h" />
+    <ClInclude Include="SAMP\RakNet\ClientContextStruct.h" />
+    <ClInclude Include="SAMP\RakNet\CommandParserInterface.h" />
+    <ClInclude Include="SAMP\RakNet\ConsoleServer.h" />
+    <ClInclude Include="SAMP\RakNet\DataBlockEncryptor.h" />
+    <ClInclude Include="SAMP\RakNet\DataCompressor.h" />
+    <ClInclude Include="SAMP\RakNet\DS_BinarySearchTree.h" />
+    <ClInclude Include="SAMP\RakNet\DS_BPlusTree.h" />
+    <ClInclude Include="SAMP\RakNet\DS_ByteQueue.h" />
+    <ClInclude Include="SAMP\RakNet\DS_Heap.h" />
+    <ClInclude Include="SAMP\RakNet\DS_HuffmanEncodingTree.h" />
+    <ClInclude Include="SAMP\RakNet\DS_HuffmanEncodingTreeFactory.h" />
+    <ClInclude Include="SAMP\RakNet\DS_HuffmanEncodingTreeNode.h" />
+    <ClInclude Include="SAMP\RakNet\DS_LinkedList.h" />
+    <ClInclude Include="SAMP\RakNet\DS_List.h" />
+    <ClInclude Include="SAMP\RakNet\DS_Map.h" />
+    <ClInclude Include="SAMP\RakNet\DS_MemoryPool.h" />
+    <ClInclude Include="SAMP\RakNet\DS_OrderedChannelHeap.h" />
+    <ClInclude Include="SAMP\RakNet\DS_OrderedList.h" />
+    <ClInclude Include="SAMP\RakNet\DS_Queue.h" />
+    <ClInclude Include="SAMP\RakNet\DS_QueueLinkedList.h" />
+    <ClInclude Include="SAMP\RakNet\DS_RangeList.h" />
+    <ClInclude Include="SAMP\RakNet\DS_Table.h" />
+    <ClInclude Include="SAMP\RakNet\DS_Tree.h" />
+    <ClInclude Include="SAMP\RakNet\DS_WeightedGraph.h" />
+    <ClInclude Include="SAMP\RakNet\Export.h" />
+    <ClInclude Include="SAMP\RakNet\GetTime.h" />
+    <ClInclude Include="SAMP\RakNet\InternalPacket.h" />
+    <ClInclude Include="SAMP\RakNet\InternalPacketPool.h" />
+    <ClInclude Include="SAMP\RakNet\LinuxStrings.h" />
+    <ClInclude Include="SAMP\RakNet\LogCommandParser.h" />
+    <ClInclude Include="SAMP\RakNet\MTUSize.h" />
+    <ClInclude Include="SAMP\RakNet\multiplayer.h" />
+    <ClInclude Include="SAMP\RakNet\NetworkIDGenerator.h" />
+    <ClInclude Include="SAMP\RakNet\NetworkTypes.h" />
+    <ClInclude Include="SAMP\RakNet\PacketEnumerations.h" />
+    <ClInclude Include="SAMP\RakNet\PacketPriority.h" />
+    <ClInclude Include="SAMP\RakNet\PluginInterface.h" />
+    <ClInclude Include="SAMP\RakNet\RakAssert.h" />
+    <ClInclude Include="SAMP\RakNet\RakClient.h" />
+    <ClInclude Include="SAMP\RakNet\RakClientInterface.h" />
+    <ClInclude Include="SAMP\RakNet\RakNetCommandParser.h" />
+    <ClInclude Include="SAMP\RakNet\RakNetDefines.h" />
+    <ClInclude Include="SAMP\RakNet\RakNetStatistics.h" />
+    <ClInclude Include="SAMP\RakNet\RakNetworkFactory.h" />
+    <ClInclude Include="SAMP\RakNet\rakpeer.h" />
+    <ClInclude Include="SAMP\RakNet\rakpeerinterface.h" />
+    <ClInclude Include="SAMP\RakNet\RakSleep.h" />
+    <ClInclude Include="SAMP\RakNet\Rand.h" />
+    <ClInclude Include="SAMP\RakNet\ReliabilityLayer.h" />
+    <ClInclude Include="SAMP\RakNet\Replica.h" />
+    <ClInclude Include="SAMP\RakNet\ReplicaEnums.h" />
+    <ClInclude Include="SAMP\RakNet\rijndael-boxes.h" />
+    <ClInclude Include="SAMP\RakNet\rijndael.h" />
+    <ClInclude Include="SAMP\RakNet\RouterInterface.h" />
+    <ClInclude Include="SAMP\RakNet\RPCMap.h" />
+    <ClInclude Include="SAMP\RakNet\RPCNode.h" />
+    <ClInclude Include="SAMP\RakNet\RSACrypt.h" />
+    <ClInclude Include="SAMP\RakNet\SHA1.h" />
+    <ClInclude Include="SAMP\RakNet\SimpleMutex.h" />
+    <ClInclude Include="SAMP\RakNet\SimpleTCPServer.h" />
+    <ClInclude Include="SAMP\RakNet\SingleProducerConsumer.h" />
+    <ClInclude Include="SAMP\RakNet\SocketLayer.h" />
+    <ClInclude Include="SAMP\RakNet\StringCompressor.h" />
+    <ClInclude Include="SAMP\RakNet\StringTable.h" />
+    <ClInclude Include="SAMP\RakNet\systemaddresslist.h" />
+    <ClInclude Include="SAMP\RakNet\SystemDatabaseClient.h" />
+    <ClInclude Include="SAMP\RakNet\SystemDatabaseServer.h" />
+    <ClInclude Include="SAMP\RakNet\TableSerializer.h" />
+    <ClInclude Include="SAMP\RakNet\ThreadPool.h" />
+    <ClInclude Include="SAMP\RakNet\TransportInterface.h" />
+    <ClInclude Include="SAMP\RakNet\Types.h" />
+    <ClInclude Include="SAMP\RakNet\_findfirst.h" />
+    <ClInclude Include="SAMP\SAMP.hpp" />
+    <ClInclude Include="SAMP\samp_auth.h" />
+    <ClInclude Include="SAMP\samp_netencr.h" />
+    <ClInclude Include="SAMP\SAMP_VER.h" />
+    <ClInclude Include="SAMP\Structs.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
