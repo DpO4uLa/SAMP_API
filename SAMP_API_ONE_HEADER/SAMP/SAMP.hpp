@@ -1083,6 +1083,22 @@ namespace SAMP {
 				IDirect3DDevice9* pDevice;
 				D3DPRESENT_PARAMETERS* pPresentParams;
 			};
+			struct stRakClientSend {
+				RakClientInterface* _this;
+				BitStream* bitStream;
+				PacketPriority priority;
+				PacketReliability reliability;
+				char orderingChannel;
+			};
+			struct stRakClientRPC {
+				RakClientInterface* _this;
+				int* uniqueID;
+				BitStream* bitStream;
+				PacketPriority priority;
+				PacketReliability reliability;
+				char orderingChannel;
+				bool shiftTimestamp;
+			};
 		}
 
 		class CCallbackRegister {
@@ -1091,6 +1107,8 @@ namespace SAMP {
 			typedef void(__stdcall *tGameLoop)();
 			typedef HRESULT(__stdcall* tPresent_)(HookedStructs::stPresentParams*);
 			typedef HRESULT(__stdcall* tReset_)(HookedStructs::stResetParams*);
+			typedef bool(__stdcall* tRakClientSend_)(HookedStructs::stRakClientSend*);
+			typedef bool(__stdcall* tRakClientRPC_)(HookedStructs::stRakClientRPC*);
 
 			CCallbackRegister(DWORD base) {
 				sampBase = base;
@@ -1099,11 +1117,15 @@ namespace SAMP {
 				gHookGameLoop = std::make_unique<injector::Hook>(0x00748DA3U, HOOKED_GameLoop);
 				gHookD3DPresent = std::make_unique<injector::Hook>(GetDeviceAddress(17), HOOKED_Present);
 				gHookD3DReset = std::make_unique<injector::Hook>(GetDeviceAddress(16), HOOKED_Reset);
+				gHookRakClientSend = std::make_unique<injector::Hook>(sampBase + 0x00307F0, HOOKED_RakClientSend);
+				gHookRakClientRPC = std::make_unique<injector::Hook>(sampBase + 0x0030B30, HOOKED_RakClientRPC);
 
 				gHookWndProc->Install();
 				gHookGameLoop->Install();
 				gHookD3DPresent->Install();
 				gHookD3DReset->Install();
+				gHookRakClientSend->Install();
+				gHookRakClientRPC->Install();
 			}
 
 			~CCallbackRegister() {
@@ -1111,15 +1133,20 @@ namespace SAMP {
 				gHookGameLoop->Remove();
 				gHookD3DPresent->Remove();
 				gHookD3DReset->Remove();
+				gHookRakClientSend->Remove();
+				gHookRakClientRPC->Remove();
 			}
 
-			//СЃРґРµР»Р°С‚СЊ РїРµСЂРµРіСЂСѓР·РєРё
+			//сделать перегрузки
 			
 			void inline RegisterWndProcCallback(tWndProc func) { callWndProc = func; };
 			void inline RegisterGameLoopCallback(tGameLoop func) { callGameLoop = func; };
 
 			void inline RegisterD3DCallback(tPresent_ func) { callPresent = func; };
 			void inline RegisterD3DCallback(tReset_ func) { callReset = func; };
+
+			void inline RegisterRakClientCallback(tRakClientSend_ func) { callRakClientSend = func; };
+			void inline RegisterRakClientCallback(tRakClientRPC_ func) { callRakClientRPC = func; };
 
 			IDirect3DDevice9 inline *GetIDirect3DDevice9(void) { return pD3DDevice; };
 		private:
@@ -1129,6 +1156,8 @@ namespace SAMP {
 			std::unique_ptr<injector::Hook> gHookD3DPresent;
 			std::unique_ptr<injector::Hook> gHookD3DReset;
 
+			std::unique_ptr<injector::Hook> gHookRakClientSend;
+			std::unique_ptr<injector::Hook> gHookRakClientRPC;
 
 			IDirect3DDevice9* pD3DDevice = nullptr;
 			bool isD3DHookInit = false;
@@ -1139,11 +1168,15 @@ namespace SAMP {
 			tGameLoop callGameLoop = 0;
 			tPresent_ callPresent = 0;
 			tReset_ callReset = 0;
+			tRakClientSend_ callRakClientSend = 0;
+			tRakClientRPC_ callRakClientRPC = 0;
 
 			static LRESULT __stdcall HOOKED_WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 			static void __stdcall HOOKED_GameLoop();
 			static HRESULT __stdcall HOOKED_Present(IDirect3DDevice9* pDevice, CONST RECT* pSrcRect, CONST RECT* pDestRect, HWND hDestWindow, CONST RGNDATA* pDirtyRegion);
 			static HRESULT __stdcall HOOKED_Reset(IDirect3DDevice9* pDevice, D3DPRESENT_PARAMETERS* pPresentParams);
+			static bool __fastcall HOOKED_RakClientSend(RakClientInterface* _this, void* Unknown, BitStream* bitStream, PacketPriority priority, PacketReliability reliability, char orderingChannel);
+			static bool __fastcall HOOKED_RakClientRPC(RakClientInterface* _this, void* Unknown, int* uniqueID, BitStream* bitStream, PacketPriority priority, PacketReliability reliability, char orderingChannel, bool shiftTimestamp);
 
 			DWORD FindDevice(DWORD dwLen)
 			{
@@ -1201,7 +1234,56 @@ namespace SAMP {
 	}
 }
 
+bool __fastcall SAMP::CallBacks::CCallbackRegister::HOOKED_RakClientRPC(RakClientInterface* _this, void* Unknown, int* uniqueID, BitStream* bitStream, PacketPriority priority, PacketReliability reliability, char orderingChannel, bool shiftTimestamp) {
+	if (_this == nullptr || uniqueID == nullptr || bitStream == nullptr)
+		return SAMP::CallBacks::pCallBackRegister->gHookRakClientRPC->Call<bool, EConvention::kThiscall>(_this, uniqueID, bitStream, priority, reliability, orderingChannel, shiftTimestamp);
 
+	if (SAMP::CallBacks::pCallBackRegister->callRakClientRPC != 0) {
+		HookedStructs::stRakClientRPC params = { 0 };
+		params.bitStream = bitStream;
+		params.orderingChannel = orderingChannel;
+		params.priority = priority;
+		params.reliability = reliability;
+		params.shiftTimestamp = shiftTimestamp;
+		params.uniqueID = uniqueID;
+		params._this = _this;
+		bool retn = SAMP::CallBacks::pCallBackRegister->callRakClientRPC(&params);
+		bitStream = params.bitStream;
+		orderingChannel = params.orderingChannel;
+		priority = params.priority;
+		reliability = params.reliability;
+		shiftTimestamp = params.shiftTimestamp;
+		uniqueID = params.uniqueID;
+		_this = params._this;
+		if (!retn)
+			return false;
+	}
+
+	return SAMP::CallBacks::pCallBackRegister->gHookRakClientRPC->Call<bool, EConvention::kThiscall>(_this, uniqueID, bitStream, priority, reliability, orderingChannel, shiftTimestamp);
+}
+bool __fastcall SAMP::CallBacks::CCallbackRegister::HOOKED_RakClientSend(RakClientInterface* _this, void* Unknown, BitStream* bitStream, PacketPriority priority, PacketReliability reliability, char orderingChannel) {
+	if(_this == nullptr || bitStream == nullptr)
+		return SAMP::CallBacks::pCallBackRegister->gHookRakClientSend->Call<bool, EConvention::kThiscall>(_this, bitStream, priority, reliability, orderingChannel);
+
+	if (SAMP::CallBacks::pCallBackRegister->callRakClientSend != 0) {
+		HookedStructs::stRakClientSend params = { 0 };
+		params.bitStream = bitStream;
+		params.orderingChannel = orderingChannel;
+		params.priority = priority;
+		params.reliability = reliability;
+		params._this = _this;
+		bool retn = SAMP::CallBacks::pCallBackRegister->callRakClientSend(&params);
+		bitStream = params.bitStream;
+		orderingChannel = params.orderingChannel;
+		priority = params.priority;
+		reliability = params.reliability;
+		_this = params._this;
+		if (!retn)
+			return false;
+	}
+
+	return SAMP::CallBacks::pCallBackRegister->gHookRakClientSend->Call<bool, EConvention::kThiscall>(_this, bitStream, priority, reliability, orderingChannel);
+}
 HRESULT __stdcall SAMP::CallBacks::CCallbackRegister::HOOKED_Present(IDirect3DDevice9* pDevice, CONST RECT* pSrcRect, CONST RECT* pDestRect, HWND hDestWindow, CONST RGNDATA* pDirtyRegion) {
 	if(pDevice == nullptr)
 		return SAMP::CallBacks::pCallBackRegister->gHookD3DPresent->Call<HRESULT, EConvention::kStdcall>(pDevice, pSrcRect, pDestRect, hDestWindow, pDirtyRegion);
