@@ -6,31 +6,27 @@
 
 LRESULT __stdcall WndProcCallBack(SAMP::CallBacks::HookedStructs::stWndProcParams *params) {
 	
-	
 	return 0;//retn null if all good
 }
 
-void DrawFillRect(IDirect3DDevice9* dev, int x, int y, int w, int h, unsigned char r, unsigned char g, unsigned char b)
-{
-	D3DCOLOR rectColor = D3DCOLOR_XRGB(r, g, b);	//No point in using alpha because clear & alpha dont work!
-	D3DRECT BarRect = { x, y, x + w, y + h };
-
-	dev->Clear(1, &BarRect, D3DCLEAR_TARGET | D3DCLEAR_TARGET, rectColor, 0, 0);
-}
-
 HRESULT __stdcall D3DPresentHook(SAMP::CallBacks::HookedStructs::stPresentParams *params) {
-	
-	if (SAMP::isKeyDown('L')) {
-		DrawFillRect(params->pDevice, 200, 200, 50, 50, 0, 0, 255);
-	}
 	
 	return D3D_OK;
 }
 
 HRESULT __stdcall D3DResetHook(SAMP::CallBacks::HookedStructs::stResetParams *params) {
-	
 
 	return D3D_OK;
+}
+
+bool __stdcall RakClientSendHook(SAMP::CallBacks::HookedStructs::stRakClientSend *params) {
+
+	return true;
+}
+
+bool __stdcall RakClientRPCHook(SAMP::CallBacks::HookedStructs::stRakClientRPC *params) {
+
+	return true;
 }
 
 void __stdcall GameLoop() {
@@ -66,6 +62,8 @@ int __stdcall DllMain(HMODULE hModule, DWORD dwReason, LPVOID lpReserved)
 			SAMP::CallBacks::pCallBackRegister->RegisterWndProcCallback(WndProcCallBack);//register wnd proc hook
 			SAMP::CallBacks::pCallBackRegister->RegisterD3DCallback(D3DPresentHook);//register D3D present hook
 			SAMP::CallBacks::pCallBackRegister->RegisterD3DCallback(D3DResetHook);//register D3D reset hook
+			SAMP::CallBacks::pCallBackRegister->RegisterRakClientCallback(RakClientSendHook);//registed RakClient Send Hook
+			SAMP::CallBacks::pCallBackRegister->RegisterRakClientCallback(RakClientRPCHook);//registed RakClient RPC Hook
 			printf("\n -> Plugin loaded (%d)\n", GetTickCount());
 			break; 
 		}
