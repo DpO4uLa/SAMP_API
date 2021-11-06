@@ -1099,6 +1099,15 @@ namespace SAMP {
 				char orderingChannel;
 				bool shiftTimestamp;
 			};
+			struct stRakClientRPCRecv {
+				unsigned __int32 rpc_id;
+				BitStream *bitStream;
+			};
+			struct stRakClientRecv {
+				unsigned __int8 pktID;
+				BitStream *bitStream;
+				unsigned __int32 lenght;
+			};
 		}
 
 		class CCallbackRegister {
@@ -1109,6 +1118,8 @@ namespace SAMP {
 			typedef HRESULT(__stdcall* tReset_)(HookedStructs::stResetParams*);
 			typedef bool(__stdcall* tRakClientSend_)(HookedStructs::stRakClientSend*);
 			typedef bool(__stdcall* tRakClientRPC_)(HookedStructs::stRakClientRPC*);
+			typedef bool(__stdcall* tRakClientRPCRecv_)(HookedStructs::stRakClientRPCRecv*);
+			typedef bool(__stdcall* tRakPeerRecv_)(HookedStructs::stRakClientRecv*);
 
 			CCallbackRegister(DWORD base) {
 				sampBase = base;
@@ -1117,15 +1128,19 @@ namespace SAMP {
 				gHookGameLoop = std::make_unique<injector::Hook>(0x00748DA3U, HOOKED_GameLoop);
 				gHookD3DPresent = std::make_unique<injector::Hook>(GetDeviceAddress(17), HOOKED_Present);
 				gHookD3DReset = std::make_unique<injector::Hook>(GetDeviceAddress(16), HOOKED_Reset);
-				gHookRakClientSend = std::make_unique<injector::Hook>(sampBase + 0x00307F0, HOOKED_RakClientSend);
-				gHookRakClientRPC = std::make_unique<injector::Hook>(sampBase + 0x0030B30, HOOKED_RakClientRPC);
-
+				gHookRakClientSend = std::make_unique<injector::Hook>(sampBase + 0x00307F0U, HOOKED_RakClientSend);
+				gHookRakPeerRecv = std::make_unique<injector::Hook>(sampBase + 0x0031180U, HOOKED_RakPeerReceive);
+				gHookRakClientRPC = std::make_unique<injector::Hook>(sampBase + 0x0030B30U, HOOKED_RakClientRPC);
+				gHookHandleRPCPacket = std::make_unique<injector::Hook>(sampBase + 0x00372F0U, HOOKED_HandleRPCPacket);
+				
 				gHookWndProc->Install();
 				gHookGameLoop->Install();
 				gHookD3DPresent->Install();
 				gHookD3DReset->Install();
 				gHookRakClientSend->Install();
+				gHookRakPeerRecv->Install();
 				gHookRakClientRPC->Install();
+				gHookHandleRPCPacket->Install();
 			}
 
 			~CCallbackRegister() {
@@ -1134,7 +1149,9 @@ namespace SAMP {
 				gHookD3DPresent->Remove();
 				gHookD3DReset->Remove();
 				gHookRakClientSend->Remove();
+				gHookRakPeerRecv->Remove();
 				gHookRakClientRPC->Remove();
+				gHookHandleRPCPacket->Remove();
 			}
 
 			//сделать перегрузки
@@ -1147,6 +1164,8 @@ namespace SAMP {
 
 			void inline RegisterRakClientCallback(tRakClientSend_ func) { callRakClientSend = func; };
 			void inline RegisterRakClientCallback(tRakClientRPC_ func) { callRakClientRPC = func; };
+			void inline RegisterRakClientCallback(tRakClientRPCRecv_ func) { callRakClientRPCRecv = func; };
+			void inline RegisterRakClientCallback(tRakPeerRecv_ func) { callRakPeerRecv = func; };
 
 			IDirect3DDevice9 inline *GetIDirect3DDevice9(void) { return pD3DDevice; };
 		private:
@@ -1157,7 +1176,9 @@ namespace SAMP {
 			std::unique_ptr<injector::Hook> gHookD3DReset;
 
 			std::unique_ptr<injector::Hook> gHookRakClientSend;
+			std::unique_ptr<injector::Hook> gHookRakPeerRecv;
 			std::unique_ptr<injector::Hook> gHookRakClientRPC;
+			std::unique_ptr<injector::Hook> gHookHandleRPCPacket;
 
 			IDirect3DDevice9* pD3DDevice = nullptr;
 			bool isD3DHookInit = false;
@@ -1170,6 +1191,41 @@ namespace SAMP {
 			tReset_ callReset = 0;
 			tRakClientSend_ callRakClientSend = 0;
 			tRakClientRPC_ callRakClientRPC = 0;
+			tRakClientRPCRecv_ callRakClientRPCRecv = 0;
+			tRakPeerRecv_ callRakPeerRecv = 0;
+
+#pragma pack(push, 1)
+			struct PlayerID__
+			{
+				unsigned int binaryAddress;
+				unsigned short port;
+				PlayerID__& operator = (const PlayerID__& input)
+				{
+					binaryAddress = input.binaryAddress;
+					port = input.port;
+					return *this;
+				}
+				bool operator==(const PlayerID__& right) const;
+				bool operator!=(const PlayerID__& right) const;
+				bool operator > (const PlayerID__& right) const;
+				bool operator < (const PlayerID__& right) const;
+			};
+			struct NetworkID__
+			{
+				bool peerToPeer;
+				PlayerID__ playerId;
+				unsigned short localSystemId;
+			};
+			struct Packet__
+			{
+				unsigned __int16 playerIndex;
+				PlayerID__ playerId;
+				unsigned int length;
+				unsigned int bitSize;
+				unsigned char* data;
+				bool deleteData;
+			};
+#pragma pack(pop)
 
 			static LRESULT __stdcall HOOKED_WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 			static void __stdcall HOOKED_GameLoop();
@@ -1177,6 +1233,19 @@ namespace SAMP {
 			static HRESULT __stdcall HOOKED_Reset(IDirect3DDevice9* pDevice, D3DPRESENT_PARAMETERS* pPresentParams);
 			static bool __fastcall HOOKED_RakClientSend(RakClientInterface* _this, void* Unknown, BitStream* bitStream, PacketPriority priority, PacketReliability reliability, char orderingChannel);
 			static bool __fastcall HOOKED_RakClientRPC(RakClientInterface* _this, void* Unknown, int* uniqueID, BitStream* bitStream, PacketPriority priority, PacketReliability reliability, char orderingChannel, bool shiftTimestamp);
+			static bool __fastcall HOOKED_HandleRPCPacket(RakPeerInterface *_this, void* Unknown, const char *data, int length, PlayerID playerid);
+			static SAMP::CallBacks::CCallbackRegister::Packet__* __fastcall HOOKED_RakPeerReceive(void *_this, void* Unknown);
+
+			template<typename result, typename source>
+			result pointer_cast(source *v)
+			{
+				return static_cast<result>(static_cast<void*>(v));
+			}
+			template<typename result, typename source>
+			result pointer_cast(const source *v)
+			{
+				return static_cast<result>(static_cast<const void*>(v));
+			}
 
 			DWORD FindDevice(DWORD dwLen)
 			{
@@ -1207,7 +1276,7 @@ namespace SAMP {
 		
 		CCallbackRegister *pCallBackRegister = nullptr;
 	}
-
+	
 	bool bKeyTable[256];
 	bool isKeyDown(uint8_t key) {
 		return bKeyTable[key];
@@ -1234,6 +1303,85 @@ namespace SAMP {
 	}
 }
 
+SAMP::CallBacks::CCallbackRegister::Packet__* __fastcall SAMP::CallBacks::CCallbackRegister::HOOKED_RakPeerReceive(void *_this, void *Unknown) {
+	SAMP::CallBacks::CCallbackRegister::Packet__ *packet = SAMP::CallBacks::pCallBackRegister->gHookRakPeerRecv->Call<SAMP::CallBacks::CCallbackRegister::Packet__*, EConvention::kThiscall>(_this);
+
+	if (packet != nullptr && packet->data != nullptr && packet->bitSize != 0 && packet->length != 0)
+	{
+		if (SAMP::CallBacks::pCallBackRegister->callRakPeerRecv != 0) {
+			HookedStructs::stRakClientRecv params = { 0 };
+			BitStream *bs = new BitStream(packet->data, packet->length, true);
+			params.bitStream = bs;
+			params.lenght = packet->length;
+			params.pktID = packet->data[0];
+			bool retn = SAMP::CallBacks::pCallBackRegister->callRakPeerRecv(&params);
+			packet->data = bs->GetData();
+			packet->bitSize = bs->GetNumberOfBitsUsed();
+			packet->length = bs->GetNumberOfBytesUsed();
+			if (!retn)
+				return nullptr;
+		}
+	}
+
+	return packet;
+}
+bool __fastcall SAMP::CallBacks::CCallbackRegister::HOOKED_HandleRPCPacket(RakPeerInterface *_this, void *Unknown, const char *data, int length, PlayerID playerid) {
+	RakNet::BitStream incoming(SAMP::CallBacks::pCallBackRegister->pointer_cast<unsigned char*>(const_cast<char*>(data)), length, true);//from rakhook by imring
+	unsigned char id = 0;
+	unsigned char* input = nullptr;
+	unsigned int bits_data = 0;
+	//std::shared_ptr<RakNet::BitStream> callback_bs = std::make_shared<RakNet::BitStream>();
+	BitStream *callback_bs = nullptr;
+
+	incoming.IgnoreBits(8);
+	if (data[0] == ID_TIMESTAMP)
+		incoming.IgnoreBits(8 * (sizeof(RakNetTime) + sizeof(unsigned char)));
+
+	int offset = incoming.GetReadOffset();
+	incoming.Read(id);
+
+	if (!incoming.ReadCompressed(bits_data))
+		return false;
+
+	if (bits_data) {
+		bool used_alloca = false;
+		if (BITS_TO_BYTES(incoming.GetNumberOfUnreadBits()) < MAX_ALLOCA_STACK_ALLOCATION) {
+			input = SAMP::CallBacks::pCallBackRegister->pointer_cast<unsigned char*>(alloca(BITS_TO_BYTES(incoming.GetNumberOfUnreadBits())));
+			used_alloca = true;
+		}
+		else input = new unsigned char[BITS_TO_BYTES(incoming.GetNumberOfUnreadBits())];
+
+		if (!incoming.ReadBits(input, bits_data, false))
+			return false;
+
+		//callback_bs = std::make_shared<RakNet::BitStream>(input, BITS_TO_BYTES(bits_data), true);
+		callback_bs = new BitStream(input, BITS_TO_BYTES(bits_data), true);
+
+		if (!used_alloca)
+			delete[] input;
+	}
+
+	if (SAMP::CallBacks::pCallBackRegister->callRakClientRPCRecv != 0) {
+		HookedStructs::stRakClientRPCRecv params = { 0 };
+		params.bitStream = callback_bs;
+		params.rpc_id = id;
+		bool retn = SAMP::CallBacks::pCallBackRegister->callRakClientRPCRecv(&params);
+		id = params.rpc_id;
+		if (!retn)
+			return false;
+	}
+	
+	incoming.SetWriteOffset(offset);
+	incoming.Write(id);
+	bits_data = BYTES_TO_BITS(callback_bs->GetNumberOfBytesUsed());
+	incoming.WriteCompressed(bits_data);
+	if (bits_data)
+		incoming.WriteBits(callback_bs->GetData(), bits_data, false);
+	
+	delete callback_bs;
+
+	return SAMP::CallBacks::pCallBackRegister->gHookHandleRPCPacket->Call<bool, EConvention::kThiscall>(_this, reinterpret_cast<char*>(incoming.GetData()), incoming.GetNumberOfBytesUsed(), playerid);
+}
 bool __fastcall SAMP::CallBacks::CCallbackRegister::HOOKED_RakClientRPC(RakClientInterface* _this, void* Unknown, int* uniqueID, BitStream* bitStream, PacketPriority priority, PacketReliability reliability, char orderingChannel, bool shiftTimestamp) {
 	if (_this == nullptr || uniqueID == nullptr || bitStream == nullptr)
 		return SAMP::CallBacks::pCallBackRegister->gHookRakClientRPC->Call<bool, EConvention::kThiscall>(_this, uniqueID, bitStream, priority, reliability, orderingChannel, shiftTimestamp);
