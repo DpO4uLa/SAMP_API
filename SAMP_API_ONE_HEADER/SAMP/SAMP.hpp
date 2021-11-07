@@ -1102,6 +1102,7 @@ namespace SAMP {
 			struct stRakClientRPCRecv {
 				unsigned __int32 rpc_id;
 				BitStream *bitStream;
+				//std::shared_ptr<RakNet::BitStream> bitStream;
 			};
 			struct stRakClientRecv {
 				unsigned __int8 pktID;
@@ -1318,6 +1319,7 @@ SAMP::CallBacks::CCallbackRegister::Packet__* __fastcall SAMP::CallBacks::CCallb
 			packet->data = bs->GetData();
 			packet->bitSize = bs->GetNumberOfBitsUsed();
 			packet->length = bs->GetNumberOfBytesUsed();
+			delete bs;
 			if (!retn)
 				return nullptr;
 		}
@@ -1331,7 +1333,8 @@ bool __fastcall SAMP::CallBacks::CCallbackRegister::HOOKED_HandleRPCPacket(RakPe
 	unsigned char* input = nullptr;
 	unsigned int bits_data = 0;
 	//std::shared_ptr<RakNet::BitStream> callback_bs = std::make_shared<RakNet::BitStream>();
-	BitStream *callback_bs = nullptr;
+	std::unique_ptr<RakNet::BitStream> callback_bs = std::make_unique<RakNet::BitStream>();
+	//BitStream *callback_bs = nullptr;
 
 	incoming.IgnoreBits(8);
 	if (data[0] == ID_TIMESTAMP)
@@ -1355,7 +1358,8 @@ bool __fastcall SAMP::CallBacks::CCallbackRegister::HOOKED_HandleRPCPacket(RakPe
 			return false;
 
 		//callback_bs = std::make_shared<RakNet::BitStream>(input, BITS_TO_BYTES(bits_data), true);
-		callback_bs = new BitStream(input, BITS_TO_BYTES(bits_data), true);
+		callback_bs = std::make_unique<RakNet::BitStream>(input, BITS_TO_BYTES(bits_data), true);
+		//callback_bs = new BitStream(input, BITS_TO_BYTES(bits_data), true);
 
 		if (!used_alloca)
 			delete[] input;
@@ -1363,7 +1367,7 @@ bool __fastcall SAMP::CallBacks::CCallbackRegister::HOOKED_HandleRPCPacket(RakPe
 
 	if (SAMP::CallBacks::pCallBackRegister->callRakClientRPCRecv != 0) {
 		HookedStructs::stRakClientRPCRecv params = { 0 };
-		params.bitStream = callback_bs;
+		params.bitStream = callback_bs.get();
 		params.rpc_id = id;
 		bool retn = SAMP::CallBacks::pCallBackRegister->callRakClientRPCRecv(&params);
 		id = params.rpc_id;
@@ -1377,8 +1381,6 @@ bool __fastcall SAMP::CallBacks::CCallbackRegister::HOOKED_HandleRPCPacket(RakPe
 	incoming.WriteCompressed(bits_data);
 	if (bits_data)
 		incoming.WriteBits(callback_bs->GetData(), bits_data, false);
-	
-	delete callback_bs;
 
 	return SAMP::CallBacks::pCallBackRegister->gHookHandleRPCPacket->Call<bool, EConvention::kThiscall>(_this, reinterpret_cast<char*>(incoming.GetData()), incoming.GetNumberOfBytesUsed(), playerid);
 }
