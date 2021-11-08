@@ -1410,7 +1410,7 @@ namespace SAMP {
 #pragma pack(pop)
 
 			static LRESULT __stdcall HOOKED_WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
-			static void __stdcall HOOKED_GameLoop();
+			static void __cdecl HOOKED_GameLoop();
 			static HRESULT __stdcall HOOKED_Present(IDirect3DDevice9* pDevice, CONST RECT* pSrcRect, CONST RECT* pDestRect, HWND hDestWindow, CONST RGNDATA* pDirtyRegion);
 			static HRESULT __stdcall HOOKED_Reset(IDirect3DDevice9* pDevice, D3DPRESENT_PARAMETERS* pPresentParams);
 			static bool __fastcall HOOKED_RakClientSend(RakClientInterface* _this, void* Unknown, BitStream* bitStream, PacketPriority priority, PacketReliability reliability, char orderingChannel);
@@ -1686,7 +1686,7 @@ HRESULT __stdcall SAMP::CallBacks::CCallbackRegister::HOOKED_Reset(IDirect3DDevi
 
 	return SAMP::CallBacks::pCallBackRegister->gHookD3DReset->Call<HRESULT, EConvention::kStdcall>(pDevice, pPresentParams);
 }
-void SAMP::CallBacks::CCallbackRegister::HOOKED_GameLoop() {
+void __cdecl SAMP::CallBacks::CCallbackRegister::HOOKED_GameLoop() {
 	if (SAMP::CallBacks::pCallBackRegister->callGameLoop != 0) {
 		SAMP::CallBacks::pCallBackRegister->callGameLoop();
 	}
