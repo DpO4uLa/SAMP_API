@@ -63,9 +63,16 @@ HRESULT __stdcall D3DPresentHook(SAMP::CallBacks::HookedStructs::stPresentParams
 					SAMP::pSAMP->getRakNet()->SendRPC(RPCEnumeration::RPC_Chat, &bs);
 				}
 
+				if (ImGui::Button(u8"SAMP::classes::")) {
+					SAMP::classes::pChat->AddMessage(-1, "Тестовое сообщение");
+				}
+
 				ImGui::End();
 			}
 		}
+
+		
+		
 
 		ImGui::EndFrame();
 		ImGui::Render();
@@ -136,10 +143,10 @@ void __stdcall GameLoop() {
 			pRender = std::make_unique<CD3DRender>(128);
 
 			//initialization
-			SAMP::pSAMP->addClientCommand("menu1", cmd);
+			SAMP::pSAMP->addClientCommand("menu", cmd);
 			SAMP::pSAMP->addMessageToChat(-1, "SAMP API By AdCKuY_DpO4uLa loaded. %s", SAMP::pSAMP->getInfo()->szIP);
 
-
+			
 			
 			
 			isPluginInitialized = true;
