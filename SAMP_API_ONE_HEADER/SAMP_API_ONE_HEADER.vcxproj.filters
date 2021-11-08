@@ -20,6 +20,9 @@
     <Filter Include="Исходные файлы\imgui">
       <UniqueIdentifier>{4f042967-10b5-40f6-835d-35ca30808690}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Исходные файлы\DirectX">
+      <UniqueIdentifier>{c5e0e29a-70a3-46d6-a125-6481a9e8a899}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -162,6 +165,9 @@
     </ClCompile>
     <ClCompile Include="imgui\imgui_widgets.cpp">
       <Filter>Исходные файлы\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectX\d3drender.cpp">
+      <Filter>Исходные файлы\DirectX</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -459,5 +465,52 @@
     <ClInclude Include="main.h">
       <Filter>Исходные файлы</Filter>
     </ClInclude>
+    <ClInclude Include="DirectX\d3d9.h">
+      <Filter>Исходные файлы\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectX\d3d9caps.h">
+      <Filter>Исходные файлы\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectX\d3d9types.h">
+      <Filter>Исходные файлы\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectX\d3drender.h">
+      <Filter>Исходные файлы\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectX\d3dx9.h">
+      <Filter>Исходные файлы\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectX\d3dx9anim.h">
+      <Filter>Исходные файлы\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectX\d3dx9core.h">
+      <Filter>Исходные файлы\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectX\d3dx9effect.h">
+      <Filter>Исходные файлы\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectX\d3dx9math.h">
+      <Filter>Исходные файлы\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectX\d3dx9mesh.h">
+      <Filter>Исходные файлы\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectX\d3dx9shader.h">
+      <Filter>Исходные файлы\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectX\d3dx9shape.h">
+      <Filter>Исходные файлы\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectX\d3dx9tex.h">
+      <Filter>Исходные файлы\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectX\d3dx9xof.h">
+      <Filter>Исходные файлы\DirectX</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="DirectX\d3dx9math.inl">
+      <Filter>Исходные файлы\DirectX</Filter>
+    </None>
   </ItemGroup>
 </Project>

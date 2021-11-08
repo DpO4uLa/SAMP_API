@@ -2,6 +2,8 @@
 
 bool isPluginInitialized = false;
 
+std::unique_ptr<CD3DRender> pRender = nullptr;
+
 LRESULT __stdcall WndProcCallBack(SAMP::CallBacks::HookedStructs::stWndProcParams *params) {
 	
 	if (isPluginInitialized) {
@@ -25,7 +27,41 @@ HRESULT __stdcall D3DPresentHook(SAMP::CallBacks::HookedStructs::stPresentParams
 		if (isOpen) {
 			if (ImGui::Begin(u8"Тестовое меню##1337", &isOpen, ImGuiWindowFlags_::ImGuiWindowFlags_NoSavedSettings)) {
 
-				ImGui::Button(u8"тестовая кнопка");
+				for (int i = 0; i != SAMP_MAX_PLAYERS; i++) {
+					if (SAMP::pSAMP->getPlayers()->iIsListed[i] == 0 || 
+						SAMP::pSAMP->getStreamedOutPlayerInfo()->fPlayerPos[i][0] == 0 ||
+						SAMP::pSAMP->getStreamedOutPlayerInfo()->fPlayerPos[i][1] == 0 ||
+						SAMP::pSAMP->getStreamedOutPlayerInfo()->fPlayerPos[i][2] == 0)
+						continue;
+
+					ImGui::Text(u8"PlayerID: %d, position: %0.f %0.f %0.f", i,
+						SAMP::pSAMP->getStreamedOutPlayerInfo()->fPlayerPos[i][0],
+						SAMP::pSAMP->getStreamedOutPlayerInfo()->fPlayerPos[i][1],
+						SAMP::pSAMP->getStreamedOutPlayerInfo()->fPlayerPos[i][2]);
+					
+
+				}
+
+				if (ImGui::Button(u8"Отправить пакет")) {
+					stOnFootData data = SAMP::pSAMP->getPlayers()->pLocalPlayer->onFootData;
+					data.fPosition[2] += 10.0f;
+
+					BitStream bs;
+					bs.Write<unsigned __int8>(ID_PLAYER_SYNC);
+					bs.Write((PCHAR)&data, sizeof(stOnFootData));
+
+					SAMP::pSAMP->getRakNet()->Send(&bs);
+				}
+
+				if (ImGui::Button(u8"Отправить RPC")) {
+					std::string text = "Хуй залупный";
+
+					BitStream bs;
+					bs.Write((unsigned __int8)text.length());
+					bs.Write(text.c_str(), text.length());
+					
+					SAMP::pSAMP->getRakNet()->SendRPC(RPCEnumeration::RPC_Chat, &bs);
+				}
 
 				ImGui::End();
 			}
@@ -34,6 +70,15 @@ HRESULT __stdcall D3DPresentHook(SAMP::CallBacks::HookedStructs::stPresentParams
 		ImGui::EndFrame();
 		ImGui::Render();
 		ImGui_ImplDX9_RenderDrawData(ImGui::GetDrawData());
+		pRender->Initialize(params->pDevice);
+
+		//render example
+		//if (SUCCEEDED(pRender->BeginRender())) {
+		//	pRender->D3DBox(100, 100, 100, 100, 0xFF00BECC);
+		//	pRender->EndRender();
+		//}
+		
+		
 	}
 
 	return D3D_OK;
@@ -41,8 +86,10 @@ HRESULT __stdcall D3DPresentHook(SAMP::CallBacks::HookedStructs::stPresentParams
 
 HRESULT __stdcall D3DResetHook(SAMP::CallBacks::HookedStructs::stResetParams *params) {
 
-	if(isPluginInitialized)
+	if (isPluginInitialized) {
 		ImGui_ImplDX9_InvalidateDeviceObjects();
+		pRender->Invalidate();
+	}
 
 	return D3D_OK;
 }
@@ -85,6 +132,8 @@ void __stdcall GameLoop() {
 			ImGui_ImplWin32_Init(GetActiveWindow());
 			ImGui_ImplDX9_Init(SAMP::CallBacks::pCallBackRegister->GetIDirect3DDevice9());
 			ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_NoMouseCursorChange;
+			//render
+			pRender = std::make_unique<CD3DRender>(128);
 
 			//initialization
 			SAMP::pSAMP->addClientCommand("menu1", cmd);
@@ -100,6 +149,7 @@ void __stdcall GameLoop() {
 
 
 		
+
 
 	}
 }

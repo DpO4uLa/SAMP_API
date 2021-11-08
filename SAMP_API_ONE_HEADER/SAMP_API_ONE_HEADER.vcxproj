@@ -142,6 +142,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DirectX\d3drender.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
     <ClCompile Include="imgui\imgui_demo.cpp" />
     <ClCompile Include="imgui\imgui_draw.cpp" />
@@ -191,6 +192,20 @@
     <ClCompile Include="SAMP\samp_netencr.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DirectX\d3d9.h" />
+    <ClInclude Include="DirectX\d3d9caps.h" />
+    <ClInclude Include="DirectX\d3d9types.h" />
+    <ClInclude Include="DirectX\d3drender.h" />
+    <ClInclude Include="DirectX\d3dx9.h" />
+    <ClInclude Include="DirectX\d3dx9anim.h" />
+    <ClInclude Include="DirectX\d3dx9core.h" />
+    <ClInclude Include="DirectX\d3dx9effect.h" />
+    <ClInclude Include="DirectX\d3dx9math.h" />
+    <ClInclude Include="DirectX\d3dx9mesh.h" />
+    <ClInclude Include="DirectX\d3dx9shader.h" />
+    <ClInclude Include="DirectX\d3dx9shape.h" />
+    <ClInclude Include="DirectX\d3dx9tex.h" />
+    <ClInclude Include="DirectX\d3dx9xof.h" />
     <ClInclude Include="imgui\imconfig.h" />
     <ClInclude Include="imgui\imgui.h" />
     <ClInclude Include="imgui\imgui_impl_dx9.h" />
@@ -289,6 +304,9 @@
     <ClInclude Include="SAMP\samp_netencr.h" />
     <ClInclude Include="SAMP\SAMP_VER.h" />
     <ClInclude Include="SAMP\Structs.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="DirectX\d3dx9math.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
