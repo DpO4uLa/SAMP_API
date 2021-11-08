@@ -12,6 +12,8 @@
 #include "../DirectX/d3dx9.h"
 #pragma comment(lib, "../DirectX/d3dx9.lib")
 
+#include "../DirectX/d3drender.h"
+
 //new hooks
 #include "injector/hde/hde32.h"
 #include "injector/injector.hpp"
@@ -938,8 +940,181 @@ struct stSAMPPools
 };
 #pragma pack(pop)
 
+enum RPCEnumeration
+{
+	RPC_ClickPlayer = 23,
+	RPC_ClientJoin = 25,
+	RPC_EnterVehicle = 26,
+	RPC_EnterEditObject = 27,
+	RPC_ScriptCash = 31,
+	RPC_ServerCommand = 50,
+	RPC_Spawn = 52,
+	RPC_Death = 53,
+	RPC_NPCJoin = 54,
+	RPC_DialogResponse = 62,
+	RPC_ClickTextDraw = 83,
+	RPC_ScmEvent = 96,
+	RPC_WeaponPickupDestroy = 97,
+	RPC_Chat = 101,
+	RPC_SrvNetStats = 102,
+	RPC_ClientCheck = 103,
+	RPC_DamageVehicle = 106,
+	RPC_GiveTakeDamage = 115,
+	RPC_EditAttachedObject = 116,
+	RPC_EditObject = 117,
+	RPC_SetInteriorId = 118,
+	RPC_MapMarker = 119,
+	RPC_RequestClass = 128,
+	RPC_RequestSpawn = 129,
+	RPC_PickedUpPickup = 131,
+	RPC_MenuSelect = 132,
+	RPC_VehicleDestroyed = 136,
+	RPC_MenuQuit = 140,
+	RPC_ExitVehicle = 154,
+	RPC_UpdateScoresPingsIPs = 155
+};
+enum ScriptRPCEnumeration
+{
+	RPC_ScrSetPlayerName = 11,
+	RPC_ScrSetPlayerPos = 12,
+	RPC_ScrSetPlayerPosFindZ = 13,
+	RPC_ScrSetPlayerHealth = 14,
+	RPC_ScrTogglePlayerControllable = 15,
+	RPC_ScrPlaySound = 16,
+	RPC_ScrSetPlayerWorldBounds = 17,
+	RPC_ScrGivePlayerMoney = 18,
+	RPC_ScrSetPlayerFacingAngle = 19,
+	RPC_ScrResetPlayerMoney = 20,
+	RPC_ScrResetPlayerWeapons = 21,
+	RPC_ScrGivePlayerWeapon = 22,
+	RPC_ScrSetVehicleParamsEx = 24,
+	RPC_ScrCancelEdit = 28,
+	RPC_ScrSetPlayerTime = 29,
+	RPC_ScrToggleClock = 30,
+	RPC_ScrWorldPlayerAdd = 32,
+	RPC_ScrSetPlayerShopName = 33,
+	RPC_ScrSetPlayerSkillLevel = 34,
+	RPC_ScrSetPlayerDrunkLevel = 35,
+	RPC_ScrCreate3DTextLabel = 36,
+	RPC_ScrDisableCheckpoint = 37,
+	RPC_ScrSetRaceCheckpoint = 38,
+	RPC_ScrDisableRaceCheckpoint = 39,
+	RPC_ScrGameModeRestart = 40,
+	RPC_ScrPlayAudioStream = 41,
+	RPC_ScrStopAudioStream = 42,
+	RPC_ScrRemoveBuildingForPlayer = 43,
+	RPC_ScrCreateObject = 44,
+	RPC_ScrSetObjectPos = 45,
+	RPC_ScrSetObjectRot = 46,
+	RPC_ScrDestroyObject = 47,
+	RPC_ScrDeathMessage = 55,
+	RPC_ScrSetPlayerMapIcon = 56,
+	RPC_ScrRemoveVehicleComponent = 57,
+	RPC_ScrUpdate3DTextLabel = 58,
+	RPC_ScrChatBubble = 59,
+	RPC_ScrSomeupdate = 60,
+	RPC_ScrShowDialog = 61,
+	RPC_ScrDestroyPickup = 63,
+	RPC_ScrLinkVehicleToInterior = 65,
+	RPC_ScrSetPlayerArmour = 66,
+	RPC_ScrSetPlayerArmedWeapon = 67,
+	RPC_ScrSetSpawnInfo = 68,
+	RPC_ScrSetPlayerTeam = 69,
+	RPC_ScrPutPlayerInVehicle = 70,
+	RPC_ScrRemovePlayerFromVehicle = 71,
+	RPC_ScrSetPlayerColor = 72,
+	RPC_ScrDisplayGameText = 73,
+	RPC_ScrForceClassSelection = 74,
+	RPC_ScrAttachObjectToPlayer = 75,
+	RPC_ScrInitMenu = 76,
+	RPC_ScrShowMenu = 77,
+	RPC_ScrHideMenu = 78,
+	RPC_ScrCreateExplosion = 79,
+	RPC_ScrShowPlayerNameTagForPlayer = 80,
+	RPC_ScrAttachCameraToObject = 81,
+	RPC_ScrInterpolateCamera = 82,
+	RPC_ScrSetObjectMaterial = 84,
+	RPC_ScrGangZoneStopFlash = 85,
+	RPC_ScrApplyAnimation = 86,
+	RPC_ScrClearAnimations = 87,
+	RPC_ScrSetPlayerSpecialAction = 88,
+	RPC_ScrSetPlayerFightingStyle = 89,
+	RPC_ScrSetPlayerVelocity = 90,
+	RPC_ScrSetVehicleVelocity = 91,
+	RPC_ScrClientMessage = 93,
+	RPC_ScrSetWorldTime = 94,
+	RPC_ScrCreatePickup = 95,
+	RPC_ScrMoveObject = 99,
+	RPC_ScrEnableStuntBonusForPlayer = 104,
+	RPC_ScrTextDrawSetString = 105,
+	RPC_ScrSetCheckpoint = 107,
+	RPC_ScrGangZoneCreate = 108,
+	RPC_ScrPlayCrimeReport = 112,
+	RPC_ScrSetPlayerAttachedObject = 113,
+	RPC_ScrGangZoneDestroy = 120,
+	RPC_ScrGangZoneFlash = 121,
+	RPC_ScrStopObject = 122,
+	RPC_ScrSetNumberPlate = 123,
+	RPC_ScrTogglePlayerSpectating = 124,
+	RPC_ScrPlayerSpectatePlayer = 126,
+	RPC_ScrPlayerSpectateVehicle = 127,
+	RPC_ScrSetPlayerWantedLevel = 133,
+	RPC_ScrShowTextDraw = 134,
+	RPC_ScrTextDrawHideForPlayer = 135,
+	RPC_ScrServerJoin = 137,
+	RPC_ScrServerQuit = 138,
+	RPC_ScrInitGame = 139,
+	RPC_ScrRemovePlayerMapIcon = 144,
+	RPC_ScrSetPlayerAmmo = 145,
+	RPC_ScrSetGravity = 146,
+	RPC_ScrSetVehicleHealth = 147,
+	RPC_ScrAttachTrailerToVehicle = 148,
+	RPC_ScrDetachTrailerFromVehicle = 149,
+	RPC_ScrSetWeather = 152,
+	RPC_ScrSetPlayerSkin = 153,
+	RPC_ScrSetPlayerInterior = 156,
+	RPC_ScrSetPlayerCameraPos = 157,
+	RPC_ScrSetPlayerCameraLookAt = 158,
+	RPC_ScrSetVehiclePos = 159,
+	RPC_ScrSetVehicleZAngle = 160,
+	RPC_ScrSetVehicleParamsForPlayer = 161,
+	RPC_ScrSetCameraBehindPlayer = 162,
+	RPC_ScrWorldPlayerRemove = 163,
+	RPC_ScrWorldVehicleAdd = 164,
+	RPC_ScrWorldVehicleRemove = 165,
+	RPC_ScrWorldPlayerDeath = 166
+};
 
 namespace SAMP {
+
+	class CRakNet
+	{
+	public:
+		CRakNet(RakClientInterface *_interface) {
+			this->pRakClientInterface = _interface;
+		}
+		~CRakNet() {
+			this->pRakClientInterface = nullptr;
+		}
+		RakClientInterface *GetRakClientInterface(void) {
+			return this->pRakClientInterface;
+		}
+		bool Send(RakNet::BitStream *bitStream, PacketPriority priority = PacketPriority::HIGH_PRIORITY, PacketReliability reliability = PacketReliability::RELIABLE_ORDERED, char orderingChannel = '\0') {
+			return this->pRakClientInterface->Send(bitStream, priority, reliability, orderingChannel);
+		};
+		bool Send(const char *data, const int length, PacketPriority priority = PacketPriority::HIGH_PRIORITY, PacketReliability reliability = PacketReliability::RELIABLE_ORDERED, char orderingChannel = '\0') {
+			return this->pRakClientInterface->Send(data, length, priority, reliability, orderingChannel);
+		};
+		bool SendRPC(int RPC_ID, RakNet::BitStream *bitStream, PacketPriority priority = PacketPriority::HIGH_PRIORITY, PacketReliability reliability = PacketReliability::RELIABLE_ORDERED, char orderingChannel = '\0', bool shiftTimestamp = false, NetworkID networkID = UNASSIGNED_NETWORK_ID, RakNet::BitStream *replyFromTarget = 0) {
+			return this->pRakClientInterface->RPC(&RPC_ID, bitStream, priority, reliability, orderingChannel, shiftTimestamp, networkID, replyFromTarget);
+		}
+		bool SendRPC(int RPC_ID, const char *data, unsigned int bitLength, PacketPriority priority = PacketPriority::HIGH_PRIORITY, PacketReliability reliability = PacketReliability::RELIABLE_ORDERED, char orderingChannel = '\0', bool shiftTimestamp = false, NetworkID networkID = UNASSIGNED_NETWORK_ID, RakNet::BitStream *replyFromTarget = 0) {
+			return this->pRakClientInterface->RPC(&RPC_ID, data, bitLength, priority, reliability, orderingChannel, shiftTimestamp, networkID, replyFromTarget);
+		}
+	private:
+		RakClientInterface *pRakClientInterface = nullptr;
+	};
+
 	class CSAMP {
 	public:
 		bool LoadAPI(void) {//init samp api
@@ -980,6 +1155,7 @@ namespace SAMP {
 			g_Vehicles = g_SAMP->pPools->pVehicle;
 			g_Players = g_SAMP->pPools->pPlayer;
 
+			g_RakNet = new CRakNet(g_SAMP->pRakClientInterface);
 
 			return true;
 		};
@@ -992,6 +1168,8 @@ namespace SAMP {
 		struct stKillInfo *getKillInfo(void) { return g_KillInfo; };
 		struct stScoreboardInfo *getScoreboardInfo(void) { return g_ScoreboardInfo; };
 		struct stMiscInfo *getMiscInfo(void) { return g_MiscInfo; };
+		struct stStreamedOutPlayerInfo *getStreamedOutPlayerInfo(void) { return g_StreamedOutPlayerInfo; };
+		class CRakNet *getRakNet(void) { return g_RakNet; };
 		
 		void addMessageToChat(D3DCOLOR cColor, char *szMsg, ...) {
 			if (g_Chat == nullptr)
@@ -1012,7 +1190,6 @@ namespace SAMP {
 
 			return AddToChatWindowBuffer((void *)g_Chat, 8, tmp, NULL, cColor, 0x00);
 		};
-
 		void addClientCommand(char *szCmd, CMDPROC pFunc)
 		{
 			if (g_Input == nullptr)
@@ -1026,7 +1203,6 @@ namespace SAMP {
 
 			return AddClientCommand(g_Input, szCmd, pFunc);
 		}
-
 		void unregisterChatCommand(void *func) {
 			for (int i = 0; i < 144; i++) {
 				if (g_Input->pCMDs[i] == func) {
@@ -1046,8 +1222,10 @@ namespace SAMP {
 			g_KillInfo = nullptr;
 			g_ScoreboardInfo = nullptr;
 			g_MiscInfo = nullptr;
+			delete g_StreamedOutPlayerInfo;
+			g_StreamedOutPlayerInfo = nullptr;
 		};
-		CSAMP(DWORD base) { sampAddr = base; };
+		CSAMP(DWORD base) { sampAddr = base; g_StreamedOutPlayerInfo = new stStreamedOutPlayerInfo; };
 		DWORD GetBase() { return sampAddr; };
 	private:
 		DWORD sampAddr = 0;
@@ -1059,6 +1237,9 @@ namespace SAMP {
 		struct stKillInfo *g_KillInfo = 0;
 		struct stScoreboardInfo *g_ScoreboardInfo = 0;
 		struct stMiscInfo *g_MiscInfo = 0;
+		struct stStreamedOutPlayerInfo *g_StreamedOutPlayerInfo = 0;
+		class CRakNet *g_RakNet = 0;
+		
 	};
 	
 	CSAMP *pSAMP = nullptr;
@@ -1309,6 +1490,33 @@ SAMP::CallBacks::CCallbackRegister::Packet__* __fastcall SAMP::CallBacks::CCallb
 
 	if (packet != nullptr && packet->data != nullptr && packet->bitSize != 0 && packet->length != 0)
 	{
+		if (packet->data[0] == ID_MARKERS_SYNC) // packetId
+		{
+			BitStream	bs(packet->data, packet->length, true);
+			int			iNumberOfPlayers = 0;
+			uint16_t	playerID = uint16_t(-1);
+			short		sPos[3] = { 0, 0, 0 };
+			bool		bIsPlayerActive = false;
+
+			bs.IgnoreBits(8);
+			bs.Read(iNumberOfPlayers);
+			if (iNumberOfPlayers >= 0 || iNumberOfPlayers <= SAMP_MAX_PLAYERS) {
+				for (int i = 0; i < iNumberOfPlayers; i++)
+				{
+					bs.Read(playerID);
+					bs.ReadCompressed(bIsPlayerActive);
+					if (bIsPlayerActive == 0)
+						continue;
+					
+					bs.Read(sPos);
+					SAMP::pSAMP->getStreamedOutPlayerInfo()->iPlayerID[playerID] = playerID;
+					SAMP::pSAMP->getStreamedOutPlayerInfo()->fPlayerPos[playerID][0] = sPos[0];
+					SAMP::pSAMP->getStreamedOutPlayerInfo()->fPlayerPos[playerID][1] = sPos[1];
+					SAMP::pSAMP->getStreamedOutPlayerInfo()->fPlayerPos[playerID][2] = sPos[2];
+				}
+			}
+		}
+
 		if (SAMP::CallBacks::pCallBackRegister->callRakPeerRecv != 0) {
 			HookedStructs::stRakClientRecv params = { 0 };
 			BitStream *bs = new BitStream(packet->data, packet->length, true);
@@ -1469,7 +1677,7 @@ HRESULT __stdcall SAMP::CallBacks::CCallbackRegister::HOOKED_Reset(IDirect3DDevi
 		HookedStructs::stResetParams params = { 0 };
 		params.pDevice = pDevice;
 		params.pPresentParams = pPresentParams;
-		LRESULT retn = SAMP::CallBacks::pCallBackRegister->callReset(&params);
+		HRESULT retn = SAMP::CallBacks::pCallBackRegister->callReset(&params);
 		pDevice = params.pDevice;
 		pPresentParams = params.pPresentParams;
 		if (retn != D3D_OK)
