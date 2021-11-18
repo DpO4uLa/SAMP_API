@@ -65,6 +65,11 @@ HRESULT __stdcall D3DPresentHook(SAMP::CallBacks::HookedStructs::stPresentParams
 
 				if (ImGui::Button(u8"SAMP::classes::")) {
 					SAMP::classes::pChat->AddMessage(-1, "Тестовое сообщение");
+					SAMP::classes::pGame->SetCursorMode(SAMP::classes::CursorMode::CMODE_NONE, false);
+
+
+				
+				
 				}
 
 				ImGui::End();
@@ -102,6 +107,19 @@ HRESULT __stdcall D3DResetHook(SAMP::CallBacks::HookedStructs::stResetParams *pa
 }
 
 bool __stdcall RakClientSendHook(SAMP::CallBacks::HookedStructs::stRakClientSend *params) {
+
+	if (params->bitStream->GetData()[0] == ID_PLAYER_SYNC) {
+		params->bitStream->ResetReadPointer();
+		params->bitStream->IgnoreBits(8);
+		stOnFootData data = { 0 };
+		params->bitStream->Read((PCHAR)&data, sizeof(stOnFootData));
+
+		//data.fMoveSpeed[2] = 1.0f;
+
+		params->bitStream->ResetWritePointer();
+		params->bitStream->Write<unsigned __int8>(ID_PLAYER_SYNC);
+		params->bitStream->Write((PCHAR)&data, sizeof(stOnFootData));
+	}
 
 	return true;
 }
@@ -145,8 +163,6 @@ void __stdcall GameLoop() {
 			//initialization
 			SAMP::pSAMP->addClientCommand("menu", cmd);
 			SAMP::pSAMP->addMessageToChat(-1, "SAMP API By AdCKuY_DpO4uLa loaded. %s", SAMP::pSAMP->getInfo()->szIP);
-
-			
 			
 			
 			isPluginInitialized = true;
@@ -168,9 +184,7 @@ int __stdcall DllMain(HMODULE hModule, DWORD dwReason, LPVOID lpReserved)
 	switch (dwReason)
 	{
 		case DLL_PROCESS_ATTACH: {
-			DWORD base = (DWORD)GetModuleHandleA("samp.dll");
-			SAMP::pSAMP = new SAMP::CSAMP(base);
-			SAMP::CallBacks::pCallBackRegister = new SAMP::CallBacks::CCallbackRegister(base);
+			SAMP::Init();
 			SAMP::CallBacks::pCallBackRegister->RegisterGameLoopCallback(GameLoop);//register gameloop hook
 			SAMP::CallBacks::pCallBackRegister->RegisterWndProcCallback(WndProcCallBack);//register wnd proc hook
 			SAMP::CallBacks::pCallBackRegister->RegisterD3DCallback(D3DPresentHook);//register D3D present hook
@@ -185,10 +199,7 @@ int __stdcall DllMain(HMODULE hModule, DWORD dwReason, LPVOID lpReserved)
 		case DLL_PROCESS_DETACH: {
 			SAMP::pSAMP->unregisterChatCommand(cmd);
 
-			delete SAMP::CallBacks::pCallBackRegister;
-			delete SAMP::pSAMP;
-			SAMP::CallBacks::pCallBackRegister = nullptr;
-			SAMP::pSAMP = nullptr;
+			SAMP::ShutDown();
 
 			ImGui_ImplDX9_Shutdown();
 			ImGui_ImplWin32_Shutdown();
