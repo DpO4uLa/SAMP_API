@@ -1283,10 +1283,15 @@ namespace SAMP {
 			g_MiscInfo = nullptr;
 			delete g_StreamedOutPlayerInfo;
 			g_StreamedOutPlayerInfo = nullptr;
+			delete g_RakNet;
+			g_RakNet = nullptr;
 		};
 		CSAMP(DWORD base) { sampAddr = base; g_StreamedOutPlayerInfo = new stStreamedOutPlayerInfo; };
 		DWORD GetBase() { return sampAddr; };
 	private:
+		
+		std::vector<void*> CMDFuncs;
+
 		DWORD sampAddr = 0;
 		struct stSAMP *g_SAMP = 0;
 		struct stPlayerPool *g_Players = 0;
@@ -1517,7 +1522,20 @@ namespace SAMP {
 		
 		CCallbackRegister *pCallBackRegister = nullptr;
 	}
+
+	void ShutDown(void) {
+		delete SAMP::CallBacks::pCallBackRegister;
+		delete SAMP::pSAMP;
+		SAMP::CallBacks::pCallBackRegister = nullptr;
+		SAMP::pSAMP = nullptr;
+	}
 	
+	void Init(void) {
+		DWORD base = (DWORD)GetModuleHandleA("samp.dll");
+		SAMP::pSAMP = new SAMP::CSAMP(base);
+		SAMP::CallBacks::pCallBackRegister = new SAMP::CallBacks::CCallbackRegister(base);
+	}
+
 	bool bKeyTable[256];
 	bool isKeyDown(uint8_t key) {
 		return bKeyTable[key];
