@@ -41,16 +41,16 @@ SAMP::classes::ID SAMP::classes::CVehiclePool::GetNearest() {
 	return ((ID(__thiscall *)(CVehiclePool *))SAMP_ADDROF(0x1B110))(this);
 }
 
-SAMP::classes::ID SAMP::classes::CVehiclePool::Find(::CVehicle *pGameObject) {
-	return ((ID(__thiscall *)(CVehiclePool *, ::CVehicle *))SAMP_ADDROF(0x1B0A0))(this, pGameObject);
+SAMP::classes::ID SAMP::classes::CVehiclePool::Find(CVehicle *pGameObject) {
+	return ((ID(__thiscall *)(CVehiclePool *, CVehicle *))SAMP_ADDROF(0x1B0A0))(this, pGameObject);
 }
 
 SAMP::classes::GTAREF SAMP::classes::CVehiclePool::GetRef(int nId) {
 	return ((GTAREF(__thiscall *)(CVehiclePool *, int))SAMP_ADDROF(0x1B0D0))(this, nId);
 }
 
-SAMP::classes::GTAREF SAMP::classes::CVehiclePool::GetRef(::CVehicle *pGameObject) {
-	return ((GTAREF(__thiscall *)(CVehiclePool *, ::CVehicle *))SAMP_ADDROF(0x1B0F0))(this, pGameObject);
+SAMP::classes::GTAREF SAMP::classes::CVehiclePool::GetRef(CVehicle *pGameObject) {
+	return ((GTAREF(__thiscall *)(CVehiclePool *, CVehicle *))SAMP_ADDROF(0x1B0F0))(this, pGameObject);
 }
 
 void SAMP::classes::CVehiclePool::Process() {

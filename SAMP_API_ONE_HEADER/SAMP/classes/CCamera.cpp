@@ -61,6 +61,6 @@ void SAMP::classes::CCamera::SetMatrix(CMatrix matrix) {
 	((void(__thiscall *)(CCamera *, CMatrix))SAMP_ADDROF(0x98E80))(this, matrix);
 }
 
-void SAMP::classes::CCamera::TakeControl(::CEntity *pTarget, short nModeToGoTo, short nTypeOfSwitch) {
-	((void(__thiscall *)(CCamera *, ::CEntity *, short, short))SAMP_ADDROF(0x98F10))(this, pTarget, nModeToGoTo, nTypeOfSwitch);
+void SAMP::classes::CCamera::TakeControl(CEntity *pTarget, short nModeToGoTo, short nTypeOfSwitch) {
+	((void(__thiscall *)(CCamera *, CEntity *, short, short))SAMP_ADDROF(0x98F10))(this, pTarget, nModeToGoTo, nTypeOfSwitch);
 }

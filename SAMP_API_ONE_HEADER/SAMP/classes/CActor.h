@@ -12,14 +12,14 @@
 #include "common.h"
 #include "CEntity.h"
 
-class CPed;
-
 SAMP_BEGIN
+
+class CPed;
 
 class SAMP_API CActor : public CEntity {
 public:
 	// void **lpVtbl = 0xD9EC8;
-	::CPed  *m_pGamePed;
+	CPed  *m_pGamePed;
 	GTAREF	m_marker;
 	GTAREF 	m_arrow;
 	bool		m_bNeedsToCreateMarker;

@@ -113,7 +113,7 @@ BOOL SAMP::classes::CEntity::IsStationary() {
 	return ((BOOL(__thiscall *)(CEntity *))SAMP_ADDROF(0x9B420))(this);
 }
 
-RwObject *SAMP::classes::CEntity::GetRwObject() {
+SAMP::classes::RwObject *SAMP::classes::CEntity::GetRwObject() {
 	return ((RwObject *(__thiscall *)(CEntity *))SAMP_ADDROF(0x9B0A0))(this);
 }
 

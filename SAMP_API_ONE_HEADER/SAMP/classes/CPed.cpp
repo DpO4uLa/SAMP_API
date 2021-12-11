@@ -101,7 +101,7 @@ BOOL SAMP::classes::CPed::IsPassenger() {
 	return ((BOOL(__thiscall *)(CPed *))SAMP_ADDROF(0xA6880))(this);
 }
 
-CVehicle *SAMP::classes::CPed::GetVehicle() {
+SAMP::classes::CVehicle *SAMP::classes::CPed::GetVehicle() {
 	return ((CVehicle *(__thiscall *)(CPed *))SAMP_ADDROF(0xA68C0))(this);
 }
 
@@ -217,12 +217,12 @@ void SAMP::classes::CPed::SetAimZ(float fValue) {
 	((void(__thiscall *)(CPed *, float))SAMP_ADDROF(0xA81F0))(this, fValue);
 }
 
-CEntity *SAMP::classes::CPed::GetContactEntity() {
-	return ((::CEntity *(__thiscall *)(CPed *))SAMP_ADDROF(0xA8240))(this);
+SAMP::classes::CEntity *SAMP::classes::CPed::GetContactEntity() {
+	return ((CEntity *(__thiscall *)(CPed *))SAMP_ADDROF(0xA8240))(this);
 }
 
-CVehicle *SAMP::classes::CPed::GetContactVehicle() {
-	return ((::CVehicle *(__thiscall *)(CPed *))SAMP_ADDROF(0xA8250))(this);
+SAMP::classes::CVehicle *SAMP::classes::CPed::GetContactVehicle() {
+	return ((CVehicle *(__thiscall *)(CPed *))SAMP_ADDROF(0xA8250))(this);
 }
 
 int SAMP::classes::CPed::GetStat() {
@@ -329,7 +329,7 @@ void SAMP::classes::CPed::ApplyCommandTask(const char *szName, int a3, int a4, i
 	((void(__thiscall *)(CPed *, const char *, int, int, int, int, int, int, int, int, int))SAMP_ADDROF(0xA8870))(this, szName, a3, a4, a5, a6, a7, a8, a9, a10, a11);
 }
 
-CWeapon *SAMP::classes::CPed::GetCurrentWeaponSlot() {
+SAMP::classes::CWeapon *SAMP::classes::CPed::GetCurrentWeaponSlot() {
 	return ((CWeapon *(__thiscall *)(CPed *))SAMP_ADDROF(0xA6A00))(this);
 }
 
@@ -361,8 +361,8 @@ void SAMP::classes::CPed::SetModelIndex(int nModel) {
 	((void(__thiscall *)(CPed *, int))SAMP_ADDROF(0xAA820))(this, nModel);
 }
 
-CPed *SAMP::classes::CPed::GetAimedPed() {
-	return ((::CPed *(__thiscall *)(CPed *))SAMP_ADDROF(0xA9800))(this);
+SAMP::classes::CPed *SAMP::classes::CPed::GetAimedPed() {
+	return ((CPed *(__thiscall *)(CPed *))SAMP_ADDROF(0xA9800))(this);
 }
 
 void SAMP::classes::CPed::DestroyCommandTask() {
@@ -389,20 +389,20 @@ BOOL SAMP::classes::CPed::CurrentWeaponHasAmmo() {
 	return ((BOOL(__thiscall *)(CPed *))SAMP_ADDROF(0xA6A20))(this);
 }
 
-CEntity *SAMP::classes::CPed::GetFloor() {
-	return ((::CEntity *(__thiscall *)(CPed *))SAMP_ADDROF(0xA72D0))(this);
+SAMP::classes::CEntity *SAMP::classes::CPed::GetFloor() {
+	return ((CEntity *(__thiscall *)(CPed *))SAMP_ADDROF(0xA72D0))(this);
 }
 
-CWeaponInfo *SAMP::classes::CPed::GetCurrentWeaponInfo() {
-	return ((::CWeaponInfo *(__thiscall *)(CPed *))SAMP_ADDROF(0xA7380))(this);
+SAMP::classes::CWeaponInfo *SAMP::classes::CPed::GetCurrentWeaponInfo() {
+	return ((CWeaponInfo *(__thiscall *)(CPed *))SAMP_ADDROF(0xA7380))(this);
 }
 
 unsigned short SAMP::classes::CPed::GetCurrentWeaponAmmo() {
 	return ((unsigned short(__thiscall *)(CPed *))SAMP_ADDROF(0xA7A10))(this);
 }
 
-CWeapon *SAMP::classes::CPed::GetWeaponSlot(int nWeapon) {
-	return ((::CWeapon *(__thiscall *)(CPed *, int))SAMP_ADDROF(0xA7A50))(this, nWeapon);
+SAMP::classes::CWeapon *SAMP::classes::CPed::GetWeaponSlot(int nWeapon) {
+	return ((CWeapon *(__thiscall *)(CPed *, int))SAMP_ADDROF(0xA7A50))(this, nWeapon);
 }
 
 BOOL SAMP::classes::CPed::OpenParachute() {

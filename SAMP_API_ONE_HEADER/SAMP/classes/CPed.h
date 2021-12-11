@@ -15,13 +15,13 @@
 
 #define MAX_ACCESSORIES 10
 
+SAMP_BEGIN
+
 class CPed;
 class CWeapon;
 class CEntity;
 class CVehicle;
 class CWeaponInfo;
-
-SAMP_BEGIN
 
 enum StuffType {
 	STUFF_TYPE_NONE,
@@ -52,7 +52,7 @@ public:
 		class CObject	  *m_pObject[MAX_ACCESSORIES];
 	}						m_accessories;
 	
-	::CPed			  *m_pGamePed;
+	CPed			  *m_pGamePed;
 	int pad_2a8[2];
 	NUMBER				m_nPlayerNumber;
 	int pad_2b1[2];
@@ -101,7 +101,7 @@ public:
 	void ForceRotation(float fValue);
 	void SetRotation(float fValue);
 	BOOL IsPassenger();
-	::CVehicle *GetVehicle();
+	CVehicle *GetVehicle();
 	void ClearWeapons();
 	void SetArmedWeapon(int nWeapon, bool bGameFunc = true);
 	void RemoveWeaponWhenEnteringVehicle();
@@ -116,8 +116,8 @@ public:
 	void SetSpawnInfo(const CVector *pPosition, float fRotation);
 	void SetControllable(BOOL bEnable);
 	char GetDeathInfo(ID *pKiller);
-	::CEntity *GetFloor();
-	::CWeaponInfo *GetCurrentWeaponInfo();
+	CEntity *GetFloor();
+	CWeaponInfo *GetCurrentWeaponInfo();
 	void HandsUp();
 	BOOL DoesHandsUp();
 	void HoldObject(int nModel);
@@ -127,7 +127,7 @@ public:
 	BOOL EnablePassengerDrivebyMode();
 	void Extinguish();
 	unsigned short GetCurrentWeaponAmmo();
-	::CWeapon *GetWeaponSlot(int nWeapon);
+	CWeapon *GetWeaponSlot(int nWeapon);
 	void SetWalkStyle(const char *szName);
 	void PerformAnimation(const char *szName, const char *szFile, float fFramedelta, int loopa, int nLockX, int nLockY, int nLockF, int nTime);
 	void LinkToInterior(char nId, BOOL bRefresh);
@@ -139,8 +139,8 @@ public:
 	void RemoveWeaponModel(int nWeapon);
 	float GetAimZ();
 	void SetAimZ(float fValue);
-	::CEntity *GetContactEntity();
-	::CVehicle *GetContactVehicle();
+	CEntity *GetContactEntity();
+	CVehicle *GetContactVehicle();
 	int GetStat();
 	BOOL PerformingCustomAnimation();
 	void StartDancing(int nStyle);
@@ -163,7 +163,7 @@ public:
 	BOOL DoesUrinating();
 	const char *GetLoadedShoppingDataSubsection();
 	void LoadShoppingDataSubsection(const char *szName);
-	::CPed *GetAimedPed();
+	CPed *GetAimedPed();
 	void SetKeys(short controllerState, short sLeftStickX, short sLeftStickY);
 	short GetKeys(short *pLeftStickX, short *pLeftStickY);
 	void CreateArrow(int nColor);

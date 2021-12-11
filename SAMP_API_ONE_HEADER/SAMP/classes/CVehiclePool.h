@@ -16,9 +16,9 @@
 #define MAX_VEHICLES 2000
 #define WAITING_LIST_SIZE 100
 
-class CVehicle;
-
 SAMP_BEGIN
+
+class CVehicle;
 
 class SAMP_API CVehiclePool {
 public:
@@ -48,7 +48,7 @@ public:
 
 	CVehicle				  *m_pObject[MAX_VEHICLES];
 	BOOL						m_bNotEmpty[MAX_VEHICLES];
-	::CVehicle			  *m_pGameObject[MAX_VEHICLES];
+	CVehicle			  *m_pGameObject[MAX_VEHICLES];
 	int pad_6ef4[MAX_VEHICLES];
 	ID							m_nLastUndrivenId[MAX_VEHICLES]; // a player who send unoccupied sync data
 	TICK						m_lastUndrivenProcessTick[MAX_VEHICLES];
@@ -65,9 +65,9 @@ public:
 	BOOL Delete(ID nId);
 	void ChangeInterior(ID nId, int nInteriorId);
 	void SetParams(ID nId, bool bIsObjective, bool bIsLocked);
-	ID Find(::CVehicle *pGameObject);
+	ID Find(CVehicle *pGameObject);
 	GTAREF GetRef(int nId);
-	GTAREF GetRef(::CVehicle *pGameObject);
+	GTAREF GetRef(CVehicle *pGameObject);
 	ID GetNearest();
 	ID GetNearest(CVector point);
 	void AddToWaitingList(const Info *pInfo);

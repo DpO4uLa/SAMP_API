@@ -14,10 +14,10 @@
 #include "CMatrix.h"
 #include "CVehicle.h"
 
+SAMP_BEGIN
+
 class CSprite2d;
 struct RwTexture;
-
-SAMP_BEGIN
 
 class SAMP_API CObject : public CEntity {
 public:
@@ -47,8 +47,8 @@ public:
 	
 	struct SAMP_API {
 		union {
-			::CSprite2d		  *m_pSprite[16];
-			::RwTexture		  *m_pTextBackground[16];
+			CSprite2d		  *m_pSprite[16];
+			RwTexture		  *m_pTextBackground[16];
 		};
 		
 		D3DCOLOR					m_color[16];

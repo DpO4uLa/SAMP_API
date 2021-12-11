@@ -31,7 +31,7 @@ public:
 	int			m_nLargestId;
 	CActor	  *m_pObject[MAX_ACTORS];
 	BOOL			m_bNotEmpty[MAX_ACTORS];
-	::CPed	  *m_pGameObject[MAX_ACTORS];
+	CPed	  *m_pGameObject[MAX_ACTORS];
 	int			pad_2ee4[MAX_ACTORS];
 	int			pad_3e84[MAX_ACTORS];
 
@@ -43,7 +43,7 @@ public:
 	void UpdateLargestId();
 	BOOL Delete(ID nId);
 	BOOL Create(const ActorInfo *pInfo);
-	ID Find(::CPed *pPed);
+	ID Find(CPed *pPed);
 };
 
 SAMP_END

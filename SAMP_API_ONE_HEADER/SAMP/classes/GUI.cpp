@@ -9,7 +9,7 @@
 
 #include "GUI.h"
 
-CDXUTDialogResourceManager *&SAMP::classes::GUI::pResourceMgr = *(CDXUTDialogResourceManager **)SAMP_ADDROF(0x21A180);
+SAMP::classes::CDXUTDialogResourceManager *&SAMP::classes::GUI::pResourceMgr = *(SAMP::classes::CDXUTDialogResourceManager **)SAMP_ADDROF(0x21A180);
 CDXUTDialog *&SAMP::classes::GUI::pGameUi = *(CDXUTDialog **)SAMP_ADDROF(0x21A184);
 CDXUTDialog *&SAMP::classes::GUI::pScoreboard = *(CDXUTDialog **)SAMP_ADDROF(0x21A188);
 CDXUTDialog *&SAMP::classes::GUI::pDialog = *(CDXUTDialog **)SAMP_ADDROF(0x21A190);

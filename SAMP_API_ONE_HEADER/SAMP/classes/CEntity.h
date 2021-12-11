@@ -12,16 +12,16 @@
 #include "common.h"
 #include "CMatrix.h"
 
+SAMP_BEGIN
+
 class CEntity;
 struct RwObject;
-
-SAMP_BEGIN
 
 class CEntity {
 public:
 	// void **m_lpVtbl = 0xD9EBC;
 	char pad_4[60];
-	::CEntity		  *m_pGameEntity;
+	CEntity		  *m_pGameEntity;
 	GTAREF				m_handle;
 
 	CEntity();

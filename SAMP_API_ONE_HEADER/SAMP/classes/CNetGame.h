@@ -35,10 +35,10 @@
 #define NETMODE_TARGET_UPDATE_DELAY 100
 #define NETMODE_PLAYERS_UPDATE_DELAY 3000
 
+SAMP_BEGIN
+
 struct Packet;
 class RakClientInterface;
-
-SAMP_BEGIN
 
 enum MarkersMode {
 	MARKERS_MODE_OFF,

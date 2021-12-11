@@ -41,8 +41,8 @@ const char *SAMP::classes::CPlayerPool::GetName(ID nId) {
 	return ((const char *(__thiscall *)(CPlayerPool *, ID))SAMP_ADDROF(0x13CE0))(this, nId);
 }
 
-SAMP::classes::ID SAMP::classes::CPlayerPool::Find(::CPed *pPed) {
-	return ((ID(__thiscall *)(CPlayerPool *, ::CPed *))SAMP_ADDROF(0x10420))(this, pPed);
+SAMP::classes::ID SAMP::classes::CPlayerPool::Find(CPed *pPed) {
+	return ((ID(__thiscall *)(CPlayerPool *, CPed *))SAMP_ADDROF(0x10420))(this, pPed);
 }
 
 int SAMP::classes::CPlayerPool::GetCount(BOOL bIncludeNPC) {
@@ -101,8 +101,8 @@ void SAMP::classes::CPlayerPool::UpdateLargestId() {
 	((void(__thiscall *)(CPlayerPool *))SAMP_ADDROF(0x102B0))(this);
 }
 
-SAMP::classes::CObject *SAMP::classes::CPlayerPool::FindAccessory(::CObject *pGameObject) {
-	return ((CObject *(__thiscall *)(CPlayerPool *, ::CObject *))SAMP_ADDROF(0x106A0))(this, pGameObject);
+SAMP::classes::CObject *SAMP::classes::CPlayerPool::FindAccessory(CObject *pGameObject) {
+	return ((CObject *(__thiscall *)(CPlayerPool *, CObject *))SAMP_ADDROF(0x106A0))(this, pGameObject);
 }
 
 void SAMP::classes::CPlayerPool::SetLocalPlayerName(const char *szName) {

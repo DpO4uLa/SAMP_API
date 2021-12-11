@@ -15,9 +15,9 @@
 #include "CCamera.h"
 #include "CObject.h"
 
-class CWeaponInfo;
-
 SAMP_BEGIN
+
+class CWeaponInfo;
 
 enum CursorMode {
 	CMODE_NONE,  

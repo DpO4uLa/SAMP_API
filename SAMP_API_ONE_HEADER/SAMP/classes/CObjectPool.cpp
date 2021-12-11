@@ -35,12 +35,12 @@ BOOL SAMP::classes::CObjectPool::Create(ID nId, int nModel, CVector position, CV
 	return ((BOOL(__thiscall *)(CObjectPool *, ID, int, CVector, CVector, float))SAMP_ADDROF(0xF470))(this, nId, nModel, position, rotation, fDrawDistance);
 }
 
-SAMP::classes::CObject *SAMP::classes::CObjectPool::Find(::CObject *pGameObject) {
-	return ((CObject *(__thiscall *)(CObjectPool *, ::CObject *))SAMP_ADDROF(0xF520))(this, pGameObject);
+SAMP::classes::CObject *SAMP::classes::CObjectPool::Find(CObject *pGameObject) {
+	return ((CObject *(__thiscall *)(CObjectPool *, CObject *))SAMP_ADDROF(0xF520))(this, pGameObject);
 }
 
-int SAMP::classes::CObjectPool::GetId(::CObject *pObject) {
-	return ((int(__thiscall *)(CObjectPool *, ::CObject *))SAMP_ADDROF(0xF560))(this, pObject);
+int SAMP::classes::CObjectPool::GetId(CObject *pObject) {
+	return ((int(__thiscall *)(CObjectPool *, CObject *))SAMP_ADDROF(0xF560))(this, pObject);
 }
 
 void SAMP::classes::CObjectPool::Process() {

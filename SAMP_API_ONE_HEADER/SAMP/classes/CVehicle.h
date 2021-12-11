@@ -15,15 +15,15 @@
 
 #define LICENSE_PLATE_TEXT_LEN 32
 
-class CVehicle;
-
 SAMP_BEGIN
+
+class CVehicle;
 
 class SAMP_API CVehicle : public CEntity {
 public:
 	// void **m_lpVtbl = 0xDB1AC;
 	CVehicle				  *m_pTrailer;
-	::CVehicle			  *m_pGameVehicle;
+	CVehicle			  *m_pGameVehicle;
 	char pad_50[8];
 	BOOL						m_bIsInvulnerable;
 	BOOL						m_bIsLightsOn;

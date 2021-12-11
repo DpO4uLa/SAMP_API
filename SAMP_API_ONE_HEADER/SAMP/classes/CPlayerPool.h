@@ -16,9 +16,9 @@
 
 #define MAX_PLAYERS 1004
 
-class CObject;
-
 SAMP_BEGIN
+
+class CObject;
 
 class SAMP_API CPlayerPool {
 public:
@@ -44,7 +44,7 @@ public:
 
 	void UpdateLargestId();
 	void Process();
-	ID Find(::CPed *pGamePed);
+	ID Find(CPed *pGamePed);
 	void Deactivate();
 	void ForceCollision();
 	void RestoreCollision();
@@ -63,7 +63,7 @@ public:
 	int GetLocalPlayerScore() { return m_localInfo.m_nScore; }
 	int GetCount(BOOL bIncludeNPC = 0);
 	CLocalPlayer *GetLocalPlayer();
-   CObject *FindAccessory(::CObject *pGameObject);
+	CObject *FindAccessory(CObject *pGameObject);
 	CPlayerInfo *GetAt(ID nId);
 	BOOL IsNPC(ID nId);
 	void SetPing(ID nId, int nValue);

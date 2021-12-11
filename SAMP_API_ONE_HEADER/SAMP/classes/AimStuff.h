@@ -12,7 +12,7 @@
 #include "common.h"
 #include "CVector.h"
 
-SAMP_BEGIN_NP
+SAMP_BEGIN_NP	
 
 namespace AimStuff {
 	struct Aim {

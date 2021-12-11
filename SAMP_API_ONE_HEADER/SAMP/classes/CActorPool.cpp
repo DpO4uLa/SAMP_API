@@ -37,6 +37,6 @@ BOOL SAMP::classes::CActorPool::Create(const ActorInfo *pInfo) {
 	return ((BOOL(__thiscall *)(CActorPool *, const ActorInfo *))SAMP_ADDROF(0x18F0))(this, pInfo);
 }
 
-SAMP::classes::ID SAMP::classes::CActorPool::Find(::CPed *pPed) {
-	return ((ID(__thiscall *)(CActorPool *, ::CPed *))SAMP_ADDROF(0x18A0))(this, pPed);
+SAMP::classes::ID SAMP::classes::CActorPool::Find(CPed *pPed) {
+	return ((ID(__thiscall *)(CActorPool *, CPed *))SAMP_ADDROF(0x18A0))(this, pPed);
 }

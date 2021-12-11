@@ -14,9 +14,9 @@
 
 #define MAX_OBJECTS 1000
 
-class CObject;
-
 SAMP_BEGIN
+
+class CObject;
 
 class SAMP_API CObjectPool {
 public:
@@ -33,8 +33,8 @@ public:
 	int GetCount();
 	BOOL Delete(ID nId);
 	BOOL Create(ID nId, int nModel, CVector position, CVector rotation, float fDrawDistance);
-	CObject *Find(::CObject *pGameObject);
-	int GetId(::CObject *pGameObject);
+	CObject *Find(CObject *pGameObject);
+	int GetId(CObject *pGameObject);
 	void Process();
 	void ConstructMaterials();
 	void ShutdownMaterials();

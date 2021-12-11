@@ -153,7 +153,7 @@ IDirect3DDevice9 *SAMP::classes::CGame::GetDevice() {
 	return ((IDirect3DDevice9 *(__thiscall *)(CGame *))SAMP_ADDROF(0x9C910))(this);
 }
 
-CWeaponInfo *SAMP::classes::CGame::GetWeaponInfo(int nWeapon, int nSkill) {
+SAMP::classes::CWeaponInfo *SAMP::classes::CGame::GetWeaponInfo(int nWeapon, int nSkill) {
 	return ((CWeaponInfo *(__thiscall *)(CGame *, int, int))SAMP_ADDROF(0x9C980))(this, nWeapon, nSkill);
 }
 

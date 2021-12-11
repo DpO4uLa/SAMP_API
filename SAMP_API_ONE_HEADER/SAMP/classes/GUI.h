@@ -11,10 +11,10 @@
 
 #include "common.h"
 
+SAMP_BEGIN
+
 class CDXUTControl;
 class CDXUTDialogResourceManager;
-
-SAMP_BEGIN
 
 namespace GUI {
 	extern CDXUTDialogResourceManager *&pResourceMgr;

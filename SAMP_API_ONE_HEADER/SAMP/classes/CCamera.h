@@ -14,9 +14,9 @@
 #include "CMatrix.h"
 #include "CEntity.h"
 
-class CEntity;
-
 SAMP_BEGIN
+
+class CEntity;
 
 class SAMP_API CCamera {
 public:
@@ -29,7 +29,7 @@ public:
 	void Fade(BOOL bin);
 	void GetMatrix(CMatrix *pMatrix);
 	void SetMatrix(CMatrix matrix);
-	void TakeControl(::CEntity *pTarget, short nModeToGoTo, short nTypeOfSwitch);
+	void TakeControl(CEntity *pTarget, short nModeToGoTo, short nTypeOfSwitch);
 	void SetMoveVector(CVector *pCamera, CVector *pPosition, int nTime, bool bSmoothTransmition);
 	void SetTrackVector(CVector *pPointAt, CVector *pTransverseTo, int nTime, bool bSmooth);
 	void Attach(CEntity *pOwner);
