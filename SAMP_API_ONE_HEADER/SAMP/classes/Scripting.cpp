@@ -9,7 +9,7 @@
 
 #include "Scripting.h"
 
-CRunningScript *&SAMP::classes::Scripting::pThread = *(CRunningScript **)SAMP_ADDROF(0x216048);
+SAMP::classes::CRunningScript *&SAMP::classes::Scripting::pThread = *(SAMP::classes::CRunningScript **)SAMP_ADDROF(0x216048);
 unsigned char *SAMP::classes::Scripting::aBuffer = (unsigned char *)SAMP_ADDROF(0x215F48);
 unsigned long &SAMP::classes::Scripting::nLastUsedOpcode = *(unsigned long *)SAMP_ADDROF(0x21604C);
 unsigned long *&SAMP::classes::Scripting::apThreadLocals = *(unsigned long **)SAMP_ADDROF(0x215F00);

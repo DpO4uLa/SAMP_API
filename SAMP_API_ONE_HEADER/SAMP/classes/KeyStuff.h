@@ -11,9 +11,9 @@
 
 #include "common.h"
 
-class CPad;
-
 SAMP_BEGIN_NP
+
+class CPad;
 
 namespace KeyStuff {	
 	extern CPad *pLocalPlayerKeys;

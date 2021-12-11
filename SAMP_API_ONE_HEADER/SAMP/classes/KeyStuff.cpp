@@ -9,9 +9,9 @@
 
 #include "KeyStuff.h"
 
-CPad *&SAMP::classes::KeyStuff::pInternalKeys = *(CPad **)SAMP_ADDROF(0x1016E8);
-CPad *SAMP::classes::KeyStuff::pLocalPlayerKeys = (CPad *)SAMP_ADDROF(0x13D2C0);
-CPad *SAMP::classes::KeyStuff::aPlayerKeys = (CPad *)SAMP_ADDROF(0x13D3F8);
+SAMP::classes::CPad *&SAMP::classes::KeyStuff::pInternalKeys = *(SAMP::classes::CPad **)SAMP_ADDROF(0x1016E8);
+SAMP::classes::CPad *SAMP::classes::KeyStuff::pLocalPlayerKeys = (SAMP::classes::CPad *)SAMP_ADDROF(0x13D2C0);
+SAMP::classes::CPad *SAMP::classes::KeyStuff::aPlayerKeys = (SAMP::classes::CPad *)SAMP_ADDROF(0x13D3F8);
 bool *&SAMP::classes::KeyStuff::pDriveByLeft = *(bool **)SAMP_ADDROF(0x1016EC);
 bool *&SAMP::classes::KeyStuff::pDriveByRight = *(bool **)SAMP_ADDROF(0x1016F0);
 bool &SAMP::classes::KeyStuff::bSavedDriveByLeft = *(bool *)SAMP_ADDROF(0x14D0A0);
@@ -37,11 +37,11 @@ void SAMP::classes::KeyStuff::ApplyKeys(int nPlayerNumber) {
 	((void(__cdecl *)(int))SAMP_ADDROF(0xA2300))(nPlayerNumber);
 }
 
-CPad *SAMP::classes::KeyStuff::GetInternalKeys() {
+SAMP::classes::CPad *SAMP::classes::KeyStuff::GetInternalKeys() {
 	return ((CPad *(__cdecl *)())SAMP_ADDROF(0xA2350))();
 }
 
-CPad *SAMP::classes::KeyStuff::GetKeys(int nPlayerNumber) {
+SAMP::classes::CPad *SAMP::classes::KeyStuff::GetKeys(int nPlayerNumber) {
 	return ((CPad *(__cdecl *)(int))SAMP_ADDROF(0xA2370))(nPlayerNumber);
 }
 
@@ -53,6 +53,6 @@ void SAMP::classes::KeyStuff::ResetInternalKeys() {
 	((void(__cdecl *)())SAMP_ADDROF(0xA23A0))();
 }
 
-CPad *SAMP::classes::KeyStuff::GetKeys() {
-	return ((::CPad *(__cdecl *)())SAMP_ADDROF(0xA2360))();
+SAMP::classes::CPad *SAMP::classes::KeyStuff::GetKeys() {
+	return ((CPad *(__cdecl *)())SAMP_ADDROF(0xA2360))();
 }

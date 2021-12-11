@@ -11,7 +11,7 @@
 
 SAMP::classes::CCamera *&SAMP::classes::VehicleSelection::pCamera = *(SAMP::classes::CCamera **)SAMP_ADDROF(0x13BA7C);
 SAMP::classes::CVehicle *&SAMP::classes::VehicleSelection::pVehicle = *(SAMP::classes::CVehicle **)SAMP_ADDROF(0x13BB64);
-CPad *&SAMP::classes::VehicleSelection::pControls = *(CPad **)SAMP_ADDROF(0x13BA78);
+SAMP::classes::CPad *&SAMP::classes::VehicleSelection::pControls = *(SAMP::classes::CPad **)SAMP_ADDROF(0x13BA78);
 BOOL &SAMP::classes::VehicleSelection::bInitialized = *(BOOL *)SAMP_ADDROF(0x13BB60);
 int &SAMP::classes::VehicleSelection::nSelectedModel = *(int *)SAMP_ADDROF(0x1014B4);
 

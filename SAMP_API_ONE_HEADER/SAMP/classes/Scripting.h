@@ -11,9 +11,9 @@
 
 #include "common.h"
 
-class CRunningScript;
-
 SAMP_BEGIN_NP
+
+class CRunningScript;
 
 namespace Scripting {
 	struct SAMP_API OpcodeInfo {
