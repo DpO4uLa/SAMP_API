@@ -849,6 +849,9 @@
     <ClInclude Include="SAMP\classes\VehicleSelection.h">
       <Filter>Исходные файлы\SAMP\classes</Filter>
     </ClInclude>
+    <ClInclude Include="injector\allocator.hpp">
+      <Filter>Исходные файлы\injector</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="DirectX\d3dx9math.inl">
