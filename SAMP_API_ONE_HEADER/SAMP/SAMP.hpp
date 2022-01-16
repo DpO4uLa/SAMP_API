@@ -6,6 +6,7 @@
 #include <vector>
 #include <map>
 #include <memory>
+#include <algorithm>
 
 //DirectX
 #include "../DirectX/d3d9.h"
@@ -19,7 +20,9 @@
 #include "injector/injector.hpp"
 #include "injector/disassembler.hpp"
 #include "injector/invoker.hpp"
+#include "injector/allocator.hpp"
 #include "injector/hook.hpp"
+#include "injector/patch.hpp"
 
 //WinSock
 #include <WinSock2.h>
@@ -794,7 +797,7 @@ struct stSAMPVehicle : public stSAMPEntity < vehicle_info >
 	int					iColorSync;
 	int					iColor_something;
 };
-struct stObject// : public stSAMPEntity < object_info >
+struct stObject : public stSAMPEntity < object_info >
 {
 	uint8_t				byteUnk0[2];
 	uint32_t			ulUnk1;
@@ -1149,6 +1152,7 @@ namespace SAMP {
 	class CRakNet
 	{
 	public:
+
 		CRakNet(RakClientInterface *_interface) {
 			this->pRakClientInterface = _interface;
 		}
@@ -1170,6 +1174,7 @@ namespace SAMP {
 		bool SendRPC(int RPC_ID, const char *data, unsigned int bitLength, PacketPriority priority = PacketPriority::HIGH_PRIORITY, PacketReliability reliability = PacketReliability::RELIABLE_ORDERED, char orderingChannel = '\0', bool shiftTimestamp = false, NetworkID networkID = UNASSIGNED_NETWORK_ID, RakNet::BitStream *replyFromTarget = 0) {
 			return this->pRakClientInterface->RPC(&RPC_ID, data, bitLength, priority, reliability, orderingChannel, shiftTimestamp, networkID, replyFromTarget);
 		}
+	
 	private:
 		RakClientInterface *pRakClientInterface = nullptr;
 	};
@@ -1289,8 +1294,6 @@ namespace SAMP {
 		CSAMP(DWORD base) { sampAddr = base; g_StreamedOutPlayerInfo = new stStreamedOutPlayerInfo; };
 		DWORD GetBase() { return sampAddr; };
 	private:
-		
-		std::vector<void*> CMDFuncs;
 
 		DWORD sampAddr = 0;
 		struct stSAMP *g_SAMP = 0;
@@ -1479,7 +1482,7 @@ namespace SAMP {
 			static HRESULT __stdcall HOOKED_Reset(IDirect3DDevice9* pDevice, D3DPRESENT_PARAMETERS* pPresentParams);
 			static bool __fastcall HOOKED_RakClientSend(RakClientInterface* _this, void* Unknown, BitStream* bitStream, PacketPriority priority, PacketReliability reliability, char orderingChannel);
 			static bool __fastcall HOOKED_RakClientRPC(RakClientInterface* _this, void* Unknown, int* uniqueID, BitStream* bitStream, PacketPriority priority, PacketReliability reliability, char orderingChannel, bool shiftTimestamp);
-			static bool __fastcall HOOKED_HandleRPCPacket(RakPeerInterface *_this, void* Unknown, const char *data, int length, PlayerID playerid);
+			static bool __fastcall HOOKED_HandleRPCPacket(RakPeerInterface *_this, void* Unknown, const char *data, int length, SAMP::CallBacks::CCallbackRegister::PlayerID__ playerid);
 			static SAMP::CallBacks::CCallbackRegister::Packet__* __fastcall HOOKED_RakPeerReceive(void *_this, void* Unknown);
 
 			template<typename result, typename source>
@@ -1502,13 +1505,12 @@ namespace SAMP {
 				dwObjBase = (DWORD)LoadLibraryA(infoBuf);
 				while (dwObjBase++ < dwObjBase + dwLen)
 				{
-					if ((*(WORD*)(dwObjBase + 0x00)) == 0x06C7 &&
-						(*(WORD*)(dwObjBase + 0x06)) == 0x8689 &&
-						(*(WORD*)(dwObjBase + 0x0C)) == 0x8689)
-					{
-						dwObjBase += 2;
-						break;
-					}
+					if (
+							(*(WORD*)(dwObjBase + 0x00)) == 0x06C7 &&
+							(*(WORD*)(dwObjBase + 0x06)) == 0x8689 &&
+							(*(WORD*)(dwObjBase + 0x0C)) == 0x8689
+						)
+					{ dwObjBase += 2; break; }
 				}
 				return(dwObjBase);
 			};
@@ -1563,7 +1565,7 @@ namespace SAMP {
 }
 
 SAMP::CallBacks::CCallbackRegister::Packet__* __fastcall SAMP::CallBacks::CCallbackRegister::HOOKED_RakPeerReceive(void *_this, void *Unknown) {
-	SAMP::CallBacks::CCallbackRegister::Packet__ *packet = SAMP::CallBacks::pCallBackRegister->gHookRakPeerRecv->Call<SAMP::CallBacks::CCallbackRegister::Packet__*, EConvention::kThiscall>(_this);
+	SAMP::CallBacks::CCallbackRegister::Packet__ *packet = SAMP::CallBacks::pCallBackRegister->gHookRakPeerRecv->Call<SAMP::CallBacks::CCallbackRegister::Packet__*, CallingConventions::Thiscall>(_this);
 
 	if (packet != nullptr && packet->data != nullptr && packet->bitSize != 0 && packet->length != 0)
 	{
@@ -1612,14 +1614,12 @@ SAMP::CallBacks::CCallbackRegister::Packet__* __fastcall SAMP::CallBacks::CCallb
 
 	return packet;
 }
-bool __fastcall SAMP::CallBacks::CCallbackRegister::HOOKED_HandleRPCPacket(RakPeerInterface *_this, void *Unknown, const char *data, int length, PlayerID playerid) {
+bool __fastcall SAMP::CallBacks::CCallbackRegister::HOOKED_HandleRPCPacket(RakPeerInterface *_this, void *Unknown, const char *data, int length, SAMP::CallBacks::CCallbackRegister::PlayerID__ playerid) {
 	RakNet::BitStream incoming(SAMP::CallBacks::pCallBackRegister->pointer_cast<unsigned char*>(const_cast<char*>(data)), length, true);//from rakhook by imring
 	unsigned char id = 0;
 	unsigned char* input = nullptr;
 	unsigned int bits_data = 0;
-	//std::shared_ptr<RakNet::BitStream> callback_bs = std::make_shared<RakNet::BitStream>();
 	std::unique_ptr<RakNet::BitStream> callback_bs = std::make_unique<RakNet::BitStream>();
-	//BitStream *callback_bs = nullptr;
 
 	incoming.IgnoreBits(8);
 	if (data[0] == ID_TIMESTAMP)
@@ -1642,9 +1642,7 @@ bool __fastcall SAMP::CallBacks::CCallbackRegister::HOOKED_HandleRPCPacket(RakPe
 		if (!incoming.ReadBits(input, bits_data, false))
 			return false;
 
-		//callback_bs = std::make_shared<RakNet::BitStream>(input, BITS_TO_BYTES(bits_data), true);
 		callback_bs = std::make_unique<RakNet::BitStream>(input, BITS_TO_BYTES(bits_data), true);
-		//callback_bs = new BitStream(input, BITS_TO_BYTES(bits_data), true);
 
 		if (!used_alloca)
 			delete[] input;
@@ -1667,11 +1665,11 @@ bool __fastcall SAMP::CallBacks::CCallbackRegister::HOOKED_HandleRPCPacket(RakPe
 	if (bits_data)
 		incoming.WriteBits(callback_bs->GetData(), bits_data, false);
 
-	return SAMP::CallBacks::pCallBackRegister->gHookHandleRPCPacket->Call<bool, EConvention::kThiscall>(_this, reinterpret_cast<char*>(incoming.GetData()), incoming.GetNumberOfBytesUsed(), playerid);
+	return SAMP::CallBacks::pCallBackRegister->gHookHandleRPCPacket->Call<bool, CallingConventions::Thiscall>(_this, reinterpret_cast<char*>(incoming.GetData()), incoming.GetNumberOfBytesUsed(), playerid);
 }
 bool __fastcall SAMP::CallBacks::CCallbackRegister::HOOKED_RakClientRPC(RakClientInterface* _this, void* Unknown, int* uniqueID, BitStream* bitStream, PacketPriority priority, PacketReliability reliability, char orderingChannel, bool shiftTimestamp) {
 	if (_this == nullptr || uniqueID == nullptr || bitStream == nullptr)
-		return SAMP::CallBacks::pCallBackRegister->gHookRakClientRPC->Call<bool, EConvention::kThiscall>(_this, uniqueID, bitStream, priority, reliability, orderingChannel, shiftTimestamp);
+		return SAMP::CallBacks::pCallBackRegister->gHookRakClientRPC->Call<bool, CallingConventions::Thiscall>(_this, uniqueID, bitStream, priority, reliability, orderingChannel, shiftTimestamp);
 
 	if (SAMP::CallBacks::pCallBackRegister->callRakClientRPC != 0) {
 		HookedStructs::stRakClientRPC params = { 0 };
@@ -1694,11 +1692,11 @@ bool __fastcall SAMP::CallBacks::CCallbackRegister::HOOKED_RakClientRPC(RakClien
 			return false;
 	}
 
-	return SAMP::CallBacks::pCallBackRegister->gHookRakClientRPC->Call<bool, EConvention::kThiscall>(_this, uniqueID, bitStream, priority, reliability, orderingChannel, shiftTimestamp);
+	return SAMP::CallBacks::pCallBackRegister->gHookRakClientRPC->Call<bool, CallingConventions::Thiscall>(_this, uniqueID, bitStream, priority, reliability, orderingChannel, shiftTimestamp);
 }
 bool __fastcall SAMP::CallBacks::CCallbackRegister::HOOKED_RakClientSend(RakClientInterface* _this, void* Unknown, BitStream* bitStream, PacketPriority priority, PacketReliability reliability, char orderingChannel) {
 	if(_this == nullptr || bitStream == nullptr)
-		return SAMP::CallBacks::pCallBackRegister->gHookRakClientSend->Call<bool, EConvention::kThiscall>(_this, bitStream, priority, reliability, orderingChannel);
+		return SAMP::CallBacks::pCallBackRegister->gHookRakClientSend->Call<bool, CallingConventions::Thiscall>(_this, bitStream, priority, reliability, orderingChannel);
 
 	if (SAMP::CallBacks::pCallBackRegister->callRakClientSend != 0) {
 		HookedStructs::stRakClientSend params = { 0 };
@@ -1717,11 +1715,11 @@ bool __fastcall SAMP::CallBacks::CCallbackRegister::HOOKED_RakClientSend(RakClie
 			return false;
 	}
 
-	return SAMP::CallBacks::pCallBackRegister->gHookRakClientSend->Call<bool, EConvention::kThiscall>(_this, bitStream, priority, reliability, orderingChannel);
+	return SAMP::CallBacks::pCallBackRegister->gHookRakClientSend->Call<bool, CallingConventions::Thiscall>(_this, bitStream, priority, reliability, orderingChannel);
 }
 HRESULT __stdcall SAMP::CallBacks::CCallbackRegister::HOOKED_Present(IDirect3DDevice9* pDevice, CONST RECT* pSrcRect, CONST RECT* pDestRect, HWND hDestWindow, CONST RGNDATA* pDirtyRegion) {
 	if(pDevice == nullptr)
-		return SAMP::CallBacks::pCallBackRegister->gHookD3DPresent->Call<HRESULT, EConvention::kStdcall>(pDevice, pSrcRect, pDestRect, hDestWindow, pDirtyRegion);
+		return SAMP::CallBacks::pCallBackRegister->gHookD3DPresent->Call<HRESULT, CallingConventions::Stdcall>(pDevice, pSrcRect, pDestRect, hDestWindow, pDirtyRegion);
 	if (!SAMP::CallBacks::pCallBackRegister->isD3DHookInit) {
 		SAMP::CallBacks::pCallBackRegister->isD3DHookInit = true;
 		SAMP::CallBacks::pCallBackRegister->pD3DDevice = pDevice;
@@ -1744,11 +1742,11 @@ HRESULT __stdcall SAMP::CallBacks::CCallbackRegister::HOOKED_Present(IDirect3DDe
 			return retn;
 	}
 
-	return SAMP::CallBacks::pCallBackRegister->gHookD3DPresent->Call<HRESULT, EConvention::kStdcall>(pDevice, pSrcRect, pDestRect, hDestWindow, pDirtyRegion);
+	return SAMP::CallBacks::pCallBackRegister->gHookD3DPresent->Call<HRESULT, CallingConventions::Stdcall>(pDevice, pSrcRect, pDestRect, hDestWindow, pDirtyRegion);
 }
 HRESULT __stdcall SAMP::CallBacks::CCallbackRegister::HOOKED_Reset(IDirect3DDevice9* pDevice, D3DPRESENT_PARAMETERS* pPresentParams) {
 	if (pDevice == nullptr)
-		return SAMP::CallBacks::pCallBackRegister->gHookD3DReset->Call<HRESULT, EConvention::kStdcall>(pDevice, pPresentParams);
+		return SAMP::CallBacks::pCallBackRegister->gHookD3DReset->Call<HRESULT, CallingConventions::Stdcall>(pDevice, pPresentParams);
 	
 	if (SAMP::CallBacks::pCallBackRegister->callReset != 0) {
 		HookedStructs::stResetParams params = { 0 };
@@ -1761,13 +1759,13 @@ HRESULT __stdcall SAMP::CallBacks::CCallbackRegister::HOOKED_Reset(IDirect3DDevi
 			return retn;
 	}
 
-	return SAMP::CallBacks::pCallBackRegister->gHookD3DReset->Call<HRESULT, EConvention::kStdcall>(pDevice, pPresentParams);
+	return SAMP::CallBacks::pCallBackRegister->gHookD3DReset->Call<HRESULT, CallingConventions::Stdcall>(pDevice, pPresentParams);
 }
 void __cdecl SAMP::CallBacks::CCallbackRegister::HOOKED_GameLoop() {
 	if (SAMP::CallBacks::pCallBackRegister->callGameLoop != 0) {
 		SAMP::CallBacks::pCallBackRegister->callGameLoop();
 	}
-	return SAMP::CallBacks::pCallBackRegister->gHookGameLoop->Call<void, EConvention::kCdeclcall>();
+	return SAMP::CallBacks::pCallBackRegister->gHookGameLoop->Call<void, CallingConventions::Cdecl>();
 }
 LRESULT __stdcall SAMP::CallBacks::CCallbackRegister::HOOKED_WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	switch (uMsg)
@@ -1833,6 +1831,6 @@ LRESULT __stdcall SAMP::CallBacks::CCallbackRegister::HOOKED_WndProc(HWND hWnd, 
 		if (retn != 0)
 			return retn;
 	}
-	return SAMP::CallBacks::pCallBackRegister->gHookWndProc->Call<HRESULT, EConvention::kStdcall>(hWnd, uMsg, wParam, lParam);
+	return SAMP::CallBacks::pCallBackRegister->gHookWndProc->Call<HRESULT, CallingConventions::Stdcall>(hWnd, uMsg, wParam, lParam);
 }
 
