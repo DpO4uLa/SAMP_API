@@ -1,7 +1,6 @@
 #pragma once
 #include <Windows.h>
 #include <string>
-#include <algorithm>
 
 #include "SAMP/SAMP.hpp"
 

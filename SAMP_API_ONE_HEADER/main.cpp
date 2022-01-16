@@ -69,14 +69,14 @@ HRESULT __stdcall D3DPresentHook(SAMP::CallBacks::HookedStructs::stPresentParams
 
 
 				
+
 				
 				}
-
+				
 				ImGui::End();
 			}
 		}
 
-		
 		
 
 		ImGui::EndFrame();
@@ -172,7 +172,6 @@ void __stdcall GameLoop() {
 
 
 		
-
 
 	}
 }
