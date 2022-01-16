@@ -5,14 +5,8 @@ namespace injector
 {
 	namespace disassembler
 	{
-		static inline std::uint8_t GetInstructionSize(detail::Pointer aTarget)
-		{
-			hde32s hs;
-			hde32_disasm(aTarget, &hs);
-			return (hs.len);
-		}
-
-		static inline std::uint8_t GetInstructionsSize(detail::Pointer aTarget, std::uint8_t aMinSize = 5)
+		static inline std::uint8_t GetInstructionsSize(const detail::Pointer& aTarget, 
+			const std::uint8_t aMinSize = 5)
 		{
 			hde32s hs;
 
@@ -30,27 +24,23 @@ namespace injector
 			return size;
 		}
 
-		static inline bool IsRelativeInstruction(detail::Pointer aTarget)
+		static inline std::uintptr_t RestoreAbsoluteOffset(const detail::Pointer& aRelative, 
+			const detail::Pointer& aSource, const std::uint32_t aSize = 5u)
 		{
-			hde32s hs;
-			hde32_disasm(aTarget, &hs);
-			return ((hs.flags & F_RELATIVE) && (hs.flags & F_IMM32));
+			auto relative = aRelative.Get();
+			auto source = aSource.Get();
+
+			return (relative + source + aSize);
 		}
 
-		static inline std::uintptr_t GetAbsoluteOffsetFrom(detail::Pointer aTarget, detail::Pointer aSource)
+		static inline std::uintptr_t GetRelativeOffset(const detail::Pointer& aTarget, 
+			const detail::Pointer& aOrigin, const std::uint32_t aSize = 5u)
 		{
-			hde32s hs;
-			hde32_disasm(aTarget, &hs);
-			return (hs.imm.imm32 + aSource.Get() + hs.len);
-		}
+			auto target = aTarget.Get();
+			auto origin = aOrigin.Get();
 
-		static inline std::uintptr_t GetAbsoluteOffset(detail::Pointer aTarget)
-		{
-			hde32s hs;
-			hde32_disasm(aTarget, &hs);
-			return (hs.imm.imm32 + aTarget.Get() + hs.len);
+			return target - (origin + aSize);
 		}
-
 	} // !namespace disassembler
 
 } // !namespace injector

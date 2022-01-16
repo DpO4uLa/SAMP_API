@@ -11,14 +11,26 @@ namespace injector
 			void* mPointer;
 			std::uintptr_t mAddress;
 		public:
-			Pointer() : mPointer(nullptr) {}
-			Pointer(std::nullptr_t) : mPointer(nullptr) {}
+			Pointer() = default;
+
 			Pointer(std::uintptr_t aAddress) : mAddress(aAddress) {}
 			Pointer(void* aPointer) : mPointer(aPointer) {}
+			
 			Pointer(const Pointer& aPointer) : mPointer(aPointer.mPointer) {}
 
 			template<typename PointerType>
-			Pointer(PointerType aValue) : mPointer( (void*)aValue ) {}
+			Pointer(PointerType aValue) : mPointer( reinterpret_cast<void*>(aValue) ) {}
+
+			/* NOTE:
+				This variant is really working (removes const), but => 
+				"any attempt to modify a const
+				object during its lifetime (6.6.3) results in undefined behavior."
+				So, this object will be read-only
+			*/
+			template<typename PointerType>
+			Pointer(const PointerType* aValue) :
+				mPointer(reinterpret_cast<void*>(const_cast<PointerType*>(aValue)))
+			{}
 
 			template<typename ReturnType>
 			inline ReturnType GetRaw() const { return reinterpret_cast<ReturnType>(mPointer); }
@@ -33,13 +45,16 @@ namespace injector
 			// Taken from https://github.com/DK22Pac/plugin-sdk/blob/master/injector/injector.hpp#L86
 #if __cplusplus >= 201103L || _MSC_VER >= 1800
 			explicit operator bool() const { return mPointer != nullptr; }
-#endif
+#endif // !__cplusplus >= 201103L || _MSC_VER >= 1800
 
-			/* Math */
+			/* Arithmetic */
 			Pointer operator+(const Pointer& rhs) const { return (mAddress + rhs.mAddress); }
 			Pointer operator-(const Pointer& rhs) const { return (mAddress - rhs.mAddress); }
 			Pointer operator/(const Pointer& rhs) const { return (mAddress / rhs.mAddress); }
 			Pointer operator*(const Pointer& rhs) const { return (mAddress * rhs.mAddress); }
+			/*            */
+
+			bool operator ==(const Pointer& rhs) const { return (rhs.mAddress == mAddress); }
 		};
 
 		class Guard
@@ -64,7 +79,7 @@ namespace injector
 
 	} // !namespace detail
 
-	static inline bool FlushMemory(detail::Pointer aTarget, std::size_t aSize)
+	static inline bool FlushMemory(const detail::Pointer& aTarget, const std::size_t aSize)
 	{
 		// https://devblogs.microsoft.com/oldnewthing/20190902-00/?p=102828
 		// just call the Flush­Instruction­Cache function and let the operating system figure out whether flushing will actually need to “do anything”.
@@ -72,14 +87,14 @@ namespace injector
 	}
 
 	template<typename ReturnType>
-	static inline ReturnType ReadMemory(detail::Pointer aTarget)
+	static inline ReturnType ReadMemory(const detail::Pointer& aTarget)
 	{
 		detail::Guard guard{ aTarget, sizeof(ReturnType) };
 		return *aTarget.GetRaw<ReturnType*>();
 	}
 
 	template<typename ValueType>
-	static inline void WriteMemory(detail::Pointer aTarget, ValueType aValue)
+	static inline void WriteMemory(const detail::Pointer& aTarget, const ValueType aValue)
 	{
 		detail::Guard guard{ aTarget, sizeof(ValueType) };
 		*aTarget.GetRaw<ValueType*>() = aValue;
@@ -87,7 +102,8 @@ namespace injector
 		FlushMemory(aTarget, sizeof(ValueType));
 	}
 
-	static inline void CopyMemoryRaw(detail::Pointer aTarget, detail::Pointer aOrigin, std::size_t aSize)
+	static inline void CopyMemoryRaw(const detail::Pointer& aTarget, const detail::Pointer& aOrigin,
+		const std::size_t aSize)
 	{
 		detail::Guard guard{ aTarget, aSize };
 		detail::Guard guard1{ aOrigin, aSize };
@@ -96,7 +112,7 @@ namespace injector
 		FlushMemory(aTarget, aSize);
 	}
 
-	static inline void FillMemoryRaw(detail::Pointer aTarget, int aValue, std::size_t aSize)
+	static inline void FillMemoryRaw(const detail::Pointer& aTarget, const int aValue, const std::size_t aSize)
 	{
 		detail::Guard guard{ aTarget, aSize };
 		std::memset(aTarget, aValue, aSize);
@@ -104,11 +120,56 @@ namespace injector
 		FlushMemory(aTarget, aSize);
 	}
 
-	static inline int CompareMemory(detail::Pointer aBuffer1, detail::Pointer aBuffer2, std::size_t aSize)
+	static inline int CompareMemory(const detail::Pointer& aBuffer1, const detail::Pointer& aBuffer2, 
+		const std::size_t aSize)
 	{
 		detail::Guard guard{ aBuffer1, aSize };
 		detail::Guard guard1{ aBuffer2, aSize };
 		return std::memcmp(aBuffer1, aBuffer2, aSize);
+	}
+
+	static std::uintptr_t SearchPattern(std::string_view aModuleName,
+		std::string_view aPattern, std::string_view aMask)
+	{
+		detail::Pointer handle{ GetModuleHandle(aModuleName.data()) };
+
+		if (!handle)
+			return 0u;
+
+		MEMORY_BASIC_INFORMATION mbi{ 0 };
+		if (!VirtualQuery(handle, &mbi, sizeof(mbi)))
+			return 0u;
+
+		auto dos = reinterpret_cast<IMAGE_DOS_HEADER*>(mbi.AllocationBase);
+		auto pe = reinterpret_cast<IMAGE_NT_HEADERS*>(
+			reinterpret_cast<std::uintptr_t>(dos) + dos->e_lfanew);
+
+		if (pe->Signature != IMAGE_NT_SIGNATURE)
+			return 0u;
+
+		auto current = reinterpret_cast<std::uint8_t*>(mbi.AllocationBase);
+		auto end = current + pe->OptionalHeader.SizeOfImage;
+
+		std::size_t i{};
+		while (current < end) 
+		{
+			for (i = 0; i < aMask.size(); i++)
+			{
+				if (&current[i] >= end)
+					break;
+
+				auto mask = aMask[i];
+				auto pattern = static_cast<std::uint8_t>(aPattern[i]);
+				if ((mask != '?') && pattern != current[i])
+					break;
+			}
+
+			if (!aMask[i])
+				return reinterpret_cast<std::uintptr_t>(current);
+
+			++current;
+		}
+		return 0u;
 	}
 } // !namespace injector
 

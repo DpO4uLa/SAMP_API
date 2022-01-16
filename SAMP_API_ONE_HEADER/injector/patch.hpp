@@ -5,41 +5,88 @@ namespace injector
 {
 	class Patch
 	{
+		using string_const = std::string_view;
+
+		using byte_vector = std::vector<std::uint8_t>;
+		using byte_vector_const = const std::vector<std::uint8_t>&;
+
 		struct Chunk
 		{
-			std::string mModuleName;
-			std::uintptr_t mBaseAddress;
-			std::uintptr_t mModuleAddress;
-			std::vector<uint8_t> mReplacement;
-			std::vector<uint8_t> mOriginal;
-			bool mFilled;
+			std::uintptr_t mTarget;
+
+			byte_vector mReplacement;
+			byte_vector mOriginal;
+		
+			Chunk(string_const aModuleName,
+				std::uintptr_t aTarget,
+				byte_vector_const aReplacement,
+				byte_vector_const aOriginal)
+			{
+				auto handle = reinterpret_cast<std::uintptr_t>(GetModuleHandle(aModuleName.data()));
+	
+				mTarget = handle + aTarget;
+				mReplacement = aReplacement;
+
+				if (aOriginal.empty())
+				{
+					mOriginal.resize(mReplacement.size());
+
+					CopyMemoryRaw(mOriginal.data(), mTarget, mReplacement.size());
+				}
+				else
+					mOriginal = aOriginal;
+			}
 		};
-	public:
-		using List = std::vector<Chunk>;
-	protected:
-		List mList;
+
+		std::vector<Chunk> mChunks;
 		bool mInstalled;
 	public:
-		Patch() : mInstalled(false) {}
+		~Patch() { Remove(); }
 
 		void Install()
 		{
-			if (mInstalled)
+			if (mInstalled || mChunks.empty())
 				return;
 			else
 				mInstalled = true;
 
-			std::uintptr_t mModuleAddress;
+			for (auto& item : mChunks)
+				CopyMemoryRaw(item.mTarget, item.mReplacement.data(), item.mReplacement.size());
+		}
 
-			for (auto& item : mList)
-			{
-				if (!item.mModuleAddress && !item.mModuleName.empty()) 
-				{
-					item.mModuleAddress = reinterpret_cast<std::uintptr_t>(GetModuleHandle(item.mModuleName.data())) + item.mBaseAddress;
-				}
+		void Remove()
+		{
+			if (!mInstalled)
+				return;
+			else
+				mInstalled = false;
 
+			for (auto& item : mChunks)
+				CopyMemoryRaw(item.mTarget, item.mOriginal.data(), item.mOriginal.size());
+		}
 
-			}
+		inline void Add(string_const aModuleName, std::uintptr_t aAddress,
+			byte_vector_const aReplacement, byte_vector_const aOriginal)
+		{
+			mChunks.emplace_back<Chunk>({ aModuleName, aAddress, aReplacement, aOriginal });
+		}
+
+		inline void Add(string_const aModuleName, std::uintptr_t aAddress,
+			byte_vector_const aReplacement)
+		{
+			Add(aModuleName, aAddress, aReplacement, {});
+		}
+
+		inline void Add(std::uintptr_t aAddress,
+			byte_vector_const aReplacement)
+		{
+			Add("", aAddress, aReplacement, {});
+		}
+
+		inline void Add(std::uintptr_t aAddress,
+			byte_vector_const aReplacement, byte_vector_const aOriginal)
+		{
+			Add("", aAddress, aReplacement, aOriginal);
 		}
 	};
 } // !namespace injector
