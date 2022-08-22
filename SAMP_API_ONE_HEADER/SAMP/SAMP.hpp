@@ -1,4 +1,10 @@
 #pragma once
+#pragma warning(disable:26495)
+#pragma warning(disable:26439)
+#pragma warning(disable:26815)
+#pragma warning(disable:26819)
+#pragma warning(disable:26812)
+#pragma warning(disable:28159)
 #include <Windows.h>
 #include <process.h>
 #include <iostream>
@@ -16,13 +22,7 @@
 #include "../DirectX/d3drender.h"
 
 //new hooks
-#include "injector/hde/hde32.h"
-#include "injector/injector.hpp"
-#include "injector/disassembler.hpp"
-#include "injector/invoker.hpp"
-#include "injector/allocator.hpp"
-#include "injector/hook.hpp"
-#include "injector/patch.hpp"
+#include "../memwrapper/memwrapper.h"
 
 //WinSock
 #include <WinSock2.h>
@@ -102,6 +102,39 @@ using namespace RakNet;
 #include "classes/Settings.h"
 #include "classes/SpecialAction.h"
 #include "classes/VehicleSelection.h"
+
+//plugin sdk
+#pragma comment(lib, "plugin.lib")
+#include "plugin.h"
+
+#include "CPed.h"
+#include "CWorld.h"
+#include "CPopulation.h"
+#include "CCivilianPed.h"
+#include "CStats.h"
+#include "CClothes.h"
+#include "CCamera.h"
+#include "CAnimManager.h"
+#include "CStreaming.h"
+#include "CRunningScript.h"
+#include "CPlayerPed.h"
+#include "CModelInfo.h"
+#include "CDraw.h"
+#include "CMenuManager.h"
+#include "CClock.h"
+#include "CWeather.h"
+#include "CTaskSimpleRunNamedAnim.h"
+#include "CTrailer.h"
+#include "CGame.h"
+#include "CCam.h"
+#include "CTrailer.h"
+#include "C3dMarker.h"
+#include "C3dMarkers.h"
+#include "CCheckpoint.h"
+#include "CCheckpoints.h"
+#include "CTaskSimpleJump.h"
+#include "ePedBones.h"
+#include "extensions/ScriptCommands.h"
 
 #define SAMP_INFO_OFFSET				0x21A0F8
 #define SAMP_CHAT_INFO_OFFSET 			0x21A0E4
@@ -453,7 +486,6 @@ struct stPlayerPool
 	actor_info *GetActorInfoFromPlayerID(uint32_t playerID);
 	bool IsPlayerStreamed(uint16_t playerID);
 	D3DCOLOR GetPlayerColor(uint16_t playerID);
-	unsigned __int16 stPlayerPool::GetPlayerIDFromCPed(CPed *pPed);
 #endif
 };
 struct stSAMPKeys
@@ -1149,34 +1181,334 @@ enum ScriptRPCEnumeration
 
 namespace SAMP {
 
+	namespace CallBacks {
+
+		namespace HookedStructs {
+			struct stWndProcParams {
+				HWND hWnd;
+				UINT uMsg;
+				WPARAM wParam;
+				LPARAM lParam;
+			};
+			struct stPresentParams {
+				IDirect3DDevice9* pDevice;
+				CONST RECT* pSrcRect;
+				CONST RECT* pDestRect;
+				HWND hDestWindow;
+				CONST RGNDATA* pDirtyRegion;
+			};
+			struct stResetParams {
+				IDirect3DDevice9* pDevice;
+				D3DPRESENT_PARAMETERS* pPresentParams;
+			};
+			struct stRakClientSend {
+				RakClientInterface* _this;
+				BitStream* bitStream;
+				PacketPriority priority;
+				PacketReliability reliability;
+				char orderingChannel;
+			};
+			struct stRakClientRPC {
+				RakClientInterface* _this;
+				int* uniqueID;
+				BitStream* bitStream;
+				PacketPriority priority;
+				PacketReliability reliability;
+				char orderingChannel;
+				bool shiftTimestamp;
+			};
+			struct stRakClientRPCRecv {
+				unsigned __int32 rpc_id;
+				BitStream* bitStream;
+				//std::shared_ptr<RakNet::BitStream> bitStream;
+			};
+			struct stRakClientRecv {
+				unsigned __int8 pktID;
+				BitStream* bitStream;
+				unsigned __int32 lenght;
+			};
+		}
+
+		class CCallbackRegister {
+		private:
+#pragma pack(push, 1)
+			struct PlayerID__
+			{
+				unsigned int binaryAddress;
+				unsigned short port;
+				PlayerID__& operator = (const PlayerID__& input)
+				{
+					binaryAddress = input.binaryAddress;
+					port = input.port;
+					return *this;
+				}
+				bool operator==(const PlayerID__& right) const;
+				bool operator!=(const PlayerID__& right) const;
+				bool operator > (const PlayerID__& right) const;
+				bool operator < (const PlayerID__& right) const;
+			};
+			struct NetworkID__
+			{
+				bool peerToPeer;
+				PlayerID__ playerId;
+				unsigned short localSystemId;
+			};
+			struct Packet__
+			{
+				unsigned __int16 playerIndex;
+				PlayerID__ playerId;
+				unsigned int length;
+				unsigned int bitSize;
+				unsigned char* data;
+				bool deleteData;
+			};
+#pragma pack(pop)
+
+			using GameLoop_t = void(__cdecl*)();
+			using WndProc_t = LRESULT(__stdcall*)(HWND, UINT, WPARAM, LPARAM);
+
+			using D3DPresent_t = HRESULT(__stdcall*)(IDirect3DDevice9*, CONST RECT*, CONST RECT*, HWND, CONST RGNDATA*);
+			using D3DReset_t = HRESULT(__stdcall*)(IDirect3DDevice9*, D3DPRESENT_PARAMETERS*);
+
+			using RakClientSend_t = bool(__thiscall*)(RakClientInterface*, BitStream*, PacketPriority, PacketReliability, char);
+			using RakClientRPCSend_t = bool(__thiscall*)(RakClientInterface*, int*, BitStream*, PacketPriority, PacketReliability, char, bool);
+			using RakPeerHandleRPCPacket_t = bool(__thiscall*)(RakPeerInterface*, const char*, int, PlayerID__);
+			using RakPeerReceive_t = Packet__ * (__thiscall*)(RakPeerInterface*);
+		public:
+			typedef LRESULT(__stdcall* tWndProc)(HookedStructs::stWndProcParams*);
+			typedef void(__stdcall* tGameLoop)();
+			typedef HRESULT(__stdcall* tPresent_)(HookedStructs::stPresentParams*);
+			typedef HRESULT(__stdcall* tReset_)(HookedStructs::stResetParams*);
+			typedef bool(__stdcall* tRakClientSend_)(HookedStructs::stRakClientSend*);
+			typedef bool(__stdcall* tRakClientRPC_)(HookedStructs::stRakClientRPC*);
+			typedef bool(__stdcall* tRakClientRPCRecv_)(HookedStructs::stRakClientRPCRecv*);
+			typedef bool(__stdcall* tRakPeerRecv_)(HookedStructs::stRakClientRecv*);
+
+			CCallbackRegister(DWORD base) {
+				sampBase = base;
+
+				pWndProcHook = std::make_unique<memwrapper::memhook<WndProc_t>>(0x00747EB0U, WndProc_HOOKED);
+				pGameLoopHook = std::make_unique<memwrapper::memhook<GameLoop_t>>(0x00748DA3U, GameLoop_HOOKED);
+				pD3DPresentHook = std::make_unique<memwrapper::memhook<D3DPresent_t>>(GetDeviceAddress(17), D3DPresent_HOOKED);
+				pD3DResetHook = std::make_unique<memwrapper::memhook<D3DReset_t>>(GetDeviceAddress(16), D3DReset_HOOKED);
+				pRakClientSendHook = std::make_unique<memwrapper::memhook<RakClientSend_t>>(sampBase + 0x00307F0U, RakClientSend_HOOKED);
+				pRakClientRPCSendHook = std::make_unique<memwrapper::memhook<RakClientRPCSend_t>>(sampBase + 0x0030B30U, RakClientRPCSend_HOOKED);
+				pRakPeerHandleRPCPacketHook = std::make_unique<memwrapper::memhook<RakPeerHandleRPCPacket_t>>(sampBase + 0x00372F0U, RakPeerHandleRPCPacketHook_HOOKED);
+				pRakPeerReceiveHook = std::make_unique<memwrapper::memhook<RakPeerReceive_t>>(sampBase + 0x0031180U, RakPeerReceive_HOOKED);
+
+
+				pWndProcHook->install();
+				pGameLoopHook->install();
+				pD3DPresentHook->install();
+				pD3DResetHook->install();
+				pRakClientSendHook->install();
+				pRakPeerReceiveHook->install();
+				pRakClientRPCSendHook->install();
+				pRakPeerHandleRPCPacketHook->install();
+			}
+
+			~CCallbackRegister() {
+				pWndProcHook->remove();
+				pGameLoopHook->remove();
+				pD3DPresentHook->remove();
+				pD3DResetHook->remove();
+				pRakClientSendHook->remove();
+				pRakPeerReceiveHook->remove();
+				pRakClientRPCSendHook->remove();
+				pRakPeerHandleRPCPacketHook->remove();
+			}
+
+			//сделать перегрузки
+
+			void inline RegisterWndProcCallback(tWndProc func) { callWndProc = func; };
+			void inline RegisterGameLoopCallback(tGameLoop func) { callGameLoop = func; };
+
+			void inline RegisterD3DCallback(tPresent_ func) { callPresent = func; };
+			void inline RegisterD3DCallback(tReset_ func) { callReset = func; };
+
+			void inline RegisterRakClientCallback(tRakClientSend_ func) { callRakClientSend = func; };
+			void inline RegisterRakClientCallback(tRakClientRPC_ func) { callRakClientRPC = func; };
+			void inline RegisterRakClientCallback(tRakClientRPCRecv_ func) { callRakClientRPCRecv = func; };
+			void inline RegisterRakClientCallback(tRakPeerRecv_ func) { callRakPeerRecv = func; };
+
+			IDirect3DDevice9 inline* GetIDirect3DDevice9(void) { return pD3DDevice; };
+
+
+			std::unique_ptr<memwrapper::memhook<GameLoop_t>> pGameLoopHook = 0;
+			std::unique_ptr<memwrapper::memhook<WndProc_t>> pWndProcHook = 0;
+
+			std::unique_ptr<memwrapper::memhook<D3DPresent_t>> pD3DPresentHook = 0;
+			std::unique_ptr<memwrapper::memhook<D3DReset_t>> pD3DResetHook = 0;
+
+			std::unique_ptr<memwrapper::memhook<RakClientSend_t>> pRakClientSendHook = 0;
+			std::unique_ptr<memwrapper::memhook<RakClientRPCSend_t>> pRakClientRPCSendHook = 0;
+			std::unique_ptr<memwrapper::memhook<RakPeerHandleRPCPacket_t>> pRakPeerHandleRPCPacketHook = 0;
+			std::unique_ptr<memwrapper::memhook<RakPeerReceive_t>> pRakPeerReceiveHook = 0;
+		private:
+
+			IDirect3DDevice9* pD3DDevice = nullptr;
+			bool isD3DHookInit = false;
+
+			DWORD sampBase = 0;
+
+			tWndProc callWndProc = 0;
+			tGameLoop callGameLoop = 0;
+			tPresent_ callPresent = 0;
+			tReset_ callReset = 0;
+			tRakClientSend_ callRakClientSend = 0;
+			tRakClientRPC_ callRakClientRPC = 0;
+			tRakClientRPCRecv_ callRakClientRPCRecv = 0;
+			tRakPeerRecv_ callRakPeerRecv = 0;
+
+			static LRESULT __stdcall WndProc_HOOKED(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+			static void __cdecl GameLoop_HOOKED();
+			static HRESULT __stdcall D3DPresent_HOOKED(IDirect3DDevice9* pDevice, CONST RECT* pSrcRect, CONST RECT* pDestRect, HWND hDestWindow, CONST RGNDATA* pDirtyRegion);
+			static HRESULT __stdcall D3DReset_HOOKED(IDirect3DDevice9* pDevice, D3DPRESENT_PARAMETERS* pPresentParams);
+			static bool __fastcall RakClientSend_HOOKED(RakClientInterface* _this, void* Unknown, BitStream* bitStream, PacketPriority priority, PacketReliability reliability, char orderingChannel);
+			static bool __fastcall RakClientRPCSend_HOOKED(RakClientInterface* _this, void* Unknown, int* uniqueID, BitStream* bitStream, PacketPriority priority, PacketReliability reliability, char orderingChannel, bool shiftTimestamp);
+			static bool __fastcall RakPeerHandleRPCPacketHook_HOOKED(RakPeerInterface* _this, void* Unknown, const char* data, int length, SAMP::CallBacks::CCallbackRegister::PlayerID__ playerid);
+			static SAMP::CallBacks::CCallbackRegister::Packet__* __fastcall RakPeerReceive_HOOKED(RakPeerInterface* _this, void* Unknown);
+
+			template<typename result, typename source>
+			result pointer_cast(source* v)
+			{
+				return static_cast<result>(static_cast<void*>(v));
+			}
+			template<typename result, typename source>
+			result pointer_cast(const source* v)
+			{
+				return static_cast<result>(static_cast<const void*>(v));
+			}
+
+			DWORD FindDevice(DWORD dwLen)
+			{
+				DWORD dwObjBase = 0;
+				char infoBuf[MAX_PATH];
+				GetSystemDirectoryA(infoBuf, MAX_PATH);
+				strcat_s(infoBuf, MAX_PATH, "\\d3d9.dll");
+				dwObjBase = (DWORD)LoadLibraryA(infoBuf);
+				while (dwObjBase++ < dwObjBase + dwLen)
+				{
+					if (
+						(*(WORD*)(dwObjBase + 0x00)) == 0x06C7 &&
+						(*(WORD*)(dwObjBase + 0x06)) == 0x8689 &&
+						(*(WORD*)(dwObjBase + 0x0C)) == 0x8689
+						)
+					{
+						dwObjBase += 2; break;
+					}
+				}
+				return(dwObjBase);
+			};
+			DWORD GetDeviceAddress(int VTableIndex)
+			{
+				PDWORD VTable;
+				*(DWORD*)&VTable = *(DWORD*)FindDevice(0x128000);
+				return VTable[VTableIndex];
+			};
+		};
+
+		CCallbackRegister* pCallBackRegister = nullptr;
+	}
+
 	class CRakNet
 	{
+	private:
+		RakClientInterface* pRakClientInterface = nullptr;
+		RakPeerInterface* pRakPeerInterface = nullptr;
+#pragma pack(push, 1)
+		struct PlayerID__
+		{
+			unsigned int binaryAddress;
+			unsigned short port;
+			PlayerID__& operator = (const PlayerID__& input)
+			{
+				binaryAddress = input.binaryAddress;
+				port = input.port;
+				return *this;
+			}
+			bool operator==(const PlayerID__& right) const;
+			bool operator!=(const PlayerID__& right) const;
+			bool operator > (const PlayerID__& right) const;
+			bool operator < (const PlayerID__& right) const;
+		};
+		struct NetworkID__
+		{
+			bool peerToPeer;
+			PlayerID__ playerId;
+			unsigned short localSystemId;
+		};
+		struct Packet__
+		{
+			unsigned __int16 playerIndex;
+			PlayerID__ playerId;
+			unsigned int length;
+			unsigned int bitSize;
+			unsigned char* data;
+			bool deleteData;
+		};
+#pragma pack(pop)
+		unsigned __int32 sampBase = 0;
+		RakPeerInterface* pRakPeerInterface1;
+		PlayerID__ plID1;
 	public:
 
-		CRakNet(RakClientInterface *_interface) {
+		CRakNet(RakClientInterface *_interface, RakPeerInterface* _rinterface) {
 			this->pRakClientInterface = _interface;
+			this->pRakPeerInterface = _rinterface;
+			sampBase = (unsigned __int32)GetModuleHandleA("samp.dll");
 		}
 		~CRakNet() {
 			this->pRakClientInterface = nullptr;
+			this->pRakPeerInterface = nullptr;
+			this->pRakPeerInterface1 = nullptr;
 		}
+		//DONT CALL THIS FUNCTION!!!
+		void InitAPIRakNet(RakPeerInterface* pRak, void* plID) {
+			pRakPeerInterface1 = pRak;
+			plID1 = *(PlayerID__*)plID;
+		};
 		RakClientInterface *GetRakClientInterface(void) {
 			return this->pRakClientInterface;
 		}
-		bool Send(RakNet::BitStream *bitStream, PacketPriority priority = PacketPriority::HIGH_PRIORITY, PacketReliability reliability = PacketReliability::RELIABLE_ORDERED, char orderingChannel = '\0') {
+		RakPeerInterface *GetRakPeerInterface(void) {
+			return this->pRakPeerInterface;
+		}
+		bool Send(RakNet::BitStream *bitStream, PacketPriority priority = HIGH_PRIORITY, PacketReliability reliability = PacketReliability::RELIABLE_ORDERED, char orderingChannel = '\0') {
 			return this->pRakClientInterface->Send(bitStream, priority, reliability, orderingChannel);
 		};
-		bool Send(const char *data, const int length, PacketPriority priority = PacketPriority::HIGH_PRIORITY, PacketReliability reliability = PacketReliability::RELIABLE_ORDERED, char orderingChannel = '\0') {
+		bool Send(const char *data, const int length, PacketPriority priority = HIGH_PRIORITY, PacketReliability reliability = PacketReliability::RELIABLE_ORDERED, char orderingChannel = '\0') {
 			return this->pRakClientInterface->Send(data, length, priority, reliability, orderingChannel);
 		};
-		bool SendRPC(int RPC_ID, RakNet::BitStream *bitStream, PacketPriority priority = PacketPriority::HIGH_PRIORITY, PacketReliability reliability = PacketReliability::RELIABLE_ORDERED, char orderingChannel = '\0', bool shiftTimestamp = false, NetworkID networkID = UNASSIGNED_NETWORK_ID, RakNet::BitStream *replyFromTarget = 0) {
+		bool SendRPC(int RPC_ID, RakNet::BitStream *bitStream, PacketPriority priority = HIGH_PRIORITY, PacketReliability reliability = PacketReliability::RELIABLE_ORDERED, char orderingChannel = '\0', bool shiftTimestamp = false, NetworkID networkID = UNASSIGNED_NETWORK_ID, RakNet::BitStream *replyFromTarget = 0) {
 			return this->pRakClientInterface->RPC(&RPC_ID, bitStream, priority, reliability, orderingChannel, shiftTimestamp, networkID, replyFromTarget);
 		}
-		bool SendRPC(int RPC_ID, const char *data, unsigned int bitLength, PacketPriority priority = PacketPriority::HIGH_PRIORITY, PacketReliability reliability = PacketReliability::RELIABLE_ORDERED, char orderingChannel = '\0', bool shiftTimestamp = false, NetworkID networkID = UNASSIGNED_NETWORK_ID, RakNet::BitStream *replyFromTarget = 0) {
+		bool SendRPC(int RPC_ID, const char* data, unsigned int bitLength, PacketPriority priority = HIGH_PRIORITY, PacketReliability reliability = PacketReliability::RELIABLE_ORDERED, char orderingChannel = '\0', bool shiftTimestamp = false, NetworkID networkID = UNASSIGNED_NETWORK_ID, RakNet::BitStream* replyFromTarget = 0) {
 			return this->pRakClientInterface->RPC(&RPC_ID, data, bitLength, priority, reliability, orderingChannel, shiftTimestamp, networkID, replyFromTarget);
-		}
-	
-	private:
-		RakClientInterface *pRakClientInterface = nullptr;
+		};
+		bool EmulRPC(unsigned __int8 rpcID, RakNet::BitStream* bitStream) {
+			RakNet::BitStream bs_;
+			bs_.Write<unsigned char>(ID_RPC);
+			bs_.Write(rpcID);
+			bs_.WriteCompressed<unsigned int>(BYTES_TO_BITS(bitStream->GetNumberOfBytesUsed()));
+			bs_.WriteBits(bitStream->GetData(), BYTES_TO_BITS(bitStream->GetNumberOfBytesUsed()), false);
+			//<RakPeerInterface*, const char*, int, PlayerID__>(_this, reinterpret_cast<char*>(incoming.GetData()), incoming.GetNumberOfBytesUsed(), playerid);
+			return SAMP::CallBacks::pCallBackRegister->pRakPeerHandleRPCPacketHook->call<RakPeerInterface*, const char*, int, PlayerID__>(pRakPeerInterface1, reinterpret_cast<char*>(bs_.GetData()), bs_.GetNumberOfBytesUsed(), plID1);
+		};
+		bool EmulPacket(RakNet::BitStream* bitStream) {
+			Packet__* send_packet = reinterpret_cast<Packet__ * (*)(size_t)>(sampBase + 0x347e0)(bitStream->GetNumberOfBytesUsed());
+			memcpy(send_packet->data, bitStream->GetData(), send_packet->length);
+
+			// RakPeer::AddPacketToProducer
+			char* packets = reinterpret_cast<char*>(pRakPeerInterface) + 0xdb6;
+			auto write_lock = reinterpret_cast<Packet__ * *(__thiscall*)(void*)>(sampBase + 0x35b10);
+			auto write_unlock = reinterpret_cast<void(__thiscall*)(void*)>(sampBase + 0x35b50);
+
+			*write_lock(packets) = send_packet;
+			write_unlock(packets);
+
+			return true;
+		};
 	};
 
 	class CSAMP {
@@ -1219,7 +1551,7 @@ namespace SAMP {
 			g_Vehicles = g_SAMP->pPools->pVehicle;
 			g_Players = g_SAMP->pPools->pPlayer;
 
-			g_RakNet = new CRakNet(g_SAMP->pRakClientInterface);
+			g_RakNet = new CRakNet(g_SAMP->pRakClientInterface, g_SAMP->pRakPeerInterface);
 
 			return true;
 		};
@@ -1311,219 +1643,7 @@ namespace SAMP {
 	
 	CSAMP *pSAMP = nullptr;
 
-	namespace CallBacks {
-
-		namespace HookedStructs {
-			struct stWndProcParams {
-				HWND hWnd;
-				UINT uMsg;
-				WPARAM wParam;
-				LPARAM lParam;
-			};
-			struct stPresentParams {
-				IDirect3DDevice9* pDevice;
-				CONST RECT* pSrcRect;
-				CONST RECT* pDestRect;
-				HWND hDestWindow;
-				CONST RGNDATA* pDirtyRegion;
-			};
-			struct stResetParams {
-				IDirect3DDevice9* pDevice;
-				D3DPRESENT_PARAMETERS* pPresentParams;
-			};
-			struct stRakClientSend {
-				RakClientInterface* _this;
-				BitStream* bitStream;
-				PacketPriority priority;
-				PacketReliability reliability;
-				char orderingChannel;
-			};
-			struct stRakClientRPC {
-				RakClientInterface* _this;
-				int* uniqueID;
-				BitStream* bitStream;
-				PacketPriority priority;
-				PacketReliability reliability;
-				char orderingChannel;
-				bool shiftTimestamp;
-			};
-			struct stRakClientRPCRecv {
-				unsigned __int32 rpc_id;
-				BitStream *bitStream;
-				//std::shared_ptr<RakNet::BitStream> bitStream;
-			};
-			struct stRakClientRecv {
-				unsigned __int8 pktID;
-				BitStream *bitStream;
-				unsigned __int32 lenght;
-			};
-		}
-
-		class CCallbackRegister {
-		public:			
-			typedef LRESULT(__stdcall *tWndProc)(HookedStructs::stWndProcParams*);
-			typedef void(__stdcall *tGameLoop)();
-			typedef HRESULT(__stdcall* tPresent_)(HookedStructs::stPresentParams*);
-			typedef HRESULT(__stdcall* tReset_)(HookedStructs::stResetParams*);
-			typedef bool(__stdcall* tRakClientSend_)(HookedStructs::stRakClientSend*);
-			typedef bool(__stdcall* tRakClientRPC_)(HookedStructs::stRakClientRPC*);
-			typedef bool(__stdcall* tRakClientRPCRecv_)(HookedStructs::stRakClientRPCRecv*);
-			typedef bool(__stdcall* tRakPeerRecv_)(HookedStructs::stRakClientRecv*);
-
-			CCallbackRegister(DWORD base) {
-				sampBase = base;
-
-				gHookWndProc = std::make_unique<injector::Hook>(0x00747EB0U, HOOKED_WndProc);
-				gHookGameLoop = std::make_unique<injector::Hook>(0x00748DA3U, HOOKED_GameLoop);
-				gHookD3DPresent = std::make_unique<injector::Hook>(GetDeviceAddress(17), HOOKED_Present);
-				gHookD3DReset = std::make_unique<injector::Hook>(GetDeviceAddress(16), HOOKED_Reset);
-				gHookRakClientSend = std::make_unique<injector::Hook>(sampBase + 0x00307F0U, HOOKED_RakClientSend);
-				gHookRakPeerRecv = std::make_unique<injector::Hook>(sampBase + 0x0031180U, HOOKED_RakPeerReceive);
-				gHookRakClientRPC = std::make_unique<injector::Hook>(sampBase + 0x0030B30U, HOOKED_RakClientRPC);
-				gHookHandleRPCPacket = std::make_unique<injector::Hook>(sampBase + 0x00372F0U, HOOKED_HandleRPCPacket);
-				
-				gHookWndProc->Install();
-				gHookGameLoop->Install();
-				gHookD3DPresent->Install();
-				gHookD3DReset->Install();
-				gHookRakClientSend->Install();
-				gHookRakPeerRecv->Install();
-				gHookRakClientRPC->Install();
-				gHookHandleRPCPacket->Install();
-			}
-
-			~CCallbackRegister() {
-				gHookWndProc->Remove();
-				gHookGameLoop->Remove();
-				gHookD3DPresent->Remove();
-				gHookD3DReset->Remove();
-				gHookRakClientSend->Remove();
-				gHookRakPeerRecv->Remove();
-				gHookRakClientRPC->Remove();
-				gHookHandleRPCPacket->Remove();
-			}
-
-			//сделать перегрузки
-			
-			void inline RegisterWndProcCallback(tWndProc func) { callWndProc = func; };
-			void inline RegisterGameLoopCallback(tGameLoop func) { callGameLoop = func; };
-
-			void inline RegisterD3DCallback(tPresent_ func) { callPresent = func; };
-			void inline RegisterD3DCallback(tReset_ func) { callReset = func; };
-
-			void inline RegisterRakClientCallback(tRakClientSend_ func) { callRakClientSend = func; };
-			void inline RegisterRakClientCallback(tRakClientRPC_ func) { callRakClientRPC = func; };
-			void inline RegisterRakClientCallback(tRakClientRPCRecv_ func) { callRakClientRPCRecv = func; };
-			void inline RegisterRakClientCallback(tRakPeerRecv_ func) { callRakPeerRecv = func; };
-
-			IDirect3DDevice9 inline *GetIDirect3DDevice9(void) { return pD3DDevice; };
-		private:
-			std::unique_ptr<injector::Hook> gHookGameLoop;
-			std::unique_ptr<injector::Hook> gHookWndProc;
-
-			std::unique_ptr<injector::Hook> gHookD3DPresent;
-			std::unique_ptr<injector::Hook> gHookD3DReset;
-
-			std::unique_ptr<injector::Hook> gHookRakClientSend;
-			std::unique_ptr<injector::Hook> gHookRakPeerRecv;
-			std::unique_ptr<injector::Hook> gHookRakClientRPC;
-			std::unique_ptr<injector::Hook> gHookHandleRPCPacket;
-
-			IDirect3DDevice9* pD3DDevice = nullptr;
-			bool isD3DHookInit = false;
-
-			DWORD sampBase = 0;
-
-			tWndProc callWndProc = 0;
-			tGameLoop callGameLoop = 0;
-			tPresent_ callPresent = 0;
-			tReset_ callReset = 0;
-			tRakClientSend_ callRakClientSend = 0;
-			tRakClientRPC_ callRakClientRPC = 0;
-			tRakClientRPCRecv_ callRakClientRPCRecv = 0;
-			tRakPeerRecv_ callRakPeerRecv = 0;
-
-#pragma pack(push, 1)
-			struct PlayerID__
-			{
-				unsigned int binaryAddress;
-				unsigned short port;
-				PlayerID__& operator = (const PlayerID__& input)
-				{
-					binaryAddress = input.binaryAddress;
-					port = input.port;
-					return *this;
-				}
-				bool operator==(const PlayerID__& right) const;
-				bool operator!=(const PlayerID__& right) const;
-				bool operator > (const PlayerID__& right) const;
-				bool operator < (const PlayerID__& right) const;
-			};
-			struct NetworkID__
-			{
-				bool peerToPeer;
-				PlayerID__ playerId;
-				unsigned short localSystemId;
-			};
-			struct Packet__
-			{
-				unsigned __int16 playerIndex;
-				PlayerID__ playerId;
-				unsigned int length;
-				unsigned int bitSize;
-				unsigned char* data;
-				bool deleteData;
-			};
-#pragma pack(pop)
-
-			static LRESULT __stdcall HOOKED_WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
-			static void __cdecl HOOKED_GameLoop();
-			static HRESULT __stdcall HOOKED_Present(IDirect3DDevice9* pDevice, CONST RECT* pSrcRect, CONST RECT* pDestRect, HWND hDestWindow, CONST RGNDATA* pDirtyRegion);
-			static HRESULT __stdcall HOOKED_Reset(IDirect3DDevice9* pDevice, D3DPRESENT_PARAMETERS* pPresentParams);
-			static bool __fastcall HOOKED_RakClientSend(RakClientInterface* _this, void* Unknown, BitStream* bitStream, PacketPriority priority, PacketReliability reliability, char orderingChannel);
-			static bool __fastcall HOOKED_RakClientRPC(RakClientInterface* _this, void* Unknown, int* uniqueID, BitStream* bitStream, PacketPriority priority, PacketReliability reliability, char orderingChannel, bool shiftTimestamp);
-			static bool __fastcall HOOKED_HandleRPCPacket(RakPeerInterface *_this, void* Unknown, const char *data, int length, SAMP::CallBacks::CCallbackRegister::PlayerID__ playerid);
-			static SAMP::CallBacks::CCallbackRegister::Packet__* __fastcall HOOKED_RakPeerReceive(void *_this, void* Unknown);
-
-			template<typename result, typename source>
-			result pointer_cast(source *v)
-			{
-				return static_cast<result>(static_cast<void*>(v));
-			}
-			template<typename result, typename source>
-			result pointer_cast(const source *v)
-			{
-				return static_cast<result>(static_cast<const void*>(v));
-			}
-
-			DWORD FindDevice(DWORD dwLen)
-			{
-				DWORD dwObjBase = 0;
-				char infoBuf[MAX_PATH];
-				GetSystemDirectoryA(infoBuf, MAX_PATH);
-				strcat_s(infoBuf, MAX_PATH, "\\d3d9.dll");
-				dwObjBase = (DWORD)LoadLibraryA(infoBuf);
-				while (dwObjBase++ < dwObjBase + dwLen)
-				{
-					if (
-							(*(WORD*)(dwObjBase + 0x00)) == 0x06C7 &&
-							(*(WORD*)(dwObjBase + 0x06)) == 0x8689 &&
-							(*(WORD*)(dwObjBase + 0x0C)) == 0x8689
-						)
-					{ dwObjBase += 2; break; }
-				}
-				return(dwObjBase);
-			};
-			DWORD GetDeviceAddress(int VTableIndex)
-			{
-				PDWORD VTable;
-				*(DWORD*)&VTable = *(DWORD*)FindDevice(0x128000);
-				return VTable[VTableIndex];
-			};
-		};
-		
-		CCallbackRegister *pCallBackRegister = nullptr;
-	}
+	
 
 	void ShutDown(void) {
 		delete SAMP::CallBacks::pCallBackRegister;
@@ -1539,6 +1659,7 @@ namespace SAMP {
 	}
 
 	bool bKeyTable[256];
+#pragma warning(disable:6282)
 	bool isKeyDown(uint8_t key) {
 		return bKeyTable[key];
 	}
@@ -1562,10 +1683,86 @@ namespace SAMP {
 
 		return false;
 	}
+#pragma warning(default:6282)
 }
+#pragma pack(push, 1)
+CPed* stPlayerPool::GetCPedFromPlayerID(uint32_t playerID) {
+	if (playerID < 0 || playerID > 1000)
+		return 0;
+	if (playerID == SAMP::pSAMP->getPlayers()->sLocalPlayerID)
+		return CPools::GetPed(SAMP::pSAMP->getPlayers()->pLocalPlayer->pSAMP_Actor->ulGTAEntityHandle);
+	else return CPools::GetPed(SAMP::pSAMP->getPlayers()->pRemotePlayer[playerID]->pPlayerData->pSAMP_Actor->ulGTAEntityHandle);
+	return 0;
+}
+actor_info* stPlayerPool::GetActorInfoFromPlayerID(uint32_t playerID) {
+	if (playerID < 0 || playerID > 1000)
+		return 0;
+	if (playerID == SAMP::pSAMP->getPlayers()->sLocalPlayerID)
+		return SAMP::pSAMP->getPlayers()->pLocalPlayer->pSAMP_Actor->pGTA_Ped;
+	else return SAMP::pSAMP->getPlayers()->pRemotePlayer[playerID]->pPlayerData->pSAMP_Actor->pGTA_Ped;
+	return 0;
+}
+bool stPlayerPool::IsPlayerStreamed(uint16_t playerID) {
+	if (SAMP::pSAMP->getPlayers() == NULL)
+		return false;
+	if (SAMP::pSAMP->getPlayers()->iIsListed[playerID] != 1)
+		return false;
+	if (SAMP::pSAMP->getPlayers()->pRemotePlayer[playerID] == NULL)
+		return false;
+	if (SAMP::pSAMP->getPlayers()->pRemotePlayer[playerID]->pPlayerData == NULL)
+		return false;
+	if (SAMP::pSAMP->getPlayers()->pRemotePlayer[playerID]->pPlayerData->pSAMP_Actor == NULL)
+		return false;
 
-SAMP::CallBacks::CCallbackRegister::Packet__* __fastcall SAMP::CallBacks::CCallbackRegister::HOOKED_RakPeerReceive(void *_this, void *Unknown) {
-	SAMP::CallBacks::CCallbackRegister::Packet__ *packet = SAMP::CallBacks::pCallBackRegister->gHookRakPeerRecv->Call<SAMP::CallBacks::CCallbackRegister::Packet__*, CallingConventions::Thiscall>(_this);
+	return true;
+}
+D3DCOLOR stPlayerPool::GetPlayerColor(uint16_t playerID) {
+	D3DCOLOR* dwColor;
+	if (playerID < 0 || playerID >= (SAMP_MAX_PLAYERS + 3))
+		return D3DCOLOR_ARGB(0xFF, 0x99, 0x99, 0x99);
+
+	switch (playerID)
+	{
+	case (SAMP_MAX_PLAYERS):
+		return 0xFF888888;
+
+	case (SAMP_MAX_PLAYERS + 1):
+		return 0xFF0000AA;
+
+	case (SAMP_MAX_PLAYERS + 2):
+		return 0xFF63C0E2;
+	}
+
+	dwColor = (D3DCOLOR*)((uint8_t*)SAMP::pSAMP->GetBase() + 0x216378);
+	return D3DCOLOR_RGBA(dwColor[playerID] >> 8, dwColor[playerID] >> 16, dwColor[playerID] >> 24, 255);
+}
+bool stVehiclePool::IsVehicleStreamed(uint16_t vehicleID) {
+	if (SAMP::pSAMP->getVehicles()->iIsListed[vehicleID] != 1)
+		return false;
+	if (SAMP::pSAMP->getVehicles()->pSAMP_Vehicle[vehicleID] == NULL)
+		return false;
+	if (SAMP::pSAMP->getVehicles()->pSAMP_Vehicle[vehicleID]->pGTA_Vehicle == NULL)
+		return false;
+	return true;
+}
+#pragma warning(disable:6385)
+CVehicle* stVehiclePool::GetCVehicleFromSAMPVehicleID(uint16_t vehicleID) {
+	if (vehicleID < 0 || vehicleID > 2000)
+		return 0;
+	else return CPools::GetVehicle(SAMP::pSAMP->getVehicles()->pSAMP_Vehicle[vehicleID]->ulGTAEntityHandle);
+	return nullptr;
+}
+vehicle_info* stVehiclePool::GetVehicleInfoFromSAMPVehicleID(uint16_t vehicleID) {
+	if (vehicleID < 0 || vehicleID > 2000)
+		return 0;
+	else return SAMP::pSAMP->getVehicles()->pSAMP_Vehicle[vehicleID]->pGTA_Vehicle;
+	return nullptr;
+}
+#pragma warning(default:6385)
+#pragma pack(pop)
+
+SAMP::CallBacks::CCallbackRegister::Packet__* __fastcall SAMP::CallBacks::CCallbackRegister::RakPeerReceive_HOOKED(RakPeerInterface *_this, void *Unknown) {
+	SAMP::CallBacks::CCallbackRegister::Packet__ *packet = SAMP::CallBacks::pCallBackRegister->pRakPeerReceiveHook->call<RakPeerInterface*>(_this);
 
 	if (packet != nullptr && packet->data != nullptr && packet->bitSize != 0 && packet->length != 0)
 	{
@@ -1614,12 +1811,19 @@ SAMP::CallBacks::CCallbackRegister::Packet__* __fastcall SAMP::CallBacks::CCallb
 
 	return packet;
 }
-bool __fastcall SAMP::CallBacks::CCallbackRegister::HOOKED_HandleRPCPacket(RakPeerInterface *_this, void *Unknown, const char *data, int length, SAMP::CallBacks::CCallbackRegister::PlayerID__ playerid) {
+bool __fastcall SAMP::CallBacks::CCallbackRegister::RakPeerHandleRPCPacketHook_HOOKED(RakPeerInterface *_this, void *Unknown, const char *data, int length, SAMP::CallBacks::CCallbackRegister::PlayerID__ playerid) {
 	RakNet::BitStream incoming(SAMP::CallBacks::pCallBackRegister->pointer_cast<unsigned char*>(const_cast<char*>(data)), length, true);//from rakhook by imring
 	unsigned char id = 0;
 	unsigned char* input = nullptr;
 	unsigned int bits_data = 0;
 	std::unique_ptr<RakNet::BitStream> callback_bs = std::make_unique<RakNet::BitStream>();
+
+	static bool isInitInterface = false;
+	if (!isInitInterface) {
+		isInitInterface = true;
+		SAMP::pSAMP->getRakNet()->InitAPIRakNet(_this, (void*)&playerid);
+	}
+
 
 	incoming.IgnoreBits(8);
 	if (data[0] == ID_TIMESTAMP)
@@ -1634,7 +1838,7 @@ bool __fastcall SAMP::CallBacks::CCallbackRegister::HOOKED_HandleRPCPacket(RakPe
 	if (bits_data) {
 		bool used_alloca = false;
 		if (BITS_TO_BYTES(incoming.GetNumberOfUnreadBits()) < MAX_ALLOCA_STACK_ALLOCATION) {
-			input = SAMP::CallBacks::pCallBackRegister->pointer_cast<unsigned char*>(alloca(BITS_TO_BYTES(incoming.GetNumberOfUnreadBits())));
+			input = SAMP::CallBacks::pCallBackRegister->pointer_cast<unsigned char*>(_malloca(BITS_TO_BYTES(incoming.GetNumberOfUnreadBits())));
 			used_alloca = true;
 		}
 		else input = new unsigned char[BITS_TO_BYTES(incoming.GetNumberOfUnreadBits())];
@@ -1665,11 +1869,11 @@ bool __fastcall SAMP::CallBacks::CCallbackRegister::HOOKED_HandleRPCPacket(RakPe
 	if (bits_data)
 		incoming.WriteBits(callback_bs->GetData(), bits_data, false);
 
-	return SAMP::CallBacks::pCallBackRegister->gHookHandleRPCPacket->Call<bool, CallingConventions::Thiscall>(_this, reinterpret_cast<char*>(incoming.GetData()), incoming.GetNumberOfBytesUsed(), playerid);
+	return SAMP::CallBacks::pCallBackRegister->pRakPeerHandleRPCPacketHook->call<RakPeerInterface*, const char*, int, PlayerID__>(_this, reinterpret_cast<char*>(incoming.GetData()), incoming.GetNumberOfBytesUsed(), playerid);
 }
-bool __fastcall SAMP::CallBacks::CCallbackRegister::HOOKED_RakClientRPC(RakClientInterface* _this, void* Unknown, int* uniqueID, BitStream* bitStream, PacketPriority priority, PacketReliability reliability, char orderingChannel, bool shiftTimestamp) {
+bool __fastcall SAMP::CallBacks::CCallbackRegister::RakClientRPCSend_HOOKED(RakClientInterface* _this, void* Unknown, int* uniqueID, BitStream* bitStream, PacketPriority priority, PacketReliability reliability, char orderingChannel, bool shiftTimestamp) {
 	if (_this == nullptr || uniqueID == nullptr || bitStream == nullptr)
-		return SAMP::CallBacks::pCallBackRegister->gHookRakClientRPC->Call<bool, CallingConventions::Thiscall>(_this, uniqueID, bitStream, priority, reliability, orderingChannel, shiftTimestamp);
+		return SAMP::CallBacks::pCallBackRegister->pRakClientRPCSendHook->call<RakClientInterface*, int*, BitStream*, PacketPriority, PacketReliability, char, bool>(_this, uniqueID, bitStream, priority, reliability, orderingChannel, shiftTimestamp);
 
 	if (SAMP::CallBacks::pCallBackRegister->callRakClientRPC != 0) {
 		HookedStructs::stRakClientRPC params = { 0 };
@@ -1692,11 +1896,11 @@ bool __fastcall SAMP::CallBacks::CCallbackRegister::HOOKED_RakClientRPC(RakClien
 			return false;
 	}
 
-	return SAMP::CallBacks::pCallBackRegister->gHookRakClientRPC->Call<bool, CallingConventions::Thiscall>(_this, uniqueID, bitStream, priority, reliability, orderingChannel, shiftTimestamp);
+	return SAMP::CallBacks::pCallBackRegister->pRakClientRPCSendHook->call<RakClientInterface*, int*, BitStream*, PacketPriority, PacketReliability, char, bool>(_this, uniqueID, bitStream, priority, reliability, orderingChannel, shiftTimestamp);
 }
-bool __fastcall SAMP::CallBacks::CCallbackRegister::HOOKED_RakClientSend(RakClientInterface* _this, void* Unknown, BitStream* bitStream, PacketPriority priority, PacketReliability reliability, char orderingChannel) {
+bool __fastcall SAMP::CallBacks::CCallbackRegister::RakClientSend_HOOKED(RakClientInterface* _this, void* Unknown, BitStream* bitStream, PacketPriority priority, PacketReliability reliability, char orderingChannel) {
 	if(_this == nullptr || bitStream == nullptr)
-		return SAMP::CallBacks::pCallBackRegister->gHookRakClientSend->Call<bool, CallingConventions::Thiscall>(_this, bitStream, priority, reliability, orderingChannel);
+		return SAMP::CallBacks::pCallBackRegister->pRakClientSendHook->call<RakClientInterface*, BitStream*, PacketPriority, PacketReliability, char>(_this, bitStream, priority, reliability, orderingChannel);
 
 	if (SAMP::CallBacks::pCallBackRegister->callRakClientSend != 0) {
 		HookedStructs::stRakClientSend params = { 0 };
@@ -1715,11 +1919,11 @@ bool __fastcall SAMP::CallBacks::CCallbackRegister::HOOKED_RakClientSend(RakClie
 			return false;
 	}
 
-	return SAMP::CallBacks::pCallBackRegister->gHookRakClientSend->Call<bool, CallingConventions::Thiscall>(_this, bitStream, priority, reliability, orderingChannel);
+	return SAMP::CallBacks::pCallBackRegister->pRakClientSendHook->call<RakClientInterface*, BitStream*, PacketPriority, PacketReliability, char>(_this, bitStream, priority, reliability, orderingChannel);
 }
-HRESULT __stdcall SAMP::CallBacks::CCallbackRegister::HOOKED_Present(IDirect3DDevice9* pDevice, CONST RECT* pSrcRect, CONST RECT* pDestRect, HWND hDestWindow, CONST RGNDATA* pDirtyRegion) {
+HRESULT __stdcall SAMP::CallBacks::CCallbackRegister::D3DPresent_HOOKED(IDirect3DDevice9* pDevice, CONST RECT* pSrcRect, CONST RECT* pDestRect, HWND hDestWindow, CONST RGNDATA* pDirtyRegion) {
 	if(pDevice == nullptr)
-		return SAMP::CallBacks::pCallBackRegister->gHookD3DPresent->Call<HRESULT, CallingConventions::Stdcall>(pDevice, pSrcRect, pDestRect, hDestWindow, pDirtyRegion);
+		return SAMP::CallBacks::pCallBackRegister->pD3DPresentHook->call<IDirect3DDevice9*, CONST RECT*, CONST RECT*, HWND, CONST RGNDATA*>(pDevice, pSrcRect, pDestRect, hDestWindow, pDirtyRegion);
 	if (!SAMP::CallBacks::pCallBackRegister->isD3DHookInit) {
 		SAMP::CallBacks::pCallBackRegister->isD3DHookInit = true;
 		SAMP::CallBacks::pCallBackRegister->pD3DDevice = pDevice;
@@ -1742,11 +1946,11 @@ HRESULT __stdcall SAMP::CallBacks::CCallbackRegister::HOOKED_Present(IDirect3DDe
 			return retn;
 	}
 
-	return SAMP::CallBacks::pCallBackRegister->gHookD3DPresent->Call<HRESULT, CallingConventions::Stdcall>(pDevice, pSrcRect, pDestRect, hDestWindow, pDirtyRegion);
+	return SAMP::CallBacks::pCallBackRegister->pD3DPresentHook->call<IDirect3DDevice9*, CONST RECT*, CONST RECT*, HWND, CONST RGNDATA*>(pDevice, pSrcRect, pDestRect, hDestWindow, pDirtyRegion);
 }
-HRESULT __stdcall SAMP::CallBacks::CCallbackRegister::HOOKED_Reset(IDirect3DDevice9* pDevice, D3DPRESENT_PARAMETERS* pPresentParams) {
+HRESULT __stdcall SAMP::CallBacks::CCallbackRegister::D3DReset_HOOKED(IDirect3DDevice9* pDevice, D3DPRESENT_PARAMETERS* pPresentParams) {
 	if (pDevice == nullptr)
-		return SAMP::CallBacks::pCallBackRegister->gHookD3DReset->Call<HRESULT, CallingConventions::Stdcall>(pDevice, pPresentParams);
+		return SAMP::CallBacks::pCallBackRegister->pD3DResetHook->call<IDirect3DDevice9*, D3DPRESENT_PARAMETERS*>(pDevice, pPresentParams);
 	
 	if (SAMP::CallBacks::pCallBackRegister->callReset != 0) {
 		HookedStructs::stResetParams params = { 0 };
@@ -1759,15 +1963,15 @@ HRESULT __stdcall SAMP::CallBacks::CCallbackRegister::HOOKED_Reset(IDirect3DDevi
 			return retn;
 	}
 
-	return SAMP::CallBacks::pCallBackRegister->gHookD3DReset->Call<HRESULT, CallingConventions::Stdcall>(pDevice, pPresentParams);
+	return SAMP::CallBacks::pCallBackRegister->pD3DResetHook->call<IDirect3DDevice9*, D3DPRESENT_PARAMETERS*>(pDevice, pPresentParams);
 }
-void __cdecl SAMP::CallBacks::CCallbackRegister::HOOKED_GameLoop() {
+void __cdecl SAMP::CallBacks::CCallbackRegister::GameLoop_HOOKED() {
 	if (SAMP::CallBacks::pCallBackRegister->callGameLoop != 0) {
 		SAMP::CallBacks::pCallBackRegister->callGameLoop();
 	}
-	return SAMP::CallBacks::pCallBackRegister->gHookGameLoop->Call<void, CallingConventions::Cdecl>();
+	return SAMP::CallBacks::pCallBackRegister->pGameLoopHook->call<>();
 }
-LRESULT __stdcall SAMP::CallBacks::CCallbackRegister::HOOKED_WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
+LRESULT __stdcall SAMP::CallBacks::CCallbackRegister::WndProc_HOOKED(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	switch (uMsg)
 	{
 	case WM_LBUTTONDOWN:
@@ -1831,6 +2035,6 @@ LRESULT __stdcall SAMP::CallBacks::CCallbackRegister::HOOKED_WndProc(HWND hWnd, 
 		if (retn != 0)
 			return retn;
 	}
-	return SAMP::CallBacks::pCallBackRegister->gHookWndProc->Call<HRESULT, CallingConventions::Stdcall>(hWnd, uMsg, wParam, lParam);
+	return SAMP::CallBacks::pCallBackRegister->pWndProcHook->call<HWND, UINT, WPARAM, LPARAM>(hWnd, uMsg, wParam, lParam);
 }
 
