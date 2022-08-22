@@ -11,12 +11,6 @@
     <Filter Include="Исходные файлы\SAMP\RakNet">
       <UniqueIdentifier>{dbb043e7-6c7a-4a29-a411-a3c895ec5616}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Исходные файлы\injector">
-      <UniqueIdentifier>{28da94ba-bde1-49bd-9410-e82245d48f24}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Исходные файлы\injector\hde">
-      <UniqueIdentifier>{db337d78-b49b-40e9-acd4-c1ceb070fe1f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Исходные файлы\imgui">
       <UniqueIdentifier>{4f042967-10b5-40f6-835d-35ca30808690}</UniqueIdentifier>
     </Filter>
@@ -25,6 +19,15 @@
     </Filter>
     <Filter Include="Исходные файлы\SAMP\classes">
       <UniqueIdentifier>{61f7b405-7916-43d0-b45a-f0505b39ba8e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\SAMP\memwrapper">
+      <UniqueIdentifier>{a00196c9-45ef-4e20-93ac-f1413b694d00}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\SAMP\memwrapper\hde">
+      <UniqueIdentifier>{0d2a1b4c-5aa0-4aa5-9467-62f067f87b2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\SAMP\memwrapper\x86">
+      <UniqueIdentifier>{48640d9d-fa87-4a4f-acdf-61826c0145af}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -144,9 +147,6 @@
     </ClCompile>
     <ClCompile Include="SAMP\RakNet\TableSerializer.cpp">
       <Filter>Исходные файлы\SAMP\RakNet</Filter>
-    </ClCompile>
-    <ClCompile Include="injector\hde\hde32.cpp">
-      <Filter>Исходные файлы\injector\hde</Filter>
     </ClCompile>
     <ClCompile Include="imgui\imgui.cpp">
       <Filter>Исходные файлы\imgui</Filter>
@@ -333,6 +333,9 @@
     </ClCompile>
     <ClCompile Include="SAMP\classes\VehicleSelection.cpp">
       <Filter>Исходные файлы\SAMP\classes</Filter>
+    </ClCompile>
+    <ClCompile Include="memwrapper\hde\hde32.cpp">
+      <Filter>Исходные файлы\SAMP\memwrapper\hde</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -582,27 +585,6 @@
     <ClInclude Include="SAMP\RakNet\Types.h">
       <Filter>Исходные файлы\SAMP\RakNet</Filter>
     </ClInclude>
-    <ClInclude Include="injector\disassembler.hpp">
-      <Filter>Исходные файлы\injector</Filter>
-    </ClInclude>
-    <ClInclude Include="injector\hook.hpp">
-      <Filter>Исходные файлы\injector</Filter>
-    </ClInclude>
-    <ClInclude Include="injector\injector.hpp">
-      <Filter>Исходные файлы\injector</Filter>
-    </ClInclude>
-    <ClInclude Include="injector\invoker.hpp">
-      <Filter>Исходные файлы\injector</Filter>
-    </ClInclude>
-    <ClInclude Include="injector\patch.hpp">
-      <Filter>Исходные файлы\injector</Filter>
-    </ClInclude>
-    <ClInclude Include="injector\hde\hde32.h">
-      <Filter>Исходные файлы\injector\hde</Filter>
-    </ClInclude>
-    <ClInclude Include="injector\hde\table32.h">
-      <Filter>Исходные файлы\injector\hde</Filter>
-    </ClInclude>
     <ClInclude Include="imgui\imconfig.h">
       <Filter>Исходные файлы\imgui</Filter>
     </ClInclude>
@@ -849,8 +831,29 @@
     <ClInclude Include="SAMP\classes\VehicleSelection.h">
       <Filter>Исходные файлы\SAMP\classes</Filter>
     </ClInclude>
-    <ClInclude Include="injector\allocator.hpp">
-      <Filter>Исходные файлы\injector</Filter>
+    <ClInclude Include="memwrapper\memwrapper.h">
+      <Filter>Исходные файлы\SAMP\memwrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="memwrapper\hde\hde32.h">
+      <Filter>Исходные файлы\SAMP\memwrapper\hde</Filter>
+    </ClInclude>
+    <ClInclude Include="memwrapper\hde\table32.h">
+      <Filter>Исходные файлы\SAMP\memwrapper\hde</Filter>
+    </ClInclude>
+    <ClInclude Include="memwrapper\x86\memwrapper_allocator.hpp">
+      <Filter>Исходные файлы\SAMP\memwrapper\x86</Filter>
+    </ClInclude>
+    <ClInclude Include="memwrapper\x86\memwrapper_basic.hpp">
+      <Filter>Исходные файлы\SAMP\memwrapper\x86</Filter>
+    </ClInclude>
+    <ClInclude Include="memwrapper\x86\memwrapper_detail.hpp">
+      <Filter>Исходные файлы\SAMP\memwrapper\x86</Filter>
+    </ClInclude>
+    <ClInclude Include="memwrapper\x86\memwrapper_hook.hpp">
+      <Filter>Исходные файлы\SAMP\memwrapper\x86</Filter>
+    </ClInclude>
+    <ClInclude Include="memwrapper\x86\memwrapper_llmo.hpp">
+      <Filter>Исходные файлы\SAMP\memwrapper\x86</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

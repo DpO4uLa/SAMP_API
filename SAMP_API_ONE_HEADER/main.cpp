@@ -67,12 +67,39 @@ HRESULT __stdcall D3DPresentHook(SAMP::CallBacks::HookedStructs::stPresentParams
 					SAMP::classes::pChat->AddMessage(-1, "Тестовое сообщение");
 					SAMP::classes::pGame->SetCursorMode(SAMP::classes::CursorMode::CMODE_NONE, false);
 
+				}
 
-				
-
-				
+				if (ImGui::Button(u8"Plugin SDK Teleport")) {
+					CVector dest = FindPlayerPed()->GetPosition();
+					dest.z += 5.0f;
+					FindPlayerPed()->Teleport(dest, false);
 				}
 				
+				static int vehID = 0;
+				ImGui::InputInt(u8"Vehicle ID", &vehID);
+				if (ImGui::Button(u8"тп кар")) {
+					if (SAMP::pSAMP->getVehicles()->IsVehicleStreamed(vehID)) {
+						SAMP::pSAMP->getVehicles()->GetCVehicleFromSAMPVehicleID(vehID)->Teleport(FindPlayerPed()->GetPosition(), false);
+					}
+				}
+
+				if (ImGui::Button(u8"emul pacet")) {
+					stOnFootData data = SAMP::pSAMP->getPlayers()->pLocalPlayer->onFootData;
+					BitStream bs;
+					bs.Write<unsigned __int8>(ID_PLAYER_SYNC);
+					bs.Write<unsigned __int16>(49);//playerID
+					bs.Write((PCHAR)&data, sizeof(stOnFootData));
+					SAMP::pSAMP->getRakNet()->EmulPacket(&bs);
+				}
+
+				if (ImGui::Button(u8"emul rpc")) {
+					BitStream bs;
+					bs.Write<float>(0.0f);
+					bs.Write<float>(0.0f);
+					bs.Write<float>(0.5f);
+					SAMP::pSAMP->getRakNet()->EmulRPC(RPC_ScrSetPlayerVelocity, &bs);
+				}
+
 				ImGui::End();
 			}
 		}
@@ -164,6 +191,11 @@ void __stdcall GameLoop() {
 			SAMP::pSAMP->addClientCommand("menu", cmd);
 			SAMP::pSAMP->addMessageToChat(-1, "SAMP API By AdCKuY_DpO4uLa loaded. %s", SAMP::pSAMP->getInfo()->szIP);
 			
+			//init raknet callbacks
+			SAMP::CallBacks::pCallBackRegister->RegisterRakClientCallback(RakClientSendHook);//registed RakClient Send Hook
+			SAMP::CallBacks::pCallBackRegister->RegisterRakClientCallback(RakClientRecvHook);//registed RakClient Recv Hook
+			SAMP::CallBacks::pCallBackRegister->RegisterRakClientCallback(RakClientRPCHook);//registed RakClient RPC Hook
+			SAMP::CallBacks::pCallBackRegister->RegisterRakClientCallback(RakClientRPCRecvHook);//registed RakClient RPC recv Hook
 			
 			isPluginInitialized = true;
 		}
@@ -188,10 +220,6 @@ int __stdcall DllMain(HMODULE hModule, DWORD dwReason, LPVOID lpReserved)
 			SAMP::CallBacks::pCallBackRegister->RegisterWndProcCallback(WndProcCallBack);//register wnd proc hook
 			SAMP::CallBacks::pCallBackRegister->RegisterD3DCallback(D3DPresentHook);//register D3D present hook
 			SAMP::CallBacks::pCallBackRegister->RegisterD3DCallback(D3DResetHook);//register D3D reset hook
-			SAMP::CallBacks::pCallBackRegister->RegisterRakClientCallback(RakClientSendHook);//registed RakClient Send Hook
-			SAMP::CallBacks::pCallBackRegister->RegisterRakClientCallback(RakClientRecvHook);//registed RakClient Recv Hook
-			SAMP::CallBacks::pCallBackRegister->RegisterRakClientCallback(RakClientRPCHook);//registed RakClient RPC Hook
-			SAMP::CallBacks::pCallBackRegister->RegisterRakClientCallback(RakClientRPCRecvHook);//registed RakClient RPC recv Hook
 			printf("\n -> Plugin loaded (%d)\n", GetTickCount());
 			break; 
 		}
