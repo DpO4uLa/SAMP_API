@@ -14,7 +14,7 @@
 #include "CLocalPlayer.h"
 #include <string>
 
-#define MAX_PLAYERS 1004
+#define SAMP_MAX_PLAYERS 1004
 
 SAMP_BEGIN
 
@@ -35,9 +35,9 @@ public:
 		int					m_nPing;
 		int					m_nScore;
 	}							m_localInfo;
-	CPlayerInfo			  *m_pObject[MAX_PLAYERS];
-	BOOL						m_bNotEmpty[MAX_PLAYERS];
-	BOOL						m_bPrevCollisionFlag[MAX_PLAYERS];
+	CPlayerInfo			  *m_pObject[SAMP_MAX_PLAYERS];
+	BOOL						m_bNotEmpty[SAMP_MAX_PLAYERS];
+	BOOL						m_bPrevCollisionFlag[SAMP_MAX_PLAYERS];
 
 	CPlayerPool();
 	~CPlayerPool();

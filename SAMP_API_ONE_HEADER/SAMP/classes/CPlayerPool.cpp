@@ -110,7 +110,7 @@ void SAMP::classes::CPlayerPool::SetLocalPlayerName(const char *szName) {
 }
 
 BOOL SAMP::classes::CPlayerPool::IsDisconnected(ID nId) {
-	if (nId < 0 || nId >= MAX_PLAYERS)
+	if (nId < 0 || nId >= SAMP_MAX_PLAYERS)
 		return 0;
 	return m_pObject[nId] == nullptr;
 }
