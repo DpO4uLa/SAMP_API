@@ -6,7 +6,10 @@
 > ### Быстрый доступ
 > - #### [Установка Plugin SDK](#psdk)
 > - #### [Настройка проекта](#setting)
-
+> - #### [Отправка пакетов / RPC](#send)
+> - #### [Эмулирование пакетов / RPC](#recv)
+> - #### [Регистрация коллбеков](#callback)
+> - #### [Работа с самп ид через Plugin SDK](#psdk_samp)
 ---
 
 <a id="psdk"></a>
@@ -39,4 +42,158 @@
 > - Ставим `Release` `x86`
 > - Сверху нажимаем `Проект`, выбираем пункт `Свойства`
 > - В открывшемся окне переходим в `Свойства конфигурации -> Общие`, выбираем имеющийся `Набор инструментов платформы`, затем `Стандарт языка C++` ставим `Стандарт ISO C++17 (/std:c++17)` и устанавливаем последнюю `"Версию пакета SDK для Windows"`, затем сохраняем настройки и нажимаем `Сборка`, выбираем пункт `Построить SAMP_API_ONE_HEADER`, если вы настроили всё правильно, то плагин скомпилируется и появится в папке `Release`
+> - [Вверх](#main)
+---
+<a id="send"></a>
+> ### Отправка пакетов / RPC
+> - Реализация простейшей OnFoot рванки 
+>> ```
+>> auto CheatRvanka(void) -> void {
+>> 	stOnFootData data = SAMP::pSAMP->getPlayers()->pLocalPlayer->onFootData;
+>> 	data.fMoveSpeed[0] = 1.0f;
+>> 	data.fMoveSpeed[1] = 1.0f;
+>> 	data.fMoveSpeed[2] = 1.0f;
+>> 	BitStream bs;
+>> 	bs.Write<unsigned __int8>(ID_PLAYER_SYNC);
+>> 	bs.Write((PCHAR)&data, sizeof(stOnFootData));
+>> 	SAMP::pSAMP->getRakNet()->Send(&bs);
+>> }
+>> ```
+> - Отправка рпц 
+>>```
+>>auto FuncSendMessage(void) -> void {
+>>	std::string message("hello");
+>>	BitStream bs;
+>>	bs.Write((unsigned __int8)message.length());
+>>	bs.Write(message.c_str(), message.length());
+>>	SAMP::pSAMP->getRakNet()->SendRPC(RPC_Chat, &bs);
+>>}
+>>```
+> - [Вверх](#main)
+---
+<a id="recv"></a>
+> ### Эмулирование пакетов / RPC
+> - Реализация фейковой входящей OnFoot синхры 
+>>```
+>>auto CheatFakeSync(void) -> void {
+>>	stOnFootData data = SAMP::pSAMP->getPlayers()->pLocalPlayer->onFootData;
+>>	BitStream bs;
+>>	bs.Write<unsigned __int8>(ID_PLAYER_SYNC);
+>>	bs.Write<unsigned __int16>(49);//playerID
+>>	bs.Write((PCHAR)&data, sizeof(stOnFootData));
+>>	SAMP::pSAMP->getRakNet()->EmulPacket(&bs);
+>>}
+>>```
+> - Эмуляция рпц 
+>>```
+>>auto CheatEmulRPC(void) -> void {
+>>	BitStream bs;
+>>	bs.Write<float>(0.0f);
+>>	bs.Write<float>(0.0f);
+>>	bs.Write<float>(0.5f);
+>>	SAMP::pSAMP->getRakNet()->EmulRPC(RPC_ScrSetPlayerVelocity, &bs);
+>>}
+>>```
+> - [Вверх](#main)
+---
+<a id="callback"></a>
+> ### Регистрация коллбеков
+> - Регистрация RakNet коллбеков
+>>```
+>>//хук исходящих пакетов
+>>bool __stdcall RakClientSendHook(SAMP::CallBacks::HookedStructs::stRakClientSend *params) {
+>>
+>>	if (params->bitStream->GetData()[0] == ID_PLAYER_SYNC) {
+>>		params->bitStream->ResetReadPointer();
+>>		params->bitStream->IgnoreBits(8);
+>>		stOnFootData data = { 0 };
+>>		params->bitStream->Read((PCHAR)&data, sizeof(stOnFootData));
+>>
+>>		//data.fMoveSpeed[2] = 1.0f;
+>>
+>>		params->bitStream->ResetWritePointer();
+>>		params->bitStream->Write<unsigned __int8>(ID_PLAYER_SYNC);
+>>		params->bitStream->Write((PCHAR)&data, sizeof(stOnFootData));
+>>	}
+>>
+>>	return true;
+>>}
+>>
+>>//хук входящих пакетов
+>>bool __stdcall RakClientRecvHook(SAMP::CallBacks::HookedStructs::stRakClientRecv *params) {
+>>
+>>	return true;
+>>}
+>>
+>>//хук исходящих RPC
+>>bool __stdcall RakClientRPCHook(SAMP::CallBacks::HookedStructs::stRakClientRPC *params) {
+>>
+>>	return true;
+>>}
+>>
+>>//хук входящих RPC
+>>bool __stdcall RakClientRPCRecvHook(SAMP::CallBacks::HookedStructs::stRakClientRPCRecv *params) {
+>>
+>>	return true;
+>>}
+>>```
+> - Сама регистация (РЕГИСТРИРОВАТЬ МОЖНО ТОЛЬКО 1 КОЛЛБЕК НА ВЕСЬ ПРОЕКТ)
+>>```
+>>SAMP::CallBacks::pCallBackRegister->RegisterRakClientCallback(RakClientSendHook);//registed RakClient Send Hook
+>>SAMP::CallBacks::pCallBackRegister->RegisterRakClientCallback(RakClientRecvHook);//registed RakClient Recv Hook
+>>SAMP::CallBacks::pCallBackRegister->RegisterRakClientCallback(RakClientRPCHook);//registed RakClient RPC Hook
+>>SAMP::CallBacks::pCallBackRegister->RegisterRakClientCallback(RakClientRPCRecvHook);//registed RakClient RPC recv Hook
+>>```
+> - Аналогично, регистрация GameLoop, WndProc, D3DPresent, D3DReset коллбеков
+>>```
+>>LRESULT __stdcall WndProcCallBack(SAMP::CallBacks::HookedStructs::stWndProcParams *params) {
+>>	
+>>	if (isPluginInitialized) {
+>>		
+>>	}
+>>
+>>	return 0;//retn null if all good
+>>}
+>>
+>>HRESULT __stdcall D3DPresentHook(SAMP::CallBacks::HookedStructs::stPresentParams *params) {
+>>
+>>	if (isPluginInitialized) {
+>>
+>>
+>>	}
+>>
+>>	return D3D_OK;
+>>}
+>>
+>>HRESULT __stdcall D3DResetHook(SAMP::CallBacks::HookedStructs::stResetParams *params) {
+>>
+>>	if (isPluginInitialized) {
+>>		
+>>	}
+>>
+>>	return D3D_OK;
+>>}
+>>
+>>void __stdcall GameLoop() {
+>>    
+>>}
+>>```
+> - Сама регистрация
+>>```
+>>SAMP::CallBacks::pCallBackRegister->RegisterGameLoopCallback(GameLoop);//register gameloop hook
+>>SAMP::CallBacks::pCallBackRegister->RegisterWndProcCallback(WndProcCallBack);//register wnd proc hook
+>>SAMP::CallBacks::pCallBackRegister->RegisterD3DCallback(D3DPresentHook);//register D3D present hook
+>>SAMP::CallBacks::pCallBackRegister->RegisterD3DCallback(D3DResetHook);//register D3D reset hook
+>>```
+> - [Вверх](#main)
+---
+<a id="psdk_samp"></a>
+> ### Работа с самп ид через Plugin SDK
+>>```
+>>//получить указатель на CPed* через ид игрока
+>>CPed* pPed = SAMP::pSAMP->getPlayers()->GetCPedFromPlayerID(100);
+>>		
+>>//получить указатель на CVehicle* через ид машины
+>>CVehicle* pVehicle = SAMP::pSAMP->getVehicles()->GetCVehicleFromSAMPVehicleID(100);
+>>```
 > - [Вверх](#main)
