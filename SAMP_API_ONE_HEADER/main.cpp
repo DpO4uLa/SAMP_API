@@ -39,7 +39,6 @@ HRESULT __stdcall D3DPresentHook(SAMP::CallBacks::HookedStructs::stPresentParams
 						SAMP::pSAMP->getStreamedOutPlayerInfo()->fPlayerPos[i][1],
 						SAMP::pSAMP->getStreamedOutPlayerInfo()->fPlayerPos[i][2]);
 					
-
 				}
 
 				if (ImGui::Button(u8"Отправить пакет")) {
@@ -59,14 +58,25 @@ HRESULT __stdcall D3DPresentHook(SAMP::CallBacks::HookedStructs::stPresentParams
 					BitStream bs;
 					bs.Write((unsigned __int8)text.length());
 					bs.Write(text.c_str(), text.length());
-					
+
 					SAMP::pSAMP->getRakNet()->SendRPC(RPCEnumeration::RPC_Chat, &bs);
 				}
 
-				if (ImGui::Button(u8"SAMP::classes::")) {
+				if (ImGui::Button(u8"SAMP::classes::")) { //WORK on R1 and R3
 					SAMP::classes::pChat->AddMessage(-1, "Тестовое сообщение");
 					SAMP::classes::pGame->SetCursorMode(SAMP::classes::CursorMode::CMODE_NONE, false);
+					
+				}
 
+				for (int i = 0; i != SAMP_MAX_PLAYERS; i++) {
+					if (!SAMP::pSAMP->getPlayers()->IsPlayerStreamed(i))
+						continue;
+
+#if defined (SAMP_R1_COMPILE)
+					ImGui::Text("name of %d: %s", i, SAMP::pSAMP->getPlayers()->pRemotePlayer[i]->szPlayerName);
+#elif defined (SAMP_R3_COMPILE)
+					ImGui::Text("name of %d: %s", i, SAMP::pSAMP->getPlayers()->pRemotePlayer[i]->PlayerName.c_str());
+#endif
 				}
 
 				if (ImGui::Button(u8"Plugin SDK Teleport")) {
@@ -83,7 +93,9 @@ HRESULT __stdcall D3DPresentHook(SAMP::CallBacks::HookedStructs::stPresentParams
 					}
 				}
 
-				if (ImGui::Button(u8"emul pacet")) {
+				
+
+				if (ImGui::Button(u8"emul packet")) {
 					stOnFootData data = SAMP::pSAMP->getPlayers()->pLocalPlayer->onFootData;
 					BitStream bs;
 					bs.Write<unsigned __int8>(ID_PLAYER_SYNC);
@@ -202,7 +214,7 @@ void __stdcall GameLoop() {
 	}
 	if (initialized) {	//gameLoop
 
-
+		
 		
 
 	}

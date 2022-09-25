@@ -29,6 +29,12 @@
     <Filter Include="Исходные файлы\SAMP\memwrapper\x86">
       <UniqueIdentifier>{48640d9d-fa87-4a4f-acdf-61826c0145af}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Исходные файлы\SAMP\classes\R1">
+      <UniqueIdentifier>{8becaafc-4dee-4062-8631-13f5b2925b72}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\SAMP\classes\R3">
+      <UniqueIdentifier>{dc318d75-36ec-4b64-b76d-609c738b9f50}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -172,170 +178,335 @@
     <ClCompile Include="DirectX\d3drender.cpp">
       <Filter>Исходные файлы\DirectX</Filter>
     </ClCompile>
-    <ClCompile Include="SAMP\classes\AimStuff.cpp">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClCompile>
-    <ClCompile Include="SAMP\classes\CActor.cpp">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClCompile>
-    <ClCompile Include="SAMP\classes\CActorPool.cpp">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClCompile>
-    <ClCompile Include="SAMP\classes\CAudio.cpp">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClCompile>
-    <ClCompile Include="SAMP\classes\CAudioStream.cpp">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClCompile>
-    <ClCompile Include="SAMP\classes\CCamera.cpp">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClCompile>
-    <ClCompile Include="SAMP\classes\CChat.cpp">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClCompile>
-    <ClCompile Include="SAMP\classes\CConfig.cpp">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClCompile>
-    <ClCompile Include="SAMP\classes\CDeathWindow.cpp">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClCompile>
-    <ClCompile Include="SAMP\classes\CDialog.cpp">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClCompile>
-    <ClCompile Include="SAMP\classes\CEntity.cpp">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClCompile>
-    <ClCompile Include="SAMP\classes\CFonts.cpp">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClCompile>
-    <ClCompile Include="SAMP\classes\CGame.cpp">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClCompile>
-    <ClCompile Include="SAMP\classes\CGangZonePool.cpp">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClCompile>
-    <ClCompile Include="SAMP\classes\CHttpClient.cpp">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClCompile>
-    <ClCompile Include="SAMP\classes\CInput.cpp">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClCompile>
-    <ClCompile Include="SAMP\classes\CLabel.cpp">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClCompile>
-    <ClCompile Include="SAMP\classes\CLabelPool.cpp">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClCompile>
-    <ClCompile Include="SAMP\classes\CLicensePlate.cpp">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClCompile>
-    <ClCompile Include="SAMP\classes\CLocalPlayer.cpp">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClCompile>
-    <ClCompile Include="SAMP\classes\CMenu.cpp">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClCompile>
-    <ClCompile Include="SAMP\classes\CMenuPool.cpp">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClCompile>
-    <ClCompile Include="SAMP\classes\CNetGame.cpp">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClCompile>
-    <ClCompile Include="SAMP\classes\CNetStats.cpp">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClCompile>
-    <ClCompile Include="SAMP\classes\CObject.cpp">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClCompile>
-    <ClCompile Include="SAMP\classes\CObjectPool.cpp">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClCompile>
-    <ClCompile Include="SAMP\classes\CObjectSelection.cpp">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClCompile>
-    <ClCompile Include="SAMP\classes\Commands.cpp">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClCompile>
-    <ClCompile Include="SAMP\classes\common.cpp">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClCompile>
-    <ClCompile Include="SAMP\classes\CPed.cpp">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClCompile>
-    <ClCompile Include="SAMP\classes\CPickupPool.cpp">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClCompile>
-    <ClCompile Include="SAMP\classes\CPlayerInfo.cpp">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClCompile>
-    <ClCompile Include="SAMP\classes\CPlayerPool.cpp">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClCompile>
-    <ClCompile Include="SAMP\classes\CPlayerTags.cpp">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClCompile>
-    <ClCompile Include="SAMP\classes\CRect.cpp">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClCompile>
-    <ClCompile Include="SAMP\classes\CRemotePlayer.cpp">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClCompile>
-    <ClCompile Include="SAMP\classes\CScoreboard.cpp">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClCompile>
-    <ClCompile Include="SAMP\classes\CSpawnScreen.cpp">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClCompile>
-    <ClCompile Include="SAMP\classes\CTextDraw.cpp">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClCompile>
-    <ClCompile Include="SAMP\classes\CTextDrawPool.cpp">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClCompile>
-    <ClCompile Include="SAMP\classes\CTextDrawSelection.cpp">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClCompile>
-    <ClCompile Include="SAMP\classes\CVector.cpp">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClCompile>
-    <ClCompile Include="SAMP\classes\CVehicle.cpp">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClCompile>
-    <ClCompile Include="SAMP\classes\CVehiclePool.cpp">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClCompile>
-    <ClCompile Include="SAMP\classes\Debug.cpp">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClCompile>
-    <ClCompile Include="SAMP\classes\DebugScript.cpp">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClCompile>
-    <ClCompile Include="SAMP\classes\Exception.cpp">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClCompile>
-    <ClCompile Include="SAMP\classes\GUI.cpp">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClCompile>
-    <ClCompile Include="SAMP\classes\InputHandler.cpp">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClCompile>
-    <ClCompile Include="SAMP\classes\KeyStuff.cpp">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClCompile>
-    <ClCompile Include="SAMP\classes\RPC.cpp">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClCompile>
-    <ClCompile Include="SAMP\classes\Scripting.cpp">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClCompile>
-    <ClCompile Include="SAMP\classes\Settings.cpp">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClCompile>
-    <ClCompile Include="SAMP\classes\VehicleSelection.cpp">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClCompile>
     <ClCompile Include="memwrapper\hde\hde32.cpp">
       <Filter>Исходные файлы\SAMP\memwrapper\hde</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R1\AimStuff_R1.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R1\CActor_R1.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R1\CActorPool_R1.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R1\CAudio_R1.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R1\CAudioStream_R1.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R1\CCamera_R1.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R1\CChat_R1.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R1\CConfig_R1.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R1\CDeathWindow_R1.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R1\CDialog_R1.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R1\CEntity_R1.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R1\CFonts_R1.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R1\CGame_R1.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R1\CGangZonePool_R1.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R1\CHttpClient_R1.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R1\CInput_R1.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R1\CLabel_R1.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R1\CLabelPool_R1.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R1\CLicensePlate_R1.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R1\CLocalPlayer_R1.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R1\CMenu_R1.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R1\CMenuPool_R1.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R1\CNetGame_R1.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R1\CNetStats_R1.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R1\CObject_R1.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R1\CObjectPool_R1.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R1\CObjectSelection_R1.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R1\Commands_R1.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R1\common_R1.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R1\CPed_R1.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R1\CPickupPool_R1.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R1\CPlayerInfo_R1.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R1\CPlayerPool_R1.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R1\CPlayerTags_R1.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R1\CRect_R1.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R1\CRemotePlayer_R1.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R1\CScoreboard_R1.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R1\CSpawnScreen_R1.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R1\CTextDraw_R1.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R1\CTextDrawPool_R1.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R1\CTextDrawSelection_R1.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R1\CVector_R1.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R1\CVehicle_R1.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R1\CVehiclePool_R1.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R1\Debug_R1.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R1\DebugScript_R1.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R1\Exception_R1.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R1\GUI_R1.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R1\InputHandler_R1.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R1\KeyStuff_R1.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R1\RPC_R1.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R1\Scripting_R1.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R1\Settings_R1.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R1\VehicleSelection_R1.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R3\AimStuff_R3.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R3\CActor_R3.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R3\CActorPool_R3.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R3\CAudio_R3.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R3\CAudioStream_R3.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R3\CCamera_R3.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R3\CChat_R3.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R3\CChatBubble_R3.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R3\CConfig_R3.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R3\CDeathWindow_R3.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R3\CDialog_R3.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R3\CEntity_R3.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R3\CFont_R3.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R3\CFonts_R3.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R3\CGame_R3.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R3\CGangZonePool_R3.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R3\CHelpDialog_R3.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R3\CHttpClient_R3.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R3\CInput_R3.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R3\CLabel_R3.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R3\CLabelPool_R3.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R3\CLicensePlate_R3.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R3\CLocalPlayer_R3.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R3\CMenu_R3.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R3\CMenuPool_R3.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R3\CNetGame_R3.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R3\CNetStats_R3.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R3\CObject_R3.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R3\CObjectMaterialText_R3.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R3\CObjectPool_R3.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R3\CObjectSelection_R3.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R3\Commands_R3.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R3\common_R3.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R3\CPed_R3.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R3\CPickupPool_R3.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R3\CPlayerInfo_R3.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R3\CPlayerPool_R3.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R3\CPlayerTags_R3.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R3\CRect_R3.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R3\CRemotePlayer_R3.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R3\CScoreboard_R3.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R3\CSpawnScreen_R3.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R3\CSrvNetStats_R3.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R3\CTextDraw_R3.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R3\CTextDrawPool_R3.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R3\CTextDrawSelection_R3.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R3\CVector_R3.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R3\CVehicle_R3.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R3\CVehiclePool_R3.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R3\DebugScript_R3.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R3\Exception_R3.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R3\GUI_R3.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R3\KeyStuff_R3.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R3\Scripting_R3.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMP\classes\R3\Settings_R3.cpp">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -654,183 +825,6 @@
     <ClInclude Include="DirectX\d3dx9xof.h">
       <Filter>Исходные файлы\DirectX</Filter>
     </ClInclude>
-    <ClInclude Include="SAMP\classes\AimStuff.h">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClInclude>
-    <ClInclude Include="SAMP\classes\Animation.h">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClInclude>
-    <ClInclude Include="SAMP\classes\CActor.h">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClInclude>
-    <ClInclude Include="SAMP\classes\CActorPool.h">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClInclude>
-    <ClInclude Include="SAMP\classes\CAudio.h">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClInclude>
-    <ClInclude Include="SAMP\classes\CAudioStream.h">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClInclude>
-    <ClInclude Include="SAMP\classes\CCamera.h">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClInclude>
-    <ClInclude Include="SAMP\classes\CChat.h">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClInclude>
-    <ClInclude Include="SAMP\classes\CConfig.h">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClInclude>
-    <ClInclude Include="SAMP\classes\CDeathWindow.h">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClInclude>
-    <ClInclude Include="SAMP\classes\CDialog.h">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClInclude>
-    <ClInclude Include="SAMP\classes\CEntity.h">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClInclude>
-    <ClInclude Include="SAMP\classes\CFonts.h">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClInclude>
-    <ClInclude Include="SAMP\classes\CGame.h">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClInclude>
-    <ClInclude Include="SAMP\classes\CGangZonePool.h">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClInclude>
-    <ClInclude Include="SAMP\classes\CHttpClient.h">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClInclude>
-    <ClInclude Include="SAMP\classes\CInput.h">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClInclude>
-    <ClInclude Include="SAMP\classes\CLabel.h">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClInclude>
-    <ClInclude Include="SAMP\classes\CLabelPool.h">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClInclude>
-    <ClInclude Include="SAMP\classes\CLicensePlate.h">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClInclude>
-    <ClInclude Include="SAMP\classes\CLocalPlayer.h">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClInclude>
-    <ClInclude Include="SAMP\classes\CMatrix.h">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClInclude>
-    <ClInclude Include="SAMP\classes\CMenu.h">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClInclude>
-    <ClInclude Include="SAMP\classes\CMenuPool.h">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClInclude>
-    <ClInclude Include="SAMP\classes\CNetGame.h">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClInclude>
-    <ClInclude Include="SAMP\classes\CNetStats.h">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClInclude>
-    <ClInclude Include="SAMP\classes\CObject.h">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClInclude>
-    <ClInclude Include="SAMP\classes\CObjectPool.h">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClInclude>
-    <ClInclude Include="SAMP\classes\CObjectSelection.h">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClInclude>
-    <ClInclude Include="SAMP\classes\Commands.h">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClInclude>
-    <ClInclude Include="SAMP\classes\common.h">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClInclude>
-    <ClInclude Include="SAMP\classes\ControllerState.h">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClInclude>
-    <ClInclude Include="SAMP\classes\CPed.h">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClInclude>
-    <ClInclude Include="SAMP\classes\CPickupPool.h">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClInclude>
-    <ClInclude Include="SAMP\classes\CPlayerInfo.h">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClInclude>
-    <ClInclude Include="SAMP\classes\CPlayerPool.h">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClInclude>
-    <ClInclude Include="SAMP\classes\CPlayerTags.h">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClInclude>
-    <ClInclude Include="SAMP\classes\CRect.h">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClInclude>
-    <ClInclude Include="SAMP\classes\CRemotePlayer.h">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClInclude>
-    <ClInclude Include="SAMP\classes\CScoreboard.h">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClInclude>
-    <ClInclude Include="SAMP\classes\CSpawnScreen.h">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClInclude>
-    <ClInclude Include="SAMP\classes\CTextDraw.h">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClInclude>
-    <ClInclude Include="SAMP\classes\CTextDrawPool.h">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClInclude>
-    <ClInclude Include="SAMP\classes\CTextDrawSelection.h">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClInclude>
-    <ClInclude Include="SAMP\classes\CVector.h">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClInclude>
-    <ClInclude Include="SAMP\classes\CVehicle.h">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClInclude>
-    <ClInclude Include="SAMP\classes\CVehiclePool.h">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClInclude>
-    <ClInclude Include="SAMP\classes\Debug.h">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClInclude>
-    <ClInclude Include="SAMP\classes\DebugScript.h">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClInclude>
-    <ClInclude Include="SAMP\classes\Exception.h">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClInclude>
-    <ClInclude Include="SAMP\classes\GUI.h">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClInclude>
-    <ClInclude Include="SAMP\classes\InputHandler.h">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClInclude>
-    <ClInclude Include="SAMP\classes\KeyStuff.h">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClInclude>
-    <ClInclude Include="SAMP\classes\Packets.h">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClInclude>
-    <ClInclude Include="SAMP\classes\RPC.h">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClInclude>
-    <ClInclude Include="SAMP\classes\Scripting.h">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClInclude>
-    <ClInclude Include="SAMP\classes\Settings.h">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClInclude>
-    <ClInclude Include="SAMP\classes\SpecialAction.h">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClInclude>
-    <ClInclude Include="SAMP\classes\VehicleSelection.h">
-      <Filter>Исходные файлы\SAMP\classes</Filter>
-    </ClInclude>
     <ClInclude Include="memwrapper\memwrapper.h">
       <Filter>Исходные файлы\SAMP\memwrapper</Filter>
     </ClInclude>
@@ -854,6 +848,363 @@
     </ClInclude>
     <ClInclude Include="memwrapper\x86\memwrapper_llmo.hpp">
       <Filter>Исходные файлы\SAMP\memwrapper\x86</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R1\AimStuff_R1.h">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R1\Animation_R1.h">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R1\CActor_R1.h">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R1\CActorPool_R1.h">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R1\CAudio_R1.h">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R1\CAudioStream_R1.h">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R1\CCamera_R1.h">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R1\CChat_R1.h">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R1\CConfig_R1.h">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R1\CDeathWindow_R1.h">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R1\CDialog_R1.h">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R1\CEntity_R1.h">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R1\CFonts_R1.h">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R1\CGame_R1.h">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R1\CGangZonePool_R1.h">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R1\CHttpClient_R1.h">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R1\CInput_R1.h">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R1\CLabel_R1.h">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R1\CLabelPool_R1.h">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R1\CLicensePlate_R1.h">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R1\CLocalPlayer_R1.h">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R1\CMatrix_R1.h">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R1\CMenu_R1.h">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R1\CMenuPool_R1.h">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R1\CNetGame_R1.h">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R1\CNetStats_R1.h">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R1\CObject_R1.h">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R1\CObjectPool_R1.h">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R1\CObjectSelection_R1.h">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R1\Commands_R1.h">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R1\common_R1.h">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R1\ControllerState_R1.h">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R1\CPed_R1.h">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R1\CPlayerInfo_R1.h">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R1\CPlayerPool_R1.h">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R1\CPlayerTags_R1.h">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R1\CRect_R1.h">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R1\CRemotePlayer_R1.h">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R1\CScoreboard_R1.h">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R1\CSpawnScreen_R1.h">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R1\CTextDraw_R1.h">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R1\CTextDrawPool_R1.h">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R1\CTextDrawSelection_R1.h">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R1\CVector_R1.h">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R1\CVehicle_R1.h">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R1\CVehiclePool_R1.h">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R1\Debug_R1.h">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R1\DebugScript_R1.h">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R1\Exception_R1.h">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R1\GUI_R1.h">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R1\InputHandler_R1.h">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R1\KeyStuff_R1.h">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R1\Packets_R1.h">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R1\RPC_R1.h">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R1\Scripting_R1.h">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R1\Settings_R1.h">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R1\SpecialAction_R1.h">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R1\VehicleSelection_R1.h">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R3\AimStuff_R3.h">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R3\Animation_R3.h">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R3\CActor_R3.h">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R3\CActorPool_R3.h">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R3\CAudio_R3.h">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R3\CAudioStream_R3.h">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R3\CCamera_R3.h">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R3\CChat_R3.h">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R3\CChatBubble_R3.h">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R3\CConfig_R3.h">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R3\CDeathWindow_R3.h">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R3\CDialog_R3.h">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R3\CEntity_R3.h">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R3\CFont_R3.h">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R3\CFonts_R3.h">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R3\CGame_R3.h">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R3\CGangZonePool_R3.h">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R3\CHelpDialog_R3.h">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R3\CHttpClient_R3.h">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R3\CInput_R3.h">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R3\CLabel_R3.h">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R3\CLabelPool_R3.h">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R3\CLicensePlate_R3.h">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R3\CLocalPlayer_R3.h">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R3\CMatrix_R3.h">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R3\CMenu_R3.h">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R3\CMenuPool_R3.h">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R3\CNetGame_R3.h">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R3\CNetStats_R3.h">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R3\CObject_R3.h">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R3\CObjectMaterialText_R3.h">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R3\CObjectPool_R3.h">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R3\CObjectSelection_R3.h">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R3\Commands_R3.h">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R3\common_R3.h">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R3\ControllerState_R3.h">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R3\CPed_R3.h">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R3\CPickupPool_R3.h">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R3\CPlayerInfo_R3.h">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R3\CPlayerPool_R3.h">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R3\CPlayerTags_R3.h">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R3\CRect_R3.h">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R3\CRemotePlayer_R3.h">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R3\CScoreboard_R3.h">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R3\CSpawnScreen_R3.h">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R3\CSrvNetStats_R3.h">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R3\CTextDraw_R3.h">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R3\CTextDrawPool_R3.h">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R3\CTextDrawSelection_R3.h">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R3\CVector_R3.h">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R3\CVehicle_R3.h">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R3\CVehiclePool_R3.h">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R3\DebugScript_R3.h">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R3\Exception_R3.h">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R3\GUI_R3.h">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R3\KeyStuff_R3.h">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R3\Packets_R3.h">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R3\Scripting_R3.h">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R3\Settings_R3.h">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R3\SpecialAction_R3.h">
+      <Filter>Исходные файлы\SAMP\classes\R3</Filter>
+    </ClInclude>
+    <ClInclude Include="SAMP\classes\R1\CPickupPool_R1.h">
+      <Filter>Исходные файлы\SAMP\classes\R1</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
