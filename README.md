@@ -10,6 +10,9 @@
 > - #### [Эмулирование пакетов / RPC](#recv)
 > - #### [Регистрация коллбеков](#callback)
 > - #### [Работа с самп ид через Plugin SDK](#psdk_samp)
+> - #### [Выбор версии SA-MP для компиляции](#sampver)
+> - #### [Пример кода под две версии](#multicode)
+> - #### [Регистрация коллбека через лямбду](#lambda)
 ---
 
 <a id="psdk"></a>
@@ -137,7 +140,7 @@
 >>	return true;
 >>}
 >>```
-> - Сама регистация (РЕГИСТРИРОВАТЬ МОЖНО ТОЛЬКО 1 КОЛЛБЕК НА ВЕСЬ ПРОЕКТ)
+> - Сама регистация (регистрировать 1 раз, имеется возможность регистрации нескольких коллбеков одного типа, к примеру два коллбека D3D Present )
 >>```
 >>SAMP::CallBacks::pCallBackRegister->RegisterRakClientCallback(RakClientSendHook);//registed RakClient Send Hook
 >>SAMP::CallBacks::pCallBackRegister->RegisterRakClientCallback(RakClientRecvHook);//registed RakClient Recv Hook
@@ -195,5 +198,52 @@
 >>		
 >>//получить указатель на CVehicle* через ид машины
 >>CVehicle* pVehicle = SAMP::pSAMP->getVehicles()->GetCVehicleFromSAMPVehicleID(100);
+>>```
+> - [Вверх](#main)
+---
+<a id="sampver"></a>
+> ### Выбор версии SA-MP для компиляции
+> - Открываем ностройки проекта, переходим в `C/C++ -> Препроцессор`, в пункте `Определения препроцессора` есть строка `SAMP_R1_COMPILE`. В зависимости от того, `R1` или `R3`, проект будет компилироваться под нужную версию сампа, возможные версии компиляции:
+> - `SAMP_R1_COMPILE` - скомпилируется под 0.3.7-R1
+> - `SAMP_R3_COMPILE` - скомпилируется под 0.3.7-R3-1
+> - [Вверх](#main)
+---
+<a id="multicode"></a>
+> ### Пример кода под две версии сампа
+> - Вывод ников игроков в зоне стрима через ImGui::Text
+>> ``` 
+>>for (int i = 0; i != SAMP_MAX_PLAYERS; i++) {
+>>	if (!SAMP::pSAMP->getPlayers()->IsPlayerStreamed(i))
+>>		continue;
+>>#if defined (SAMP_R1_COMPILE)//R1
+>>	ImGui::Text("name of %d: %s", i, SAMP::pSAMP->getPlayers()->pRemotePlayer[i]->szPlayerName);
+>>#elif defined (SAMP_R3_COMPILE)//R3
+>>	ImGui::Text("name of %d: %s", i, SAMP::pSAMP->getPlayers()->pRemotePlayer[i]->PlayerName.c_str());
+>>#endif			
+>>}
+>>```
+> - [Вверх](#main)
+---
+<a id="lambda"></a>
+> ### Пример регистрации коллбека через лямбду
+>>```
+>>class MainClass {
+>>public:
+>>	MainClass() {
+>>		//RakNet Send
+>>		*SAMP::CallBacks::pCallBackRegister += [&](SAMP::CallBacks::HookedStructs::stRakClientSend* params) -> bool {
+>>
+>>
+>>			return true;
+>>		};
+>>		//GameLoop
+>>		*SAMP::CallBacks::pCallBackRegister += [&]() -> void {
+>>
+>>
+>>
+>>		};
+>>	};
+>>
+>>} MainClassObj;
 >>```
 > - [Вверх](#main)
