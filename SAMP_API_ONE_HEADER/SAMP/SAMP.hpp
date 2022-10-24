@@ -3067,7 +3067,9 @@ SAMP::CallBacks::CCallbackRegister::Packet__* __fastcall SAMP::CallBacks::CCallb
 				retn = i(&params);
 				if (!retn) {
 					delete bs;
-					return nullptr;
+					//return nullptr;
+					_this->DeallocatePacket((Packet*)packet);
+					return packet;
 				}
 			}
 			//bool retn = SAMP::CallBacks::pCallBackRegister->callRakPeerRecv(&params);
