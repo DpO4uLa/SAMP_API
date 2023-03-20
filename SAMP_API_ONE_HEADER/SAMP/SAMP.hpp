@@ -3068,7 +3068,9 @@ SAMP::CallBacks::CCallbackRegister::Packet__* __fastcall SAMP::CallBacks::CCallb
 				if (!retn) {
 					delete bs;
 					//return nullptr;
-					_this->DeallocatePacket((Packet*)packet);
+					//_this->DeallocatePacket((Packet*)packet);
+					memset(packet->data, 0, packet->length);
+					packet->data[0] = 0xFF;
 					return packet;
 				}
 			}
