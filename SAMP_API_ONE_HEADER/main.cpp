@@ -2,7 +2,7 @@
 
 bool isPluginInitialized = false;
 
-std::unique_ptr<CD3DRender> pRender = nullptr;
+//std::unique_ptr<CD3DRender> pRender = nullptr;
 
 LRESULT __stdcall WndProcCallBack(SAMP::CallBacks::HookedStructs::stWndProcParams *params) {
 	
@@ -52,14 +52,12 @@ HRESULT __stdcall D3DPresentHook(SAMP::CallBacks::HookedStructs::stPresentParams
 					SAMP::pSAMP->getRakNet()->Send(&bs);
 				}
 
-				if (ImGui::Button(u8"Отправить RPC")) {
-					std::string text = "Хуй залупный";
-
-					BitStream bs;
-					bs.Write((unsigned __int8)text.length());
-					bs.Write(text.c_str(), text.length());
-
-					SAMP::pSAMP->getRakNet()->SendRPC(RPCEnumeration::RPC_Chat, &bs);
+				if (ImGui::Button(u8"Отправить RPC's")) {
+					constexpr char message[] = "Хуйня";
+					BitStream bsSend;
+					bsSend.Write((std::uint8_t)std::strlen(message));
+					bsSend.Write(message, (std::uint8_t)std::strlen(message));
+					SAMP::pSAMP->getRakNet()->SendRPC(RPC_Chat, &bsSend);
 				}
 
 				if (ImGui::Button(u8"SAMP::classes::")) { //WORK on R1 and R3
@@ -121,7 +119,7 @@ HRESULT __stdcall D3DPresentHook(SAMP::CallBacks::HookedStructs::stPresentParams
 		ImGui::EndFrame();
 		ImGui::Render();
 		ImGui_ImplDX9_RenderDrawData(ImGui::GetDrawData());
-		pRender->Initialize(params->pDevice);
+		//pRender->Initialize(params->pDevice);
 
 		//render example
 		//if (SUCCEEDED(pRender->BeginRender())) {
@@ -139,7 +137,7 @@ HRESULT __stdcall D3DResetHook(SAMP::CallBacks::HookedStructs::stResetParams *pa
 
 	if (isPluginInitialized) {
 		ImGui_ImplDX9_InvalidateDeviceObjects();
-		pRender->Invalidate();
+		//pRender->Invalidate();
 	}
 
 	return D3D_OK;
@@ -197,7 +195,7 @@ void __stdcall GameLoop() {
 			ImGui_ImplDX9_Init(SAMP::CallBacks::pCallBackRegister->GetIDirect3DDevice9());
 			ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_NoMouseCursorChange;
 			//render
-			pRender = std::make_unique<CD3DRender>(128);
+			//pRender = std::make_unique<CD3DRender>(128);
 
 			//initialization
 			SAMP::pSAMP->addClientCommand("menu", cmd);
@@ -207,8 +205,8 @@ void __stdcall GameLoop() {
 			SAMP::CallBacks::pCallBackRegister->RegisterRakClientCallback(RakClientSendHook);//registed RakClient Send Hook
 			SAMP::CallBacks::pCallBackRegister->RegisterRakClientCallback(RakClientRecvHook);//registed RakClient Recv Hook
 			SAMP::CallBacks::pCallBackRegister->RegisterRakClientCallback(RakClientRPCHook);//registed RakClient RPC Hook
-			SAMP::CallBacks::pCallBackRegister->RegisterRakClientCallback(RakClientRPCRecvHook);//registed RakClient RPC recv Hook
-			
+			SAMP::CallBacks::pCallBackRegister->RegisterRakClientCallback(RakClientRPCRecvHook);//registed RakClient RPC recv Hook	
+
 			isPluginInitialized = true;
 		}
 	}
