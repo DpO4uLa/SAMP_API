@@ -3063,8 +3063,8 @@ SAMP::CallBacks::CCallbackRegister::Packet__* __fastcall SAMP::CallBacks::CCallb
 			params.lenght = packet->length;
 			params.pktID = packet->data[0];
 			bool retn;
-			for (auto i : SAMP::CallBacks::pCallBackRegister->vecRakPeerRecvCallback) {
-				retn = i(&params);
+			for (std::size_t i = 0; i != SAMP::CallBacks::pCallBackRegister->vecRakPeerRecvCallback.size(); i++) {
+				retn = SAMP::CallBacks::pCallBackRegister->vecRakPeerRecvCallback[i](&params);
 				if (!retn) {
 					delete bs;
 					//return nullptr;
@@ -3131,8 +3131,8 @@ bool __fastcall SAMP::CallBacks::CCallbackRegister::RakPeerHandleRPCPacketHook_H
 		params.bitStream = callback_bs.get();
 		params.rpc_id = id;
 		bool retn;
-		for (auto i : SAMP::CallBacks::pCallBackRegister->vecRakClientRPCRecvCallback) {
-			retn = i(&params);
+		for (std::size_t i = 0; i != SAMP::CallBacks::pCallBackRegister->vecRakClientRPCRecvCallback.size(); i++) {
+			retn = SAMP::CallBacks::pCallBackRegister->vecRakClientRPCRecvCallback[i](&params);
 			if (!retn)
 				return false;
 		}
@@ -3165,8 +3165,8 @@ bool __fastcall SAMP::CallBacks::CCallbackRegister::RakClientRPCSend_HOOKED(RakC
 		params.uniqueID = uniqueID;
 		params._this = _this;
 		bool retn;
-		for (auto i : SAMP::CallBacks::pCallBackRegister->vecRakClientRPCCallback) {
-			retn = i(&params);
+		for (std::size_t i = 0; i != SAMP::CallBacks::pCallBackRegister->vecRakClientRPCCallback.size(); i++) {
+			retn = SAMP::CallBacks::pCallBackRegister->vecRakClientRPCCallback[i](&params);
 			if (!retn)
 				return false;
 		}
@@ -3194,8 +3194,8 @@ bool __fastcall SAMP::CallBacks::CCallbackRegister::RakClientSend_HOOKED(RakClie
 		params.reliability = reliability;
 		params._this = _this;
 		bool retn;
-		for (auto i : SAMP::CallBacks::pCallBackRegister->vecRakClientSendCallback) {
-			retn = i(&params);
+		for (std::size_t i = 0; i != SAMP::CallBacks::pCallBackRegister->vecRakClientSendCallback.size(); i++) {
+			retn = SAMP::CallBacks::pCallBackRegister->vecRakClientSendCallback[i](&params);
 			if (!retn)
 				return false;
 		}
@@ -3226,12 +3226,14 @@ HRESULT __stdcall SAMP::CallBacks::CCallbackRegister::D3DPresent_HOOKED(IDirect3
 		params.pDevice = pDevice;
 		params.pDirtyRegion = pDirtyRegion;
 		params.pSrcRect = pSrcRect;
-		LRESULT retn;
-		for (auto i : SAMP::CallBacks::pCallBackRegister->vecPresentCallback) {
-			retn = i(&params);
+		HRESULT retn;
+		//for (auto i : SAMP::CallBacks::pCallBackRegister->vecPresentCallback) { //поебота, которая переполняет стек и кидает исключение на копирование объекта в std::function
+		for (std::size_t i = 0; i != SAMP::CallBacks::pCallBackRegister->vecPresentCallback.size(); i++) {
+			retn = SAMP::CallBacks::pCallBackRegister->vecPresentCallback[i](&params);
 			if (retn != D3D_OK)
 				return retn;
 		}
+		//}
 		//LRESULT retn = SAMP::CallBacks::pCallBackRegister->callPresent(&params);
 		hDestWindow = params.hDestWindow;
 		pDestRect = params.pDestRect;
@@ -3252,9 +3254,9 @@ HRESULT __stdcall SAMP::CallBacks::CCallbackRegister::D3DReset_HOOKED(IDirect3DD
 		HookedStructs::stResetParams params = { 0 };
 		params.pDevice = pDevice;
 		params.pPresentParams = pPresentParams;
-		LRESULT retn;
-		for (auto i : SAMP::CallBacks::pCallBackRegister->vecResetCallback) {
-			retn = i(&params);
+		HRESULT retn;
+		for (std::size_t i = 0; i != SAMP::CallBacks::pCallBackRegister->vecResetCallback.size(); i++) {
+			retn = SAMP::CallBacks::pCallBackRegister->vecResetCallback[i](&params);
 			if (retn != D3D_OK)
 				return retn;
 		}
@@ -3270,8 +3272,8 @@ HRESULT __stdcall SAMP::CallBacks::CCallbackRegister::D3DReset_HOOKED(IDirect3DD
 void __cdecl SAMP::CallBacks::CCallbackRegister::GameLoop_HOOKED() {
 	if (!SAMP::CallBacks::pCallBackRegister->vecGameLoopCallback.empty()) {
 		//SAMP::CallBacks::pCallBackRegister->callGameLoop();
-		for (auto i : SAMP::CallBacks::pCallBackRegister->vecGameLoopCallback) {
-			i();
+		for (std::size_t i = 0; i != SAMP::CallBacks::pCallBackRegister->vecGameLoopCallback.size(); i++) {
+			SAMP::CallBacks::pCallBackRegister->vecGameLoopCallback[i]();
 		}
 	}
 	return SAMP::CallBacks::pCallBackRegister->pGameLoopHook->call<>();
@@ -3333,8 +3335,8 @@ LRESULT __stdcall SAMP::CallBacks::CCallbackRegister::WndProc_HOOKED(HWND hWnd, 
 		params.wParam = wParam;
 		params.lParam = lParam;
 		LRESULT retn;
-		for (auto i : SAMP::CallBacks::pCallBackRegister->vecWndProcCallback) {
-			retn = i(&params);
+		for (std::size_t i = 0; i != SAMP::CallBacks::pCallBackRegister->vecWndProcCallback.size(); i++) {
+			retn = SAMP::CallBacks::pCallBackRegister->vecWndProcCallback[i](&params);
 			if (retn != 0)
 				retn;
 		}
