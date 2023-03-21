@@ -27,6 +27,11 @@ HRESULT __stdcall D3DPresentHook(SAMP::CallBacks::HookedStructs::stPresentParams
 		if (isOpen) {
 			if (ImGui::Begin(u8"Тестовое меню##1337", &isOpen, ImGuiWindowFlags_::ImGuiWindowFlags_NoSavedSettings)) {
 
+				static bool bIsDemoWindowActive = false;
+				ImGui::Checkbox(u8"Демо", &bIsDemoWindowActive);
+				if(bIsDemoWindowActive)
+					ImGui::ShowDemoWindow(&bIsDemoWindowActive);
+
 				for (int i = 0; i != SAMP_MAX_PLAYERS; i++) {
 					if (SAMP::pSAMP->getPlayers()->iIsListed[i] == 0 || 
 						SAMP::pSAMP->getStreamedOutPlayerInfo()->fPlayerPos[i][0] == 0 ||
@@ -53,7 +58,7 @@ HRESULT __stdcall D3DPresentHook(SAMP::CallBacks::HookedStructs::stPresentParams
 				}
 
 				if (ImGui::Button(u8"Отправить RPC's")) {
-					constexpr char message[] = "Хуйня";
+					constexpr char message[] = "Тестовое сообщение";
 					BitStream bsSend;
 					bsSend.Write((std::uint8_t)std::strlen(message));
 					bsSend.Write(message, (std::uint8_t)std::strlen(message));
